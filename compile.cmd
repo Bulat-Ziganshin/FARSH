@@ -1,10 +1,13 @@
 @echo off
 set options=main.cpp
-set options_ms=-MP -Gy -GL -GR- -nologo %options% user32.lib shell32.lib ole32.lib advapi32.lib %* -link -LARGEADDRESSAWARE
+set options_ms=-arch:AVX2 -MP -Gy -GL -GR- -nologo %options% user32.lib shell32.lib ole32.lib advapi32.lib %* -link -LARGEADDRESSAWARE
 set options_ms_cl=-Ox -GL -Gy -EHsc %options_ms%
 set options_ms_icl=-w -O3 -Qipo %options_ms%
 set options_ms_x86=-MACHINE:x86
 set options_ms_x64=-MACHINE:x64
+
+gcc -std=c++11 -O3 -m32 -s -static -msse2 %options% -ofarsh32-gcc.exe
+gcc -std=c++11 -O3 -m64 -s -static -msse2 %options% -ofarsh64-gcc.exe
 
 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
 cl -Fefarsh32.exe %options_ms_cl% %options_ms_x86%
