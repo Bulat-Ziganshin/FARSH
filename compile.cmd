@@ -1,5 +1,5 @@
 @echo off
-set options=
+set options=main.cpp
 set options_ms=-MP -Gy -GL -GR- -nologo %options% user32.lib shell32.lib ole32.lib advapi32.lib %* -link -LARGEADDRESSAWARE
 set options_ms_cl=-Ox -GL -Gy -EHsc %options_ms%
 set options_ms_icl=-w -O3 -Qipo %options_ms%
