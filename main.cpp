@@ -12,7 +12,7 @@ int main()
 
     for (int i=0; i<DATASET/DATASIZE; i++)
     {
-        char data[DATASIZE];
+        static char data[DATASIZE];  data[0]=(char)i;
         auto h = farsh (data, DATASIZE);
         if (h==42) break;
     }
