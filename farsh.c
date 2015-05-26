@@ -13,11 +13,6 @@ static const UINT farsh_key[STRIPE_ELEMENTS+1024/32-1] = {  /* STRIPE bytes of k
 
 /* Hash up to STRIPE bytes, consisting of whole UINT pairs, including optional
    UINT pair in the extra[] */
-#if (__GNUC__>0) || defined(__clang__)
-__attribute__((always_inline)) inline
-#else
-__forceinline
-#endif
 static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *farsh_key)
 {
     ULONG sum = 0;  int i;
