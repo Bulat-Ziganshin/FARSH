@@ -1,7 +1,7 @@
 # FARSH
 Fast and reliable (but not cryptographic) scalable hash
 
-# Benchmarks
+# Benchmark (i7-4770)
 ```
 C:\>gcc -std=c++11 -O3 -funroll-loops -s -static -m32 main.cpp & a
 6.331 GB/s = 5.896 GiB/s
