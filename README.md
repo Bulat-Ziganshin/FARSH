@@ -1,5 +1,5 @@
 # FARSH
-Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*n` bits, up to 1024 bits) can be calculated with `farsh_n()`. Main loop uses universal hashing formula from UMAC with a precomputed key material of 1024 bytes. You can use the FARSH as keyed hash by calling `farsh_keyed()` with 1024-byte key or `farsh_keyed_n()` with key of `1024+(n-1)*4` bytes.
+Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*n` bits, up to 1024 bits) can be calculated with `farsh_n()`. Main loop uses universal hashing formula from [UMAC](en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes. You can use the FARSH as keyed hash by calling `farsh_keyed()` with 1024-byte key or `farsh_keyed_n()` with key of `1024+(n-1)*4` bytes.
 
 # Benchmark (i7-4770)
 ```
