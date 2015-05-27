@@ -17,6 +17,7 @@
 
 #define UINT  /*uint32_t*/ unsigned
 #define ULONG /*uint64_t*/ unsigned long long
+#define COMPRESS_ULONG(sum) ((UINT)((sum) >> 32) + (UINT)(sum))   /* return sum of 32-bit halves of the sum */
 
 #define STRIPE          1024
 #define STRIPE_ELEMENTS (STRIPE/sizeof(UINT))
@@ -42,17 +43,17 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
     {
         __m128i d = _mm_loadu_si128 (xdata+i);
         __m128i k = _mm_load_si128 (xkey+i);
-        __m128i dk = _mm_add_epi32(d,k);                                  // uint32 dk[4]  = {d0+k0, d1+k1, d2+k2, d3+k3}
-        __m128i res = _mm_mul_epu32 (dk, _mm_shuffle_epi32 (dk,0x31));    // uint64 res[2] = {dk0*dk1,dk2*dk3}
+        __m128i dk = _mm_add_epi32(d,k);                                        // uint32 dk[4]  = {d0+k0, d1+k1, d2+k2, d3+k3}
+        __m128i res = _mm_mul_epu32 (dk, _mm_shuffle_epi32 (dk,0x31));          // uint64 res[2] = {dk0*dk1,dk2*dk3}
         sum = _mm_add_epi64(sum,res);
     }
-    sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));              // sum up two 64-bit values in the sum
-    return _mm_cvtsi128_si32 (_mm_shuffle_epi32(sum,1));                  // .. and extract higher 32 bits of result
+    sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));                    // sum up two 64-bit values in the sum
+    return _mm_cvtsi128_si32 (_mm_add_epi32 (sum, _mm_shuffle_epi32(sum,1)));   // .. and return COMPRESS_ULONG(sum)
 #else
     ULONG sum = 0;  int i;
     for (i=0; i < STRIPE_ELEMENTS; i+=2)
         sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
-    return (UINT)(sum >> 32);
+    return COMPRESS_ULONG(sum);
 #endif
 }
 
@@ -65,7 +66,7 @@ static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, c
         sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
     if (extra)
         sum += (extra[0] + key[i]) * (ULONG)(extra[1] + key[i+1]);
-    return (UINT)(sum >> 32);
+    return COMPRESS_ULONG(sum);
 }
 
 /* Hash up to STRIPE bytes, with special optimization for exactly STRIPE input
@@ -95,7 +96,7 @@ UINT farsh_keyed (const void *data_ptr, size_t bytes, const UINT *key)
         if (++i == STRIPE_ELEMENTS)
             i = 0;/*to do*/
     }
-    return (UINT)(sum >> 32);
+    return COMPRESS_ULONG(sum);
 }
 
 /* Hash the buffer of arbitrary size */
@@ -120,5 +121,6 @@ UINT farsh (const void *data_ptr, size_t bytes)
 
 #undef STRIPE
 #undef STRIPE_ELEMENTS
+#undef COMPRESS_ULONG
 #undef UINT
 #undef ULONG
