@@ -17,7 +17,7 @@ C:\>gcc -std=c++11 -O3 -funroll-loops -s -static -m64 -mavx2 -DAVX2 main.cpp & a
 ```
 
 # Features
-- [x] hashes up to 1024 bits long (farsh_n)
+- [x] hashes up to 1024 bits long (`farsh_n`)
 - [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
 - [x] SSE2/AVX2 manually-optimized main loop
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
