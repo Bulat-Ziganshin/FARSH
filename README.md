@@ -1,5 +1,5 @@
 # FARSH
-Fast and reliable (but not cryptographic) scalable hash
+Fast and reliable (but not secure) hash
 
 # Benchmark (i7-4770)
 ```
