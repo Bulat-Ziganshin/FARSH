@@ -34,6 +34,21 @@ static const UINT farsh_key[STRIPE_ELEMENTS+1024/sizeof(UINT)-1] = {  /* STRIPE 
 static UINT farsh_fast (const UINT *data, const UINT *key)
 {
 #ifdef AVX2
+    __m256i sum = _mm256_setzero_si256();  int i;
+    const __m256i *xdata = (const __m256i *) data;
+    const __m256i *xkey  = (const __m256i *) key;
+
+    for (i=0; i < STRIPE/sizeof(__m256i); i++)
+    {
+        __m256i d = _mm256_loadu_si256 (xdata+i);
+        __m256i k = _mm256_load_si256  (xkey+i);
+        __m256i dk = _mm256_add_epi32(d,k);                                     // uint32 dk[8]  = {d0+k0, d1+k1 .. d7+k7}
+        __m256i res = _mm256_mul_epu32 (dk, _mm256_shuffle_epi32 (dk,0x31));    // uint64 res[4] = {dk0*dk1, dk2*dk3, dk4*dk5, dk6*dk7}
+        sum = _mm256_add_epi64(sum,res);
+    }
+     sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));              // sum up four 64-bit values in the sum
+     __m128i sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
+     return _mm_cvtsi128_si32 (_mm_add_epi32 (sum128, _mm_shuffle_epi32(sum128,1)));   // .. and return COMPRESS_ULONG(sum)
 #elif defined(SSE2)
     __m128i sum = _mm_setzero_si128();  int i;
     const __m128i *xdata = (const __m128i *) data;
@@ -42,7 +57,7 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
     for (i=0; i < STRIPE/sizeof(__m128i); i++)
     {
         __m128i d = _mm_loadu_si128 (xdata+i);
-        __m128i k = _mm_load_si128 (xkey+i);
+        __m128i k = _mm_load_si128  (xkey+i);
         __m128i dk = _mm_add_epi32(d,k);                                        // uint32 dk[4]  = {d0+k0, d1+k1, d2+k2, d3+k3}
         __m128i res = _mm_mul_epu32 (dk, _mm_shuffle_epi32 (dk,0x31));          // uint64 res[2] = {dk0*dk1,dk2*dk3}
         sum = _mm_add_epi64(sum,res);

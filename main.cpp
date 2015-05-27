@@ -10,7 +10,7 @@ int main()
     for (int i=0; i<DATASIZE; i++)
         data[i] = char((123456791u*i) >> (i%16));
 
-    const uint64_t DATASET = uint64_t(10)<<30;
+    const uint64_t DATASET = uint64_t(100)<<30;
     printf("Hashing %d GiB", int(DATASET>>30));
     Timer t;  t.Start();
 
