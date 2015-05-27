@@ -11,42 +11,51 @@ static const UINT farsh_key[STRIPE_ELEMENTS+1024/32-1] = {  /* STRIPE bytes of k
     0xe3bc0197,0x55079913,0x9f72c696,0x363e00c8,0x53153947,0xebfd127f,0x00f60519,0x46a6b62a,0x93b83380,0x3fe29324,0xdfc67091,0x0f62386d,0xdc375e79,0x8fea3f3e,0xdf8463d0,0x3702fa7b,0x3954435e,0x87caa648,0xa9158bee,0x08f30c25,0x66b82936,0xe7fc3feb,0x183c5450,0xd7ef4345,0x798c7963,0xc02cf557,0x098553d1,0xfa4312aa,0xe29ef883,0x7caf128d,0x74b3a07d
     };
 
+/* Hash exactly STRIPE bytes */
+static UINT farsh_fast (const UINT *data, const UINT *key)
+{
+    ULONG sum = 0;  int i;
+    for (i=0; i < STRIPE_ELEMENTS; i+=2)
+        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
+    return (UINT)(sum >> 32);
+}
+
 /* Hash up to STRIPE bytes, consisting of whole UINT pairs, including optional
    UINT pair in the extra[] */
-static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *farsh_key)
+static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *key)
 {
     ULONG sum = 0;  int i;
     for (i=0; i < elements; i+=2)
-        sum += (data[i] + farsh_key[i]) * (ULONG)(data[i+1] + farsh_key[i+1]);
+        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
     if (extra)
-        sum += (extra[0] + farsh_key[i]) * (ULONG)(extra[1] + farsh_key[i+1]);
+        sum += (extra[0] + key[i]) * (ULONG)(extra[1] + key[i+1]);
     return (UINT)(sum >> 32);
 }
 
 /* Hash up to STRIPE bytes, with special optimization for exactly STRIPE input
    bytes and careful handling of partial UINT pair at the end of buffer */
-static UINT farsh_block (const void *data_ptr, size_t bytes, const UINT *farsh_key)
+static UINT farsh_block (const void *data_ptr, size_t bytes, const UINT *key)
 {
     const UINT *data = (const UINT*) data_ptr;
-    if (bytes == STRIPE)  return farsh_pairs (data, STRIPE_ELEMENTS, NULL, farsh_key);
+    if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
     UINT extra_data[2] = {0};
     size_t extra_bytes = bytes - elements*sizeof(UINT);
     memcpy (extra_data, data+elements, extra_bytes);
-    return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, farsh_key);
+    return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
 }
 
 /* Hash the buffer of arbitrary size */
-UINT farsh_keyed (const void *data_ptr, size_t bytes, const UINT *farsh_key)
+UINT farsh_keyed (const void *data_ptr, size_t bytes, const UINT *key)
 {
     ULONG sum = 0;  int i = 0;
     const char *data = (const char*) data_ptr,  *end = data+bytes;
     while (data < end)
     {
         size_t minbytes = (bytes<STRIPE? bytes : STRIPE);
-        UINT h = farsh_block (data, minbytes, farsh_key);
+        UINT h = farsh_block (data, minbytes, key);
         data += minbytes;
-        sum += h*(ULONG)farsh_key[i];
+        sum += h*(ULONG)key[i];
         if (++i == STRIPE_ELEMENTS)
             i = 0;/*to do*/
     }
@@ -54,11 +63,11 @@ UINT farsh_keyed (const void *data_ptr, size_t bytes, const UINT *farsh_key)
 }
 
 /* Hash the buffer of arbitrary size */
-void farsh_keyed_n (const void *data_ptr, size_t bytes, const UINT *farsh_key, int n, UINT *hash)
+void farsh_keyed_n (const void *data_ptr, size_t bytes, const UINT *key, int n, UINT *hash)
 {
     int i;
     for (i=0; i < n; i++)
-        hash[i] = farsh_keyed (data_ptr, bytes, farsh_key+i);
+        hash[i] = farsh_keyed (data_ptr, bytes, key+i);
 }
 
 /* Hash the buffer of arbitrary size */
