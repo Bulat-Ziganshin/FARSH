@@ -21,5 +21,4 @@ C:\>gcc -std=c++11 -O3 -funroll-loops -s -static -m64 -mavx2 -DAVX2 main.cpp & a
 - [x] hashes with user-supplied key material (farsh_key and farsh_key_n)
 - [x] SSE2/AVX2 manually-optimized main loop
 - [ ] farsh_init/farsh_update/farsh_result streaming API
-- [ ] better high-level mixing
-- [ ] ? improve COMPRESS_ULONG (may be crc32(sum)?)
+- [ ] improve COMPRESS_ULONG and level-1/level-2 hashsum combination
