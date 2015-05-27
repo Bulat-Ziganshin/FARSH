@@ -4,6 +4,7 @@ Fast and reliable (but not cryptographic) scalable hash
 Features:
 - [x] hashes up to 1024 bits long (farsh_n)
 - [x] hashes with user-supplied key material (farsh_key and farsh_key_n)
-- [ ] manually SSE2/AVX2-optimized implementation
+- [x] SSE2/AVX2 manually-optimized main loop
+- [ ] farsh_init/farsh_update/farsh_result streaming API
 - [ ] better high-level mixing
-- [ ] ? replace 'sum>>32' with something else (sum>>32+sum or crc32(sum))
+- [ ] ? improve COMPRESS_ULONG (crc32(sum)?)
