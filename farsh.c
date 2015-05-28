@@ -108,7 +108,7 @@ UINT farsh_keyed (const void *data, size_t bytes, const UINT *key)
         ptr += minbytes;
 
         // Level-1 hashsum combining
-        sum += h*(ULONG)key[i];
+        sum += h*(ULONG)(key[i]+minbytes);
         if (++i == STRIPE_ELEMENTS)
         {
             i = 0;
