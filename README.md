@@ -20,6 +20,7 @@ C:\>gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2 main.cpp & a
 - [x] hashes up to 1024 bits long (`farsh_n`)
 - [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
 - [x] SSE2/AVX2 manually-optimized main loop
+- [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
 - [ ] SMHasher testsuite
 - [ ] fix issues found by SMHasher by tuning `COMPRESS_ULONG()` and hashsum combining (using tabbed hashing, crc, murmur/xxhash ideas?)
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
