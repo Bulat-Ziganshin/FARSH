@@ -17,10 +17,10 @@ C:\>gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2 main.cpp & a
 ```
 
 # The main loop code
-[-m32](gcc32.lst#L286)
-[-m32 -DSSE2](gcc32sse2.lst#L326)
-[-m64 -DSSE2](gcc64sse2.lst#L257)
-[-m64 -DAVX2](gcc64avx2.lst#L259)
+- [gcc -O3 -funroll-loops -m32](gcc32.lst#L286)
+- [gcc -O3 -funroll-loops -m32 -DSSE2](gcc32sse2.lst#L326)
+- [gcc -O3 -funroll-loops -m64 -DSSE2](gcc64sse2.lst#L257)
+- [gcc -O3 -funroll-loops -m64 -DAVX2](gcc64avx2.lst#L259)
 
 
 # Features
