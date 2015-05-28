@@ -129,10 +129,11 @@ void farsh_keyed_n (const void *data, size_t bytes, const UINT *key, int n, UINT
         hash[i] = farsh_keyed (data, bytes, key+i);
 }
 
-/* Hash the buffer and return hash up to 32 dwords (1024 bits) long */
-void farsh_n (const void *data, size_t bytes, int n, UINT *hash)
+/* Hash the buffer and return hash up to 32 dwords (1024 bits) long.
+   Return `n` keys starting with key number `k'. */
+void farsh_n (const void *data, size_t bytes, int k, int n, UINT *hash)
 {
-    farsh_keyed_n (data, bytes, FARSH_KEYS, n, hash);
+    farsh_keyed_n (data, bytes, FARSH_KEYS+k, n, hash);
 }
 
 /* Hash the buffer */
@@ -146,3 +147,5 @@ UINT farsh (const void *data, size_t bytes)
 #undef COMPRESS_ULONG
 #undef UINT
 #undef ULONG
+#undef ALIGN
+#undef NOINLINE
