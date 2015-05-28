@@ -16,6 +16,13 @@ C:\>gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2 main.cpp & a
 55.483 GB/s = 51.672 GiB/s
 ```
 
+# The main loop code
+[-m32](gcc32.lst#L286)
+[-m32 -DSSE2](gcc32sse2.lst#L326)
+[-m64 -DSSE2](gcc64sse2.lst#L257)
+[-m64 -DAVX2](gcc64avx2.lst#L259)
+
+
 # Features
 - [x] hashes up to 1024 bits long (`farsh_n`)
 - [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
