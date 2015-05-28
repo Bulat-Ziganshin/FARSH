@@ -45,6 +45,11 @@ HashInfo g_hashes[] =
   { DoNothingHash,        32, 0x00000000, "donothing32", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,        64, 0x00000000, "donothing64", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,       128, 0x00000000, "donothing128", "Do-Nothing function (only valid for measuring call overhead)" },
+
+  { farsh32_test,         32, 0x19DA0781, "Farsh32",     "FARSH, 32-bit result" },
+  { farsh64_test,         64, 0xC5863701, "Farsh64",     "FARSH, 64-bit result" },
+  { farsh128_test,       128, 0xDB7BE8E3, "Farsh128",    "FARSH, 128-bit result" },
+  { farsh256_test,       256, 0xECF9C588, "Farsh256",    "FARSH, 256-bit result" },
 };
 
 HashInfo * findHash ( const char * name )
@@ -514,11 +519,11 @@ void testHash ( const char * name )
 
 int main ( int argc, char ** argv )
 {
-  const char * hashToTest = "murmur3a";
+  const char * hashToTest = "farsh32";
 
   if(argc < 2)
   {
-    printf("(No test hash given on command line, testing Murmur3_x86_32.)\n");
+    printf("(No test hash given on command line, testing farsh32)\n");
   }
   else
   {
