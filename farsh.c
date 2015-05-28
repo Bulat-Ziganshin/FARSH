@@ -1,17 +1,16 @@
 #include <stdlib.h>
 #include <memory.h>
+
 #if defined(AVX2) || defined(SSE2)
 #include "emmintrin.h"
 #endif
+
 #if __GNUC__
 #define ALIGN(n)      __attribute__ ((aligned(n)))
-#define NOINLINE      __attribute__ ((noinline))
 #elif _MSC_VER
 #define ALIGN(n)      __declspec(align(n))
-#define NOINLINE      __declspec(noinline)
 #else
 #define ALIGN(n)
-#define NOINLINE
 #endif
 
 
@@ -73,8 +72,7 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
 }
 
 /* Internal: hash up to STRIPE bytes, consisting of whole UINT pairs, including optional UINT pair in the extra[] */
-static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra,
-                         const UINT *key)
+static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *key)
 {
     ULONG sum = 0;  int i;
     for (i=0; i < elements; i+=2)
@@ -85,9 +83,8 @@ static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra,
 }
 
 /* Internal: hash up to STRIPE bytes, with special optimization for exactly STRIPE input bytes and careful handling of partial UINT pair at the end of buffer */
-static UINT farsh_block (const void *data_ptr, size_t bytes, const UINT *key)
+static UINT farsh_block (const UINT *data, size_t bytes, const UINT *key)
 {
-    const UINT *data = (const UINT*) data_ptr;
     if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
     UINT extra_data[2] = {0};
@@ -96,24 +93,25 @@ static UINT farsh_block (const void *data_ptr, size_t bytes, const UINT *key)
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
 }
 
-/* Hash the buffer with the user-supplied key */
-UINT farsh_keyed (const void *data, size_t bytes, const UINT *key)
+/* Hash the buffer with the user-supplied key material */
+UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
     ULONG sum = 0;  int i = 0;  int j = 0;
+    const UINT *key_ptr = (const UINT*) key;
     const char *ptr = (const char*) data,  *end = ptr+bytes;
     while (ptr < end)
     {
         size_t minbytes = (bytes<STRIPE? bytes : STRIPE);
-        UINT h = farsh_block (ptr, minbytes, key);
+        UINT h = farsh_block ((const UINT*)ptr, minbytes, key_ptr);
         ptr += minbytes;
 
         // Level-1 hashsum combining
-        sum += h*(ULONG)(key[i]+minbytes);
+        sum += h * (ULONG)(key_ptr[i]+minbytes);
         if (++i == STRIPE_ELEMENTS)
         {
             i = 0;
             // Level-2 hashsum combining
-            sum += COMPRESS_ULONG(sum)*(ULONG)key[j];
+            sum += COMPRESS_ULONG(sum) * (ULONG)key_ptr[j];
             if (++j == STRIPE_ELEMENTS)
                 j = 0;
         }
@@ -121,17 +119,16 @@ UINT farsh_keyed (const void *data, size_t bytes, const UINT *key)
     return COMPRESS_ULONG(sum);
 }
 
-/* Hash the buffer with the user-supplied key and return hash up to 32 dwords (1024 bits) long */
-void farsh_keyed_n (const void *data, size_t bytes, const UINT *key, int n, UINT *hash)
+/* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
+void farsh_keyed_n (const void *data, size_t bytes, const void *key, int n, void *hash)
 {
-    int i;
+    int i;  UINT *hash_ptr = (UINT*)hash;  const UINT *key_ptr = (const UINT*) key;
     for (i=0; i < n; i++)
-        hash[i] = farsh_keyed (data, bytes, key+i);
+        hash_ptr[i] = farsh_keyed (data, bytes, key_ptr+i);
 }
 
-/* Hash the buffer and return hash up to 32 dwords (1024 bits) long.
-   Return `n` keys starting with key number `k'. */
-void farsh_n (const void *data, size_t bytes, int k, int n, UINT *hash)
+/* Hash the buffer and return hash of 32*n bits long (n<=32), starting with hash number 'k'. */
+void farsh_n (const void *data, size_t bytes, int k, int n, void *hash)
 {
     farsh_keyed_n (data, bytes, FARSH_KEYS+k, n, hash);
 }
@@ -148,4 +145,3 @@ UINT farsh (const void *data, size_t bytes)
 #undef UINT
 #undef ULONG
 #undef ALIGN
-#undef NOINLINE

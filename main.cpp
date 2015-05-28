@@ -5,15 +5,16 @@
 
 int main()
 {
+    // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 28*1024;
     static char data[DATASIZE+1];
     for (int i=0; i<DATASIZE+1; i++)
         data[i] = char((123456791u*i) >> (i%16));
 
+
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
     for (int i=0; i<=16; i++)
     {
-        data[i] = (char)i;
         unsigned h = farsh (data+i, DATASIZE+1-i);
         if (h==42)  break;
     }
