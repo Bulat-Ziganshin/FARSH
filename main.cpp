@@ -27,13 +27,13 @@ int main()
     for (int i=0; i<DATASET/DATASIZE; i++)
     {
         data[0]=(char)i;
-        auto h = farsh (data, DATASIZE);
+        unsigned h = farsh (data, DATASIZE);
         if (h==42)  break;
         if (i==42)  printf(" (%x)", h);
         //printf("\n %5d %x ", i, h);
     }
 
-    t.Stop();  auto speed = DATASET/(t.Elapsed()/1000);
+    t.Stop();  double speed = DATASET/(t.Elapsed()/1000);
     printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed(), speed/1e9, speed/(1<<30));
     return 0;
 }
