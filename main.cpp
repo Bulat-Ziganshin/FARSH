@@ -6,10 +6,20 @@
 int main()
 {
     const size_t DATASIZE = 28*1024;
-    static char data[DATASIZE];
-    for (int i=0; i<DATASIZE; i++)
+    static char data[DATASIZE+1];
+    for (int i=0; i<DATASIZE+1; i++)
         data[i] = char((123456791u*i) >> (i%16));
 
+    // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
+    for (int i=0; i<=16; i++)
+    {
+        data[i] = (char)i;
+        unsigned h = farsh (data+i, DATASIZE+1-i);
+        if (h==42)  break;
+    }
+
+
+    // BENCHMARK
     const uint64_t DATASET = uint64_t(100)<<30;
     printf("Hashing %d GiB", int(DATASET>>30));
     Timer t;  t.Start();
