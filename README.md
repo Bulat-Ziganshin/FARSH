@@ -13,7 +13,7 @@ Hence, I propose you to clone the repository and try to develop your own version
 - [x] SSE2/AVX2 manually-optimized main loop
 - [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
 - [x] [SMHasher](https://code.google.com/p/smhasher) testsuite
-- [ ] fix issues found by [SMHasher](https://code.google.com/p/smhasher) by tuning `COMPRESS_ULONG()` and hashsum combining
+- [ ] fix [issues found by SMHasher](SMHasher/reports/smhasher-farsh32-report.txt) by tuning `COMPRESS_ULONG()` and hashsum combining
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 
 # Universal hashing
