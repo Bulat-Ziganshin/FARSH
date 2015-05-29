@@ -34,11 +34,10 @@ The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula 
   - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm-listings/gcc-x64-avx2.lst#L262)
 
 ## Benchmark on Haswell i7-4770
-```
-farsh32.exe:       6.457 GB/s =  6.014 GiB/s
-farsh32sse2.exe:  30.436 GB/s = 28.346 GiB/s
-farsh32avx2.exe:  58.783 GB/s = 54.746 GiB/s
-
-farsh64.exe:      26.296 GB/s = 24.490 GiB/s
-farsh64avx2.exe:  57.904 GB/s = 53.927 GiB/s
-```
+Executable      | Speed                       | Compiler
+----------------|-----------------------------|---------
+farsh-x86       |  6.457 GB/s =  6.014 GiB/s  |gcc -O3 -funroll-loops -m32
+farsh-x86-sse2  | 30.436 GB/s = 28.346 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DSSE2
+farsh-x86-avx2  | 58.783 GB/s = 54.746 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2
+farsh-x64       | 26.296 GB/s = 24.490 GiB/s  |gcc -O3 -funroll-loops -m64 -DSSE2
+farsh-x64-avx2  | 57.904 GB/s = 53.927 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2
