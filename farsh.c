@@ -89,16 +89,16 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
 UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
     UINT sum1 = 0, sum2 = 0;
+    const char *ptr     = (const char*) data;
     const UINT *key_ptr = (const UINT*) key;
-    const char *ptr = (const char*) data,  *end = ptr+bytes;
-    while (ptr < end)
+    while (bytes)
     {
-        size_t minbytes = (bytes<STRIPE? bytes : STRIPE);
-        ULONG h = farsh_block ((const UINT*)ptr, minbytes, key_ptr);
-        ptr += minbytes;
+        size_t chunk = (bytes<STRIPE? bytes : STRIPE);
+        ULONG h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
+        ptr += chunk;  bytes -= chunk;
 
         // Level-1 hashsum combining
-        sum1 = _mm_crc32_u32 (sum1, (UINT)(h+minbytes));
+        sum1 = _mm_crc32_u32 (sum1, (UINT)(h+chunk));
         sum2 = _mm_crc32_u32 (sum2, (UINT)(h>>32));
     }
     return _mm_crc32_u32 (sum1,sum2);

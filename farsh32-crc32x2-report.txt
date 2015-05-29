@@ -1,4 +1,4 @@
-C:\!FreeArc\public\FARSH\SMHasher>a.exe
+C:\!FreeArc\public\FARSH\SMHasher>p64 a.exe
 (No test hash given on command line, testing farsh32)
 -------------------------------------------------------------------------------
 --- Testing Farsh32 (FARSH, 32-bit result)
@@ -12,46 +12,46 @@ Running sanity check 2..........PASS
 [[[ Speed Tests ]]]
 
 Bulk speed test - 262144-byte keys
-Alignment  0 - 15.434 bytes/cycle - 44157.63 MiB/sec @ 3 ghz
-Alignment  1 - 13.059 bytes/cycle - 37363.05 MiB/sec @ 3 ghz
-Alignment  2 - 13.055 bytes/cycle - 37351.05 MiB/sec @ 3 ghz
-Alignment  3 - 13.045 bytes/cycle - 37323.42 MiB/sec @ 3 ghz
-Alignment  4 - 12.841 bytes/cycle - 36738.74 MiB/sec @ 3 ghz
-Alignment  5 - 13.022 bytes/cycle - 37255.05 MiB/sec @ 3 ghz
-Alignment  6 - 13.116 bytes/cycle - 37525.08 MiB/sec @ 3 ghz
-Alignment  7 - 13.015 bytes/cycle - 37237.50 MiB/sec @ 3 ghz
+Alignment  0 - 15.275 bytes/cycle - 43700.94 MiB/sec @ 3 ghz
+Alignment  1 - 12.993 bytes/cycle - 37174.08 MiB/sec @ 3 ghz
+Alignment  2 - 12.940 bytes/cycle - 37022.54 MiB/sec @ 3 ghz
+Alignment  3 - 12.802 bytes/cycle - 36628.24 MiB/sec @ 3 ghz
+Alignment  4 - 12.885 bytes/cycle - 36863.18 MiB/sec @ 3 ghz
+Alignment  5 - 12.827 bytes/cycle - 36697.91 MiB/sec @ 3 ghz
+Alignment  6 - 12.881 bytes/cycle - 36851.85 MiB/sec @ 3 ghz
+Alignment  7 - 12.739 bytes/cycle - 36446.66 MiB/sec @ 3 ghz
 
-Small key speed test -    1-byte keys -    28.68 cycles/hash
-Small key speed test -    2-byte keys -    31.87 cycles/hash
-Small key speed test -    3-byte keys -    33.09 cycles/hash
-Small key speed test -    4-byte keys -    34.72 cycles/hash
-Small key speed test -    5-byte keys -    34.51 cycles/hash
-Small key speed test -    6-byte keys -    36.29 cycles/hash
-Small key speed test -    7-byte keys -    37.71 cycles/hash
-Small key speed test -    8-byte keys -    32.36 cycles/hash
-Small key speed test -    9-byte keys -    34.15 cycles/hash
-Small key speed test -   10-byte keys -    29.20 cycles/hash
-Small key speed test -   11-byte keys -    35.35 cycles/hash
-Small key speed test -   12-byte keys -    36.93 cycles/hash
-Small key speed test -   13-byte keys -    37.60 cycles/hash
-Small key speed test -   14-byte keys -    40.58 cycles/hash
-Small key speed test -   15-byte keys -    41.06 cycles/hash
-Small key speed test -   16-byte keys -    42.52 cycles/hash
-Small key speed test -   17-byte keys -    38.09 cycles/hash
-Small key speed test -   18-byte keys -    44.18 cycles/hash
-Small key speed test -   19-byte keys -    44.92 cycles/hash
-Small key speed test -   20-byte keys -    46.79 cycles/hash
-Small key speed test -   21-byte keys -    42.57 cycles/hash
-Small key speed test -   22-byte keys -    40.82 cycles/hash
-Small key speed test -   23-byte keys -    49.30 cycles/hash
-Small key speed test -   24-byte keys -    43.82 cycles/hash
-Small key speed test -   25-byte keys -    45.58 cycles/hash
-Small key speed test -   26-byte keys -    47.38 cycles/hash
-Small key speed test -   27-byte keys -    48.02 cycles/hash
-Small key speed test -   28-byte keys -    48.63 cycles/hash
-Small key speed test -   29-byte keys -    40.13 cycles/hash
-Small key speed test -   30-byte keys -    49.50 cycles/hash
-Small key speed test -   31-byte keys -    51.71 cycles/hash
+Small key speed test -    1-byte keys -    24.00 cycles/hash
+Small key speed test -    2-byte keys -    31.64 cycles/hash
+Small key speed test -    3-byte keys -    31.41 cycles/hash
+Small key speed test -    4-byte keys -    28.06 cycles/hash
+Small key speed test -    5-byte keys -    27.94 cycles/hash
+Small key speed test -    6-byte keys -    34.74 cycles/hash
+Small key speed test -    7-byte keys -    29.90 cycles/hash
+Small key speed test -    8-byte keys -    37.57 cycles/hash
+Small key speed test -    9-byte keys -    26.99 cycles/hash
+Small key speed test -   10-byte keys -    29.07 cycles/hash
+Small key speed test -   11-byte keys -    29.61 cycles/hash
+Small key speed test -   12-byte keys -    36.48 cycles/hash
+Small key speed test -   13-byte keys -    29.80 cycles/hash
+Small key speed test -   14-byte keys -    40.35 cycles/hash
+Small key speed test -   15-byte keys -    40.54 cycles/hash
+Small key speed test -   16-byte keys -    40.22 cycles/hash
+Small key speed test -   17-byte keys -    32.02 cycles/hash
+Small key speed test -   18-byte keys -    44.65 cycles/hash
+Small key speed test -   19-byte keys -    36.99 cycles/hash
+Small key speed test -   20-byte keys -    46.22 cycles/hash
+Small key speed test -   21-byte keys -    46.27 cycles/hash
+Small key speed test -   22-byte keys -    43.37 cycles/hash
+Small key speed test -   23-byte keys -    48.58 cycles/hash
+Small key speed test -   24-byte keys -    42.45 cycles/hash
+Small key speed test -   25-byte keys -    44.92 cycles/hash
+Small key speed test -   26-byte keys -    46.43 cycles/hash
+Small key speed test -   27-byte keys -    46.75 cycles/hash
+Small key speed test -   28-byte keys -    47.88 cycles/hash
+Small key speed test -   29-byte keys -    48.32 cycles/hash
+Small key speed test -   30-byte keys -    49.54 cycles/hash
+Small key speed test -   31-byte keys -    51.19 cycles/hash
 
 [[[ Differential Tests ]]]
 
@@ -291,10 +291,9 @@ Testing distribution - Worst bias is the  20-bit window at bit  17 - 0.065%
 [[[ Keyset 'Zeroes' Tests ]]]
 
 Keyset 'Zeroes' - 65536 keys
-Testing collisions   - Expected     0.50, actual 64448.00 (128897.97x) !!!!!
-Testing distribution - Worst bias is the  13-bit window at bit   5 - 99.253% !!!!!
+Testing collisions   - Expected     0.50, actual     0.00 ( 0.00x)
+Testing distribution - Worst bias is the  13-bit window at bit  31 - 1.752% !!!!!
 
-*********FAIL*********
 
 [[[ Keyset 'Seed' Tests ]]]
 
@@ -305,6 +304,26 @@ Testing distribution - Worst bias is the  17-bit window at bit   0 - 99.999% !!!
 *********FAIL*********
 
 
-Input vcode 0xfea7ed15, Output vcode 0x6395c1f8, Result vcode 0x00000001
-Verification value is 0x00000001 - Testing took 1296.355000 seconds
+Input vcode 0xfea7ed15, Output vcode 0xc1d4b5f2, Result vcode 0x00000001
+Verification value is 0x00000001 - Testing took 1294.922000 seconds
 -------------------------------------------------------------------------------
+
+Process ID       : 12476
+Thread ID        : 12316
+Process Exit Code: 0
+Thread Exit Code : 0
+
+User Time        :        1288.661s
+Kernel Time      :           0.530s
+Process Time     :        1289.191s
+Clock Time       :        1294.949s
+
+Working Set      :          348292 KB
+Paged Pool       :             106 KB
+Nonpaged Pool    :               5 KB
+Pagefile         :          346036 KB
+Page Fault Count : 537681
+
+IO Read          :               0 KB (in               0 reads )
+IO Write         :               0 KB (in               0 writes)
+IO Other         :               1 KB (in             497 others)
