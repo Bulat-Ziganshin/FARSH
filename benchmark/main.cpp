@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "timer.h"
-#include "farsh.c"
+#include "../farsh.c"
 
 int main()
 {
@@ -16,7 +16,14 @@ int main()
     for (int i=0; i<=16; i++)
     {
         unsigned h = farsh (data+i, DATASIZE+1-i);
-        if (h==42)  break;
+        if (h==42)  break;   // anti-optimization trick
+
+        static char out[32*4];
+        for (int j=1; j<=32; j++)
+        {
+            farsh_n (data+i, DATASIZE+1-i, 0, j, out);
+            if (*out==42)  break;
+        }
     }
 
 
