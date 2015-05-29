@@ -3,7 +3,7 @@ Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*n` bits, u
 
 NOTE: FARSH isn't yet ready for practical use since SMHasher shows a lot of problems in current implementation. But FARSH main loop implements universal hashing scheme that's mathematically proven to guarantee ideal hashing (as far as key material is random) and it employs the formula successfully used in cryptographic UMAC/VMAC algorithms.
 
-FARSH is essentially UHASH with higher-level hashing algorithms replaced with simpler non-cryptographic ones. Current versions of high-level algorithms are very weak and this leads to hash weakness discovered by SMHasher, but I expect that improving these algorithms will lead to hash that's both faster and more secure than XXHash and MurMurHash. The ideas that can be tried here is tabulated hashing, CRC and the same algos from XXHash and MurMurHash.
+FARSH is essentially UHASH with higher-level hashing algorithms replaced with simpler non-cryptographic ones. Current versions of FARSH high-level algorithms are very weak and this leads to hash weakness discovered by SMHasher, but I expect that improving these algorithms will lead to hash that's both faster and more secure than XXHash and MurMurHash. The ideas that can be tried here is tabulated hashing, CRC and the same algos from XXHash and MurMurHash.
 
 Hence, I propose you to clone the repository and try to develop your own versions of the bit mixers, checking results with bundled SMHasher. Other areas of improvements you can do include reliable system for unrolling of main loop (since compilers are very weak in this area and MSVC/ICL were unable to unroll main loop), and streaming API - but this probably should be postponed until development of good bit mixing algorithms.
 
@@ -12,11 +12,18 @@ Hence, I propose you to clone the repository and try to develop your own version
 - [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
 - [x] SSE2/AVX2 manually-optimized main loop
 - [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
-- [ ] SMHasher testsuite
+- [x] SMHasher testsuite
 - [ ] fix issues found by SMHasher by tuning `COMPRESS_ULONG()` and hashsum combining
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 
 # Universal hashing
+
+The universal hashing formula used here is as simple as
+```
+    for (i=0; i < elements; i+=2)
+        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
+```
+
 ## The main loop
 - [Source code](farsh.c#L34)
 - Asm code (found by adcl/pmuludq)
