@@ -1,4 +1,4 @@
-set GCC=gcc -O3 -funroll-loops -s -static ../main.cpp
+set GCC=gcc -O3 -funroll-loops -s -static -c ../farsh.c
 ::  -g
 %GCC% -O3 -funroll-loops -m32               -Wa,-adhlns=gcc-x86.lst
 %GCC% -O3 -funroll-loops -m32 -msse2 -DSSE2 -Wa,-adhlns=gcc-x86-sse2.lst

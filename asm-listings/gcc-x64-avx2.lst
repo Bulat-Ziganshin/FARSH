@@ -1,0 +1,1053 @@
+   1              		.file	"farsh.c"
+   2              		.section	.text.unlikely,"x"
+   3              	.LCOLDB0:
+   4              		.text
+   5              	.LHOTB0:
+   6              		.p2align 4,,15
+   7              		.globl	farsh_keyed
+   9              		.seh_proc	farsh_keyed
+  10              	farsh_keyed:
+  11 0000 4157     		pushq	%r15
+  12              		.seh_pushreg	%r15
+  13 0002 4156     		pushq	%r14
+  14              		.seh_pushreg	%r14
+  15 0004 4155     		pushq	%r13
+  16              		.seh_pushreg	%r13
+  17 0006 4154     		pushq	%r12
+  18              		.seh_pushreg	%r12
+  19 0008 55       		pushq	%rbp
+  20              		.seh_pushreg	%rbp
+  21 0009 57       		pushq	%rdi
+  22              		.seh_pushreg	%rdi
+  23 000a 56       		pushq	%rsi
+  24              		.seh_pushreg	%rsi
+  25 000b 53       		pushq	%rbx
+  26              		.seh_pushreg	%rbx
+  27 000c 4883EC58 		subq	$88, %rsp
+  28              		.seh_stackalloc	88
+  29              		.seh_endprologue
+  30 0010 488D0411 		leaq	(%rcx,%rdx), %rax
+  31 0014 4889CB   		movq	%rcx, %rbx
+  32 0017 4C89C6   		movq	%r8, %rsi
+  33 001a 4839C1   		cmpq	%rax, %rcx
+  34 001d 48894424 		movq	%rax, 40(%rsp)
+  34      28
+  35 0022 0F83AB03 		jae	.L14
+  35      0000
+  36 0028 4881FA00 		cmpq	$1024, %rdx
+  36      040000
+  37 002f 41BC0004 		movl	$1024, %r12d
+  37      0000
+  38 0035 41BD0000 		movl	$0, %r13d
+  38      0000
+  39 003b 4C0F46E2 		cmovbe	%rdx, %r12
+  40 003f 4C89E7   		movq	%r12, %rdi
+  41 0042 4D89E6   		movq	%r12, %r14
+  42 0045 4D89E0   		movq	%r12, %r8
+  43 0048 4C8D5424 		leaq	64(%rsp), %r10
+  43      40
+  44 004d 48C1EF02 		shrq	$2, %rdi
+  45 0051 4883E7FE 		andq	$-2, %rdi
+  46 0055 488D14BD 		leaq	0(,%rdi,4), %rdx
+  46      00000000 
+  47 005d 4929D6   		subq	%rdx, %r14
+  48 0060 48895424 		movq	%rdx, 48(%rsp)
+  48      30
+  49 0065 4D0F45EA 		cmovne	%r10, %r13
+  50 0069 31C9     		xorl	%ecx, %ecx
+  51 006b 31ED     		xorl	%ebp, %ebp
+  52 006d 4531FF   		xorl	%r15d, %r15d
+  53 0070 4189CC   		movl	%ecx, %r12d
+  54 0073 4C896C24 		movq	%r13, 56(%rsp)
+  54      38
+  55 0078 4D89C5   		movq	%r8, %r13
+  56 007b 0F1F4400 		.p2align 4,,10
+  56      00
+  57              	.L12:
+  58 0080 4981FD00 		cmpq	$1024, %r13
+  58      040000
+  59 0087 0F841602 		je	.L54
+  59      0000
+  60 008d 4C8B4C24 		movq	48(%rsp), %r9
+  60      30
+  61 0092 4D89F0   		movq	%r14, %r8
+  62 0095 4C89D1   		movq	%r10, %rcx
+  63 0098 48C74424 		movq	$0, 64(%rsp)
+  63      40000000 
+  63      00
+  64 00a1 4A8D140B 		leaq	(%rbx,%r9), %rdx
+  65 00a5 C5F877   		vzeroupper
+  66 00a8 E8000000 		call	memcpy
+  66      00
+  67 00ad 4D85F6   		testq	%r14, %r14
+  68 00b0 4989C2   		movq	%rax, %r10
+  69 00b3 0F84A701 		je	.L55
+  69      0000
+  70 00b9 4885FF   		testq	%rdi, %rdi
+  71 00bc 0F84FE02 		je	.L56
+  71      0000
+  72              	.L8:
+  73 00c2 448B5B04 		movl	4(%rbx), %r11d
+  74 00c6 488D57FF 		leaq	-1(%rdi), %rdx
+  75 00ca 8B03     		movl	(%rbx), %eax
+  76 00cc 48D1EA   		shrq	%rdx
+  77 00cf 0306     		addl	(%rsi), %eax
+  78 00d1 83E203   		andl	$3, %edx
+  79 00d4 4589D9   		movl	%r11d, %r9d
+  80 00d7 44034E04 		addl	4(%rsi), %r9d
+  81 00db 41BB0200 		movl	$2, %r11d
+  81      0000
+  82 00e1 490FAFC1 		imulq	%r9, %rax
+  83 00e5 4883FF02 		cmpq	$2, %rdi
+  84 00e9 0F86F100 		jbe	.L46
+  84      0000
+  85 00ef 4885D2   		testq	%rdx, %rdx
+  86 00f2 746E     		je	.L18
+  87 00f4 4883FA01 		cmpq	$1, %rdx
+  88 00f8 7443     		je	.L40
+  89 00fa 4883FA02 		cmpq	$2, %rdx
+  90 00fe 741D     		je	.L41
+  91 0100 448B430C 		movl	12(%rbx), %r8d
+  92 0104 41BB0400 		movl	$4, %r11d
+  92      0000
+  93 010a 8B5308   		movl	8(%rbx), %edx
+  94 010d 035608   		addl	8(%rsi), %edx
+  95 0110 4489C1   		movl	%r8d, %ecx
+  96 0113 034E0C   		addl	12(%rsi), %ecx
+  97 0116 480FAFD1 		imulq	%rcx, %rdx
+  98 011a 4801D0   		addq	%rdx, %rax
+  99              	.L41:
+ 100 011d 468B4C9B 		movl	4(%rbx,%r11,4), %r9d
+ 100      04
+ 101 0122 428B0C9B 		movl	(%rbx,%r11,4), %ecx
+ 102 0126 42030C9E 		addl	(%rsi,%r11,4), %ecx
+ 103 012a 4589C8   		movl	%r9d, %r8d
+ 104 012d 4603449E 		addl	4(%rsi,%r11,4), %r8d
+ 104      04
+ 105 0132 4983C302 		addq	$2, %r11
+ 106 0136 490FAFC8 		imulq	%r8, %rcx
+ 107 013a 4801C8   		addq	%rcx, %rax
+ 108              	.L40:
+ 109 013d 428B549B 		movl	4(%rbx,%r11,4), %edx
+ 109      04
+ 110 0142 468B049B 		movl	(%rbx,%r11,4), %r8d
+ 111 0146 4603049E 		addl	(%rsi,%r11,4), %r8d
+ 112 014a 4189D1   		movl	%edx, %r9d
+ 113 014d 46034C9E 		addl	4(%rsi,%r11,4), %r9d
+ 113      04
+ 114 0152 4983C302 		addq	$2, %r11
+ 115 0156 4D0FAFC1 		imulq	%r9, %r8
+ 116 015a 4C01C0   		addq	%r8, %rax
+ 117 015d 4C39DF   		cmpq	%r11, %rdi
+ 118 0160 767E     		jbe	.L46
+ 119              	.L18:
+ 120 0162 428B4C9B 		movl	4(%rbx,%r11,4), %ecx
+ 120      04
+ 121 0167 4D8D4302 		leaq	2(%r11), %r8
+ 122 016b 428B149B 		movl	(%rbx,%r11,4), %edx
+ 123 016f 4203149E 		addl	(%rsi,%r11,4), %edx
+ 124 0173 4189C9   		movl	%ecx, %r9d
+ 125 0176 46034C9E 		addl	4(%rsi,%r11,4), %r9d
+ 125      04
+ 126 017b 428B4C83 		movl	4(%rbx,%r8,4), %ecx
+ 126      04
+ 127 0180 42034C86 		addl	4(%rsi,%r8,4), %ecx
+ 127      04
+ 128 0185 490FAFD1 		imulq	%r9, %rdx
+ 129 0189 468B0C83 		movl	(%rbx,%r8,4), %r9d
+ 130 018d 46030C86 		addl	(%rsi,%r8,4), %r9d
+ 131 0191 4D8D4304 		leaq	4(%r11), %r8
+ 132 0195 490FAFC9 		imulq	%r9, %rcx
+ 133 0199 4801D0   		addq	%rdx, %rax
+ 134 019c 488D1408 		leaq	(%rax,%rcx), %rdx
+ 135 01a0 428B4C83 		movl	4(%rbx,%r8,4), %ecx
+ 135      04
+ 136 01a5 428B0483 		movl	(%rbx,%r8,4), %eax
+ 137 01a9 42034C86 		addl	4(%rsi,%r8,4), %ecx
+ 137      04
+ 138 01ae 42030486 		addl	(%rsi,%r8,4), %eax
+ 139 01b2 4D8D4306 		leaq	6(%r11), %r8
+ 140 01b6 4983C308 		addq	$8, %r11
+ 141 01ba 480FAFC1 		imulq	%rcx, %rax
+ 142 01be 4C8D0C02 		leaq	(%rdx,%rax), %r9
+ 143 01c2 428B4483 		movl	4(%rbx,%r8,4), %eax
+ 143      04
+ 144 01c7 428B1483 		movl	(%rbx,%r8,4), %edx
+ 145 01cb 42034486 		addl	4(%rsi,%r8,4), %eax
+ 145      04
+ 146 01d0 42031486 		addl	(%rsi,%r8,4), %edx
+ 147 01d4 480FAFC2 		imulq	%rdx, %rax
+ 148 01d8 4C01C8   		addq	%r9, %rax
+ 149 01db 4C39DF   		cmpq	%r11, %rdi
+ 150 01de 7782     		ja	.L18
+ 151              	.L46:
+ 152 01e0 4C8B4C24 		movq	56(%rsp), %r9
+ 152      38
+ 153 01e5 49C1E302 		salq	$2, %r11
+ 154 01e9 4D8D4304 		leaq	4(%r11), %r8
+ 155 01ed 4D85C9   		testq	%r9, %r9
+ 156 01f0 4C89C9   		movq	%r9, %rcx
+ 157 01f3 7414     		je	.L51
+ 158              	.L13:
+ 159 01f5 8B5104   		movl	4(%rcx), %edx
+ 160 01f8 8B09     		movl	(%rcx), %ecx
+ 161 01fa 42031406 		addl	(%rsi,%r8), %edx
+ 162 01fe 42030C1E 		addl	(%rsi,%r11), %ecx
+ 163 0202 480FAFD1 		imulq	%rcx, %rdx
+ 164 0206 4801D0   		addq	%rdx, %rax
+ 165              	.L51:
+ 166 0209 4989C3   		movq	%rax, %r11
+ 167 020c 49C1EB20 		shrq	$32, %r11
+ 168 0210 4401D8   		addl	%r11d, %eax
+ 169              	.L5:
+ 170 0213 4C63C5   		movslq	%ebp, %r8
+ 171 0216 83C501   		addl	$1, %ebp
+ 172 0219 4C01EB   		addq	%r13, %rbx
+ 173 021c 468B0C86 		movl	(%rsi,%r8,4), %r9d
+ 174 0220 4D01E9   		addq	%r13, %r9
+ 175 0223 490FAFC1 		imulq	%r9, %rax
+ 176 0227 4901C7   		addq	%rax, %r15
+ 177 022a 81FD0001 		cmpl	$256, %ebp
+ 177      0000
+ 178 0230 743E     		je	.L57
+ 179              	.L11:
+ 180 0232 48395C24 		cmpq	%rbx, 40(%rsp)
+ 180      28
+ 181 0237 0F8743FE 		ja	.L12
+ 181      FFFF
+ 182 023d 4C89F8   		movq	%r15, %rax
+ 183 0240 48C1E820 		shrq	$32, %rax
+ 184 0244 4401F8   		addl	%r15d, %eax
+ 185 0247 C5F877   		vzeroupper
+ 186              	.L50:
+ 187 024a 4883C458 		addq	$88, %rsp
+ 188 024e 5B       		popq	%rbx
+ 189 024f 5E       		popq	%rsi
+ 190 0250 5F       		popq	%rdi
+ 191 0251 5D       		popq	%rbp
+ 192 0252 415C     		popq	%r12
+ 193 0254 415D     		popq	%r13
+ 194 0256 415E     		popq	%r14
+ 195 0258 415F     		popq	%r15
+ 196 025a C3       		ret
+ 197 025b 0F1F4400 		.p2align 4,,10
+ 197      00
+ 198              	.L55:
+ 199 0260 31C0     		xorl	%eax, %eax
+ 200 0262 4885FF   		testq	%rdi, %rdi
+ 201 0265 0F8557FE 		jne	.L8
+ 201      FFFF
+ 202 026b EBA6     		jmp	.L5
+ 203 026d 0F1F00   		.p2align 4,,10
+ 204              	.L57:
+ 205 0270 4D63DC   		movslq	%r12d, %r11
+ 206 0273 4C89FA   		movq	%r15, %rdx
+ 207 0276 4183C401 		addl	$1, %r12d
+ 208 027a 428B049E 		movl	(%rsi,%r11,4), %eax
+ 209 027e 48C1EA20 		shrq	$32, %rdx
+ 210 0282 6631ED   		xorw	%bp, %bp
+ 211 0285 41B80000 		movl	$0, %r8d
+ 211      0000
+ 212 028b 428D0C3A 		leal	(%rdx,%r15), %ecx
+ 213 028f 480FAFC1 		imulq	%rcx, %rax
+ 214 0293 4901C7   		addq	%rax, %r15
+ 215 0296 4181FC00 		cmpl	$256, %r12d
+ 215      010000
+ 216 029d 450F44E0 		cmove	%r8d, %r12d
+ 217 02a1 EB8F     		jmp	.L11
+ 218              		.p2align 4,,10
+ 219              	.L54:
+ 220 02a3 31C0     		xorl	%eax, %eax
+ 221 02a5 C5D1EFED 		vpxor	%xmm5, %xmm5, %xmm5
+ 222              	.L4:
+ 223 02a9 C5FE6F0C 		vmovdqu	(%rsi,%rax), %ymm1
+ 223      06
+ 224 02ae C5F5FE1C 		vpaddd	(%rbx,%rax), %ymm1, %ymm3
+ 224      03
+ 225 02b3 C5FD70D3 		vpshufd	$49, %ymm3, %ymm2
+ 225      31
+ 226 02b8 C5E5F4E2 		vpmuludq	%ymm2, %ymm3, %ymm4
+ 227 02bc C5D5D4C4 		vpaddq	%ymm4, %ymm5, %ymm0
+ 228 02c0 C5FE6F6C 		vmovdqu	32(%rbx,%rax), %ymm5
+ 228      0320
+ 229 02c6 C5D5FE4C 		vpaddd	32(%rsi,%rax), %ymm5, %ymm1
+ 229      0620
+ 230 02cc C5FD70D9 		vpshufd	$49, %ymm1, %ymm3
+ 230      31
+ 231 02d1 C5F5F4D3 		vpmuludq	%ymm3, %ymm1, %ymm2
+ 232 02d5 C5FDD4E2 		vpaddq	%ymm2, %ymm0, %ymm4
+ 233 02d9 C5FE6F44 		vmovdqu	64(%rbx,%rax), %ymm0
+ 233      0340
+ 234 02df C5FDFE6C 		vpaddd	64(%rsi,%rax), %ymm0, %ymm5
+ 234      0640
+ 235 02e5 C5FE6F54 		vmovdqu	96(%rbx,%rax), %ymm2
+ 235      0360
+ 236 02eb C5EDFE44 		vpaddd	96(%rsi,%rax), %ymm2, %ymm0
+ 236      0660
+ 237 02f1 C5FD70CD 		vpshufd	$49, %ymm5, %ymm1
+ 237      31
+ 238 02f6 C5D5F4D9 		vpmuludq	%ymm1, %ymm5, %ymm3
+ 239 02fa C5FD70E8 		vpshufd	$49, %ymm0, %ymm5
+ 239      31
+ 240 02ff C5FDF4CD 		vpmuludq	%ymm5, %ymm0, %ymm1
+ 241 0303 C5DDD4E3 		vpaddq	%ymm3, %ymm4, %ymm4
+ 242 0307 C5DDD4D9 		vpaddq	%ymm1, %ymm4, %ymm3
+ 243 030b C5FE6FA4 		vmovdqu	128(%rbx,%rax), %ymm4
+ 243      03800000 
+ 243      00
+ 244 0314 C5DDFE94 		vpaddd	128(%rsi,%rax), %ymm4, %ymm2
+ 244      06800000 
+ 244      00
+ 245 031d C5FD70C2 		vpshufd	$49, %ymm2, %ymm0
+ 245      31
+ 246 0322 C5EDF4E8 		vpmuludq	%ymm0, %ymm2, %ymm5
+ 247 0326 C5E5D4CD 		vpaddq	%ymm5, %ymm3, %ymm1
+ 248 032a C5FE6F9C 		vmovdqu	160(%rbx,%rax), %ymm3
+ 248      03A00000 
+ 248      00
+ 249 0333 C5E5FEA4 		vpaddd	160(%rsi,%rax), %ymm3, %ymm4
+ 249      06A00000 
+ 249      00
+ 250 033c C5FD70D4 		vpshufd	$49, %ymm4, %ymm2
+ 250      31
+ 251 0341 C5DDF4C2 		vpmuludq	%ymm2, %ymm4, %ymm0
+ 252 0345 C5F5D4E8 		vpaddq	%ymm0, %ymm1, %ymm5
+ 253 0349 C5FE6F8C 		vmovdqu	192(%rbx,%rax), %ymm1
+ 253      03C00000 
+ 253      00
+ 254 0352 C5F5FE9C 		vpaddd	192(%rsi,%rax), %ymm1, %ymm3
+ 254      06C00000 
+ 254      00
+ 255 035b C5FE6F84 		vmovdqu	224(%rbx,%rax), %ymm0
+ 255      03E00000 
+ 255      00
+ 256 0364 C5FDFE8C 		vpaddd	224(%rsi,%rax), %ymm0, %ymm1
+ 256      06E00000 
+ 256      00
+ 257 036d 48050001 		addq	$256, %rax
+ 257      0000
+ 258 0373 C5FD70E3 		vpshufd	$49, %ymm3, %ymm4
+ 258      31
+ 259 0378 C5E5F4D4 		vpmuludq	%ymm4, %ymm3, %ymm2
+ 260 037c 483D0004 		cmpq	$1024, %rax
+ 260      0000
+ 261 0382 C5FD70D9 		vpshufd	$49, %ymm1, %ymm3
+ 261      31
+ 262 0387 C5F5F4E3 		vpmuludq	%ymm3, %ymm1, %ymm4
+ 263 038b C5D5D4EA 		vpaddq	%ymm2, %ymm5, %ymm5
+ 264 038f C5D5D4EC 		vpaddq	%ymm4, %ymm5, %ymm5
+ 265 0393 0F8510FF 		jne	.L4
+ 265      FFFF
+ 266 0399 C5FD70D5 		vpshufd	$14, %ymm5, %ymm2
+ 266      0E
+ 267 039e C5D5D4C2 		vpaddq	%ymm2, %ymm5, %ymm0
+ 268 03a2 C4E37D39 		vextracti128	$0x1, %ymm0, %xmm1
+ 268      C101
+ 269 03a8 C5F9D4D9 		vpaddq	%xmm1, %xmm0, %xmm3
+ 270 03ac C5F970E3 		vpshufd	$1, %xmm3, %xmm4
+ 270      01
+ 271 03b1 C5D9FEEB 		vpaddd	%xmm3, %xmm4, %xmm5
+ 272 03b5 C5F97EE8 		vmovd	%xmm5, %eax
+ 273 03b9 E955FEFF 		jmp	.L5
+ 273      FF
+ 274 03be 6690     		.p2align 4,,10
+ 275              	.L56:
+ 276 03c0 41B80400 		movl	$4, %r8d
+ 276      0000
+ 277 03c6 4531DB   		xorl	%r11d, %r11d
+ 278 03c9 31C0     		xorl	%eax, %eax
+ 279 03cb 4C89D1   		movq	%r10, %rcx
+ 280 03ce E922FEFF 		jmp	.L13
+ 280      FF
+ 281              	.L14:
+ 282 03d3 31C0     		xorl	%eax, %eax
+ 283 03d5 E970FEFF 		jmp	.L50
+ 283      FF
+ 284              		.seh_endproc
+ 285              		.section	.text.unlikely,"x"
+ 286              	.LCOLDE0:
+ 287              		.text
+ 288              	.LHOTE0:
+ 289              		.section	.text.unlikely,"x"
+ 290              	.LCOLDB1:
+ 291              		.text
+ 292              	.LHOTB1:
+ 293 03da 660F1F44 		.p2align 4,,15
+ 293      0000
+ 294              		.globl	farsh_keyed_n
+ 296              		.seh_proc	farsh_keyed_n
+ 297              	farsh_keyed_n:
+ 298 03e0 4156     		pushq	%r14
+ 299              		.seh_pushreg	%r14
+ 300 03e2 4155     		pushq	%r13
+ 301              		.seh_pushreg	%r13
+ 302 03e4 4154     		pushq	%r12
+ 303              		.seh_pushreg	%r12
+ 304 03e6 55       		pushq	%rbp
+ 305              		.seh_pushreg	%rbp
+ 306 03e7 57       		pushq	%rdi
+ 307              		.seh_pushreg	%rdi
+ 308 03e8 56       		pushq	%rsi
+ 309              		.seh_pushreg	%rsi
+ 310 03e9 53       		pushq	%rbx
+ 311              		.seh_pushreg	%rbx
+ 312 03ea 4883EC20 		subq	$32, %rsp
+ 313              		.seh_stackalloc	32
+ 314              		.seh_endprologue
+ 315 03ee 4C8BA424 		movq	128(%rsp), %r12
+ 315      80000000 
+ 316 03f6 4585C9   		testl	%r9d, %r9d
+ 317 03f9 0F8ECB01 		jle	.L99
+ 317      0000
+ 318 03ff 458D69FF 		leal	-1(%r9), %r13d
+ 319 0403 BB040000 		movl	$4, %ebx
+ 319      00
+ 320 0408 4C89C5   		movq	%r8, %rbp
+ 321 040b 4E8D34AD 		leaq	4(,%r13,4), %r14
+ 321      04000000 
+ 322 0413 4889D7   		movq	%rdx, %rdi
+ 323 0416 4889CE   		movq	%rcx, %rsi
+ 324 0419 E8E2FBFF 		call	farsh_keyed
+ 324      FF
+ 325 041e 4183E507 		andl	$7, %r13d
+ 326 0422 4C39F3   		cmpq	%r14, %rbx
+ 327 0425 41890424 		movl	%eax, (%r12)
+ 328 0429 0F849B01 		je	.L99
+ 328      0000
+ 329 042f 4D85ED   		testq	%r13, %r13
+ 330 0432 0F84DE00 		je	.L60
+ 330      0000
+ 331 0438 4983FD01 		cmpq	$1, %r13
+ 332 043c 0F84B300 		je	.L86
+ 332      0000
+ 333 0442 4983FD02 		cmpq	$2, %r13
+ 334 0446 0F849100 		je	.L87
+ 334      0000
+ 335 044c 4983FD03 		cmpq	$3, %r13
+ 336 0450 7473     		je	.L88
+ 337 0452 4983FD04 		cmpq	$4, %r13
+ 338 0456 7455     		je	.L89
+ 339 0458 4983FD05 		cmpq	$5, %r13
+ 340 045c 7437     		je	.L90
+ 341 045e 4983FD06 		cmpq	$6, %r13
+ 342 0462 7419     		je	.L91
+ 343 0464 4C8D4504 		leaq	4(%rbp), %r8
+ 344 0468 4889FA   		movq	%rdi, %rdx
+ 345 046b 4889F1   		movq	%rsi, %rcx
+ 346 046e E88DFBFF 		call	farsh_keyed
+ 346      FF
+ 347 0473 BB080000 		movl	$8, %ebx
+ 347      00
+ 348 0478 41894424 		movl	%eax, 4(%r12)
+ 348      04
+ 349              	.L91:
+ 350 047d 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 350      00
+ 351 0482 4889FA   		movq	%rdi, %rdx
+ 352 0485 4889F1   		movq	%rsi, %rcx
+ 353 0488 E873FBFF 		call	farsh_keyed
+ 353      FF
+ 354 048d 4189041C 		movl	%eax, (%r12,%rbx)
+ 355 0491 4883C304 		addq	$4, %rbx
+ 356              	.L90:
+ 357 0495 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 357      00
+ 358 049a 4889FA   		movq	%rdi, %rdx
+ 359 049d 4889F1   		movq	%rsi, %rcx
+ 360 04a0 E85BFBFF 		call	farsh_keyed
+ 360      FF
+ 361 04a5 4189041C 		movl	%eax, (%r12,%rbx)
+ 362 04a9 4883C304 		addq	$4, %rbx
+ 363              	.L89:
+ 364 04ad 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 364      00
+ 365 04b2 4889FA   		movq	%rdi, %rdx
+ 366 04b5 4889F1   		movq	%rsi, %rcx
+ 367 04b8 E843FBFF 		call	farsh_keyed
+ 367      FF
+ 368 04bd 4189041C 		movl	%eax, (%r12,%rbx)
+ 369 04c1 4883C304 		addq	$4, %rbx
+ 370              	.L88:
+ 371 04c5 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 371      00
+ 372 04ca 4889FA   		movq	%rdi, %rdx
+ 373 04cd 4889F1   		movq	%rsi, %rcx
+ 374 04d0 E82BFBFF 		call	farsh_keyed
+ 374      FF
+ 375 04d5 4189041C 		movl	%eax, (%r12,%rbx)
+ 376 04d9 4883C304 		addq	$4, %rbx
+ 377              	.L87:
+ 378 04dd 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 378      00
+ 379 04e2 4889FA   		movq	%rdi, %rdx
+ 380 04e5 4889F1   		movq	%rsi, %rcx
+ 381 04e8 E813FBFF 		call	farsh_keyed
+ 381      FF
+ 382 04ed 4189041C 		movl	%eax, (%r12,%rbx)
+ 383 04f1 4883C304 		addq	$4, %rbx
+ 384              	.L86:
+ 385 04f5 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 385      00
+ 386 04fa 4889FA   		movq	%rdi, %rdx
+ 387 04fd 4889F1   		movq	%rsi, %rcx
+ 388 0500 E8FBFAFF 		call	farsh_keyed
+ 388      FF
+ 389 0505 4189041C 		movl	%eax, (%r12,%rbx)
+ 390 0509 4883C304 		addq	$4, %rbx
+ 391 050d 4C39F3   		cmpq	%r14, %rbx
+ 392 0510 0F84B400 		je	.L99
+ 392      0000
+ 393              	.L60:
+ 394 0516 4C8D441D 		leaq	0(%rbp,%rbx), %r8
+ 394      00
+ 395 051b 4889FA   		movq	%rdi, %rdx
+ 396 051e 4889F1   		movq	%rsi, %rcx
+ 397 0521 E8DAFAFF 		call	farsh_keyed
+ 397      FF
+ 398 0526 4C8D441D 		leaq	4(%rbp,%rbx), %r8
+ 398      04
+ 399 052b 4889FA   		movq	%rdi, %rdx
+ 400 052e 4889F1   		movq	%rsi, %rcx
+ 401 0531 4189041C 		movl	%eax, (%r12,%rbx)
+ 402 0535 E8C6FAFF 		call	farsh_keyed
+ 402      FF
+ 403 053a 4C8D441D 		leaq	8(%rbp,%rbx), %r8
+ 403      08
+ 404 053f 4889FA   		movq	%rdi, %rdx
+ 405 0542 4889F1   		movq	%rsi, %rcx
+ 406 0545 4189441C 		movl	%eax, 4(%r12,%rbx)
+ 406      04
+ 407 054a E8B1FAFF 		call	farsh_keyed
+ 407      FF
+ 408 054f 4C8D441D 		leaq	12(%rbp,%rbx), %r8
+ 408      0C
+ 409 0554 4889FA   		movq	%rdi, %rdx
+ 410 0557 4889F1   		movq	%rsi, %rcx
+ 411 055a 4189441C 		movl	%eax, 8(%r12,%rbx)
+ 411      08
+ 412 055f E89CFAFF 		call	farsh_keyed
+ 412      FF
+ 413 0564 4C8D441D 		leaq	16(%rbp,%rbx), %r8
+ 413      10
+ 414 0569 4889FA   		movq	%rdi, %rdx
+ 415 056c 4889F1   		movq	%rsi, %rcx
+ 416 056f 4189441C 		movl	%eax, 12(%r12,%rbx)
+ 416      0C
+ 417 0574 E887FAFF 		call	farsh_keyed
+ 417      FF
+ 418 0579 4C8D441D 		leaq	20(%rbp,%rbx), %r8
+ 418      14
+ 419 057e 4889FA   		movq	%rdi, %rdx
+ 420 0581 4889F1   		movq	%rsi, %rcx
+ 421 0584 4189441C 		movl	%eax, 16(%r12,%rbx)
+ 421      10
+ 422 0589 E872FAFF 		call	farsh_keyed
+ 422      FF
+ 423 058e 4C8D441D 		leaq	24(%rbp,%rbx), %r8
+ 423      18
+ 424 0593 4889FA   		movq	%rdi, %rdx
+ 425 0596 4889F1   		movq	%rsi, %rcx
+ 426 0599 4189441C 		movl	%eax, 20(%r12,%rbx)
+ 426      14
+ 427 059e E85DFAFF 		call	farsh_keyed
+ 427      FF
+ 428 05a3 4C8D441D 		leaq	28(%rbp,%rbx), %r8
+ 428      1C
+ 429 05a8 4889FA   		movq	%rdi, %rdx
+ 430 05ab 4889F1   		movq	%rsi, %rcx
+ 431 05ae 4189441C 		movl	%eax, 24(%r12,%rbx)
+ 431      18
+ 432 05b3 E848FAFF 		call	farsh_keyed
+ 432      FF
+ 433 05b8 4189441C 		movl	%eax, 28(%r12,%rbx)
+ 433      1C
+ 434 05bd 4883C320 		addq	$32, %rbx
+ 435 05c1 4C39F3   		cmpq	%r14, %rbx
+ 436 05c4 0F854CFF 		jne	.L60
+ 436      FFFF
+ 437              	.L99:
+ 438 05ca 4883C420 		addq	$32, %rsp
+ 439 05ce 5B       		popq	%rbx
+ 440 05cf 5E       		popq	%rsi
+ 441 05d0 5F       		popq	%rdi
+ 442 05d1 5D       		popq	%rbp
+ 443 05d2 415C     		popq	%r12
+ 444 05d4 415D     		popq	%r13
+ 445 05d6 415E     		popq	%r14
+ 446 05d8 C3       		ret
+ 447              		.seh_endproc
+ 448              		.section	.text.unlikely,"x"
+ 449              	.LCOLDE1:
+ 450              		.text
+ 451              	.LHOTE1:
+ 452              		.section	.text.unlikely,"x"
+ 453              	.LCOLDB2:
+ 454              		.text
+ 455              	.LHOTB2:
+ 456 05d9 0F1F8000 		.p2align 4,,15
+ 456      000000
+ 457              		.globl	farsh_n
+ 459              		.seh_proc	farsh_n
+ 460              	farsh_n:
+ 461 05e0 4157     		pushq	%r15
+ 462              		.seh_pushreg	%r15
+ 463 05e2 4156     		pushq	%r14
+ 464              		.seh_pushreg	%r14
+ 465 05e4 4155     		pushq	%r13
+ 466              		.seh_pushreg	%r13
+ 467 05e6 4154     		pushq	%r12
+ 468              		.seh_pushreg	%r12
+ 469 05e8 55       		pushq	%rbp
+ 470              		.seh_pushreg	%rbp
+ 471 05e9 57       		pushq	%rdi
+ 472              		.seh_pushreg	%rdi
+ 473 05ea 56       		pushq	%rsi
+ 474              		.seh_pushreg	%rsi
+ 475 05eb 53       		pushq	%rbx
+ 476              		.seh_pushreg	%rbx
+ 477 05ec 4883EC28 		subq	$40, %rsp
+ 478              		.seh_stackalloc	40
+ 479              		.seh_endprologue
+ 480 05f0 4C8BA424 		movq	144(%rsp), %r12
+ 480      90000000 
+ 481 05f8 4D63C0   		movslq	%r8d, %r8
+ 482 05fb 4585C9   		testl	%r9d, %r9d
+ 483 05fe 4A8D3485 		leaq	0(,%r8,4), %rsi
+ 483      00000000 
+ 484 0606 0F8E0701 		jle	.L121
+ 484      0000
+ 485 060c 4183E901 		subl	$1, %r9d
+ 486 0610 BB040000 		movl	$4, %ebx
+ 486      00
+ 487 0615 4889D5   		movq	%rdx, %rbp
+ 488 0618 4C8D2D00 		leaq	FARSH_KEYS(%rip), %r13
+ 488      000000
+ 489 061f 4D89CF   		movq	%r9, %r15
+ 490 0622 4889CF   		movq	%rcx, %rdi
+ 491 0625 4E8D348D 		leaq	4(,%r9,4), %r14
+ 491      04000000 
+ 492 062d 4183E703 		andl	$3, %r15d
+ 493 0631 4D8D4435 		leaq	0(%r13,%rsi), %r8
+ 493      00
+ 494 0636 E8C5F9FF 		call	farsh_keyed
+ 494      FF
+ 495 063b 4C39F3   		cmpq	%r14, %rbx
+ 496 063e 41890424 		movl	%eax, (%r12)
+ 497 0642 0F84CB00 		je	.L121
+ 497      0000
+ 498 0648 4D85FF   		testq	%r15, %r15
+ 499 064b 745F     		je	.L102
+ 500 064d 4983FF01 		cmpq	$1, %r15
+ 501 0651 743A     		je	.L116
+ 502 0653 4983FF02 		cmpq	$2, %r15
+ 503 0657 741A     		je	.L117
+ 504 0659 4D8D4435 		leaq	4(%r13,%rsi), %r8
+ 504      04
+ 505 065e 4889EA   		movq	%rbp, %rdx
+ 506 0661 4889F9   		movq	%rdi, %rcx
+ 507 0664 E897F9FF 		call	farsh_keyed
+ 507      FF
+ 508 0669 BB080000 		movl	$8, %ebx
+ 508      00
+ 509 066e 41894424 		movl	%eax, 4(%r12)
+ 509      04
+ 510              	.L117:
+ 511 0673 4C8D0433 		leaq	(%rbx,%rsi), %r8
+ 512 0677 4889EA   		movq	%rbp, %rdx
+ 513 067a 4889F9   		movq	%rdi, %rcx
+ 514 067d 4D01E8   		addq	%r13, %r8
+ 515 0680 E87BF9FF 		call	farsh_keyed
+ 515      FF
+ 516 0685 4189041C 		movl	%eax, (%r12,%rbx)
+ 517 0689 4883C304 		addq	$4, %rbx
+ 518              	.L116:
+ 519 068d 4C8D0433 		leaq	(%rbx,%rsi), %r8
+ 520 0691 4889EA   		movq	%rbp, %rdx
+ 521 0694 4889F9   		movq	%rdi, %rcx
+ 522 0697 4D01E8   		addq	%r13, %r8
+ 523 069a E861F9FF 		call	farsh_keyed
+ 523      FF
+ 524 069f 4189041C 		movl	%eax, (%r12,%rbx)
+ 525 06a3 4883C304 		addq	$4, %rbx
+ 526 06a7 4C39F3   		cmpq	%r14, %rbx
+ 527 06aa 7467     		je	.L121
+ 528              	.L102:
+ 529 06ac 4C8D0433 		leaq	(%rbx,%rsi), %r8
+ 530 06b0 4889EA   		movq	%rbp, %rdx
+ 531 06b3 4889F9   		movq	%rdi, %rcx
+ 532 06b6 4D01E8   		addq	%r13, %r8
+ 533 06b9 E842F9FF 		call	farsh_keyed
+ 533      FF
+ 534 06be 4C8D441E 		leaq	4(%rsi,%rbx), %r8
+ 534      04
+ 535 06c3 4889EA   		movq	%rbp, %rdx
+ 536 06c6 4889F9   		movq	%rdi, %rcx
+ 537 06c9 4D01E8   		addq	%r13, %r8
+ 538 06cc 4189041C 		movl	%eax, (%r12,%rbx)
+ 539 06d0 E82BF9FF 		call	farsh_keyed
+ 539      FF
+ 540 06d5 4C8D441E 		leaq	8(%rsi,%rbx), %r8
+ 540      08
+ 541 06da 4889EA   		movq	%rbp, %rdx
+ 542 06dd 4889F9   		movq	%rdi, %rcx
+ 543 06e0 4D01E8   		addq	%r13, %r8
+ 544 06e3 4189441C 		movl	%eax, 4(%r12,%rbx)
+ 544      04
+ 545 06e8 E813F9FF 		call	farsh_keyed
+ 545      FF
+ 546 06ed 4C8D441E 		leaq	12(%rsi,%rbx), %r8
+ 546      0C
+ 547 06f2 4889EA   		movq	%rbp, %rdx
+ 548 06f5 4889F9   		movq	%rdi, %rcx
+ 549 06f8 4189441C 		movl	%eax, 8(%r12,%rbx)
+ 549      08
+ 550 06fd 4D01E8   		addq	%r13, %r8
+ 551 0700 E8FBF8FF 		call	farsh_keyed
+ 551      FF
+ 552 0705 4189441C 		movl	%eax, 12(%r12,%rbx)
+ 552      0C
+ 553 070a 4883C310 		addq	$16, %rbx
+ 554 070e 4C39F3   		cmpq	%r14, %rbx
+ 555 0711 7599     		jne	.L102
+ 556              	.L121:
+ 557 0713 4883C428 		addq	$40, %rsp
+ 558 0717 5B       		popq	%rbx
+ 559 0718 5E       		popq	%rsi
+ 560 0719 5F       		popq	%rdi
+ 561 071a 5D       		popq	%rbp
+ 562 071b 415C     		popq	%r12
+ 563 071d 415D     		popq	%r13
+ 564 071f 415E     		popq	%r14
+ 565 0721 415F     		popq	%r15
+ 566 0723 C3       		ret
+ 567              		.seh_endproc
+ 568              		.section	.text.unlikely,"x"
+ 569              	.LCOLDE2:
+ 570              		.text
+ 571              	.LHOTE2:
+ 572              		.section	.text.unlikely,"x"
+ 573              	.LCOLDB3:
+ 574              		.text
+ 575              	.LHOTB3:
+ 576 0724 6666662E 		.p2align 4,,15
+ 576      0F1F8400 
+ 576      00000000 
+ 577              		.globl	farsh
+ 579              		.seh_proc	farsh
+ 580              	farsh:
+ 581              		.seh_endprologue
+ 582 0730 4C8D0500 		leaq	FARSH_KEYS(%rip), %r8
+ 582      000000
+ 583 0737 E9C4F8FF 		jmp	farsh_keyed
+ 583      FF
+ 584              		.seh_endproc
+ 585              		.section	.text.unlikely,"x"
+ 586              	.LCOLDE3:
+ 587              		.text
+ 588              	.LHOTE3:
+ 589 073c 90909090 		.section .rdata,"dr"
+ 590              		.align 64
+ 591              	FARSH_KEYS:
+ 592 0000 396CFEB8 		.long	-1191285703
+ 593 0004 BE4BA423 		.long	597969854
+ 594 0008 2C81017C 		.long	2080473388
+ 595 000c 1CAD21F7 		.long	-148787940
+ 596 0010 E96DD4DE 		.long	-556503575
+ 597 0014 DB979083 		.long	-2087675941
+ 598 0018 A4A44072 		.long	1916839076
+ 599 001c 1F67B3B7 		.long	-1212979425
+ 600 0020 4EE679CB 		.long	-881203634
+ 601 0024 78E5C0CC 		.long	-859773576
+ 602 0028 7DD05A82 		.long	-2107977603
+ 603 002c 2172FFCC 		.long	-855674335
+ 604 0030 744608B8 		.long	-1207417228
+ 605 0034 8E2443F7 		.long	-146594674
+ 606 0038 E69035E0 		.long	-533360410
+ 607 003c 4C263A81 		.long	-2126895540
+ 608 0040 BB52283C 		.long	1009275579
+ 609 0044 CB00C391 		.long	-1849491253
+ 610 0048 8B65D088 		.long	-1999608437
+ 611 004c A32E531B 		.long	458436259
+ 612 0050 97486471 		.long	1902397591
+ 613 0054 4EF90DA2 		.long	-1576142514
+ 614 0058 46EF1938 		.long	941223750
+ 615 005c D8ACDEA9 		.long	-1445024552
+ 616 0060 3F76FAA8 		.long	-1459980737
+ 617 0064 3F349CE3 		.long	-476302273
+ 618 0068 C7BBDCF9 		.long	-102974521
+ 619 006c 1D4F0BC7 		.long	-955560163
+ 620 0070 4BE0518A 		.long	-1974345653
+ 621 0074 3159B4CD 		.long	-843818703
+ 622 0078 C97E9FC8 		.long	-929071415
+ 623 007c 647378D9 		.long	-646417564
+ 624 0080 52076A4F 		.long	1332348754
+ 625 0084 9C079BA7 		.long	-1483012196
+ 626 0088 9994C48F 		.long	-1882942311
+ 627 008c A9B7C98E 		.long	-1899382871
+ 628 0090 4922C933 		.long	868819529
+ 629 0094 4F40B64E 		.long	1320566863
+ 630 0098 4EFB2AFB 		.long	-81069234
+ 631 009c 554281A4 		.long	-1535032747
+ 632 00a0 981B0E2F 		.long	789453720
+ 633 00a4 243BE9AC 		.long	-1394001116
+ 634 00a8 CD508818 		.long	411586765
+ 635 00ac A7745C6C 		.long	1817998503
+ 636 00b0 0444FA66 		.long	1727677444
+ 637 00b4 83ACC5EA 		.long	-356143997
+ 638 00b8 C3EBD334 		.long	886303683
+ 639 00bc FFA081C5 		.long	-981360385
+ 640 00c0 EB6313FA 		.long	-99392533
+ 641 00c4 51DD0D17 		.long	386784593
+ 642 00c8 49DAF0B7 		.long	-1208952247
+ 643 00cc 265516D3 		.long	-753511130
+ 644 00d0 9E68D429 		.long	701786270
+ 645 00d4 58BE162B 		.long	722910808
+ 646 00d8 FCA1477D 		.long	2101846524
+ 647 00dc D1B8F88F 		.long	-1879525167
+ 648 00e0 CE31D07A 		.long	2060464590
+ 649 00e4 8F3ACB45 		.long	1170946703
+ 650 00e8 28041695 		.long	-1793719256
+ 651 00ec CAFBD7AF 		.long	-1344799798
+ 652 00f0 7E404BBB 		.long	-1152696194
+ 653 00f4 A4745299 		.long	-1722649436
+ 654 00f8 932D9AEB 		.long	-342217325
+ 655 00fc 0889E73B 		.long	1005029640
+ 656 0100 6C5F47ED 		.long	-314089620
+ 657 0104 F2D89C91 		.long	-1851991822
+ 658 0108 5A1E86D3 		.long	-746185126
+ 659 010c 0C39316E 		.long	1848719628
+ 660 0110 493A6AFE 		.long	-26592695
+ 661 0114 1409ADDC 		.long	-592639724
+ 662 0118 EB8B5006 		.long	105941995
+ 663 011c F39983A8 		.long	-1467770381
+ 664 0120 2F1158B0 		.long	-1336405713
+ 665 0124 79FAB0E8 		.long	-391054727
+ 666 0128 06DAB429 		.long	699718150
+ 667 012c FB53C2ED 		.long	-306031621
+ 668 0130 AD6DE9C3 		.long	-1008112211
+ 669 0134 832B376E 		.long	1849109379
+ 670 0138 53B1784F 		.long	1333309779
+ 671 013c 866EFAFF 		.long	-364922
+ 672 0140 ECEEBE21 		.long	566161132
+ 673 0144 02EACA01 		.long	30075394
+ 674 0148 0DE56712 		.long	308798733
+ 675 014c 2F09E611 		.long	300288303
+ 676 0150 98D219E8 		.long	-400960872
+ 677 0154 DD802F83 		.long	-2094038819
+ 678 0158 77244E0C 		.long	206447735
+ 679 015c EB8678BC 		.long	-1132951829
+ 680 0160 37665001 		.long	22046263
+ 681 0164 6896A88B 		.long	-1951885720
+ 682 0168 A0E7116D 		.long	1829889952
+ 683 016c 15FD12FC 		.long	-65864427
+ 684 0170 194CA586 		.long	-2035987431
+ 685 0174 DDE33C59 		.long	1497162717
+ 686 0178 E53FB1D2 		.long	-760135707
+ 687 017c 532B778E 		.long	-1904792749
+ 688 0180 CC604AAE 		.long	-1370857268
+ 689 0184 1B3B7A64 		.long	1685732123
+ 690 0188 E0867754 		.long	1417119456
+ 691 018c 8E37C43E 		.long	1053046670
+ 692 0190 89CF7A8D 		.long	-1921331319
+ 693 0194 47F936CA 		.long	-902366905
+ 694 0198 EFD5890E 		.long	243914223
+ 695 019c 3C6ADAAA 		.long	-1428526532
+ 696 01a0 09A1A46D 		.long	1839505673
+ 697 01a4 1CE1C69A 		.long	-1698242276
+ 698 01a8 EF916668 		.long	1751552495
+ 699 01ac 2BBD57A3 		.long	-1554531029
+ 700 01b0 9A1B6FD1 		.long	-781247590
+ 701 01b4 0303C738 		.long	952566531
+ 702 01b8 B322467D 		.long	2101748403
+ 703 01bc 8FFA6829 		.long	694745743
+ 704 01c0 B9BCA58C 		.long	-1935295303
+ 705 01c4 0510D6FC 		.long	-53080059
+ 706 01c8 965E8B22 		.long	579559062
+ 707 01cc 19CC9D2C 		.long	748538905
+ 708 01d0 3C24CF57 		.long	1473193020
+ 709 01d4 C1F9533C 		.long	1012136385
+ 710 01d8 2C95C70C 		.long	214406444
+ 711 01dc F0E46D68 		.long	1752032496
+ 712 01e0 B547A793 		.long	-1817753675
+ 713 01e4 10A5874E 		.long	1317512464
+ 714 01e8 AE915E97 		.long	-1755410002
+ 715 01ec 8EB9104C 		.long	1276164494
+ 716 01f0 8C067F8A 		.long	-1971386740
+ 717 01f4 AB196B34 		.long	879434155
+ 718 01f8 25A63C35 		.long	893167141
+ 719 01fc E0500AF2 		.long	-234204960
+ 720 0200 F62199CE 		.long	-828825098
+ 721 0204 14E066DF 		.long	-546906092
+ 722 0208 4BEF110A 		.long	168947531
+ 723 020c DF4DC88B 		.long	-1949807137
+ 724 0210 225DD284 		.long	-2066588382
+ 725 0214 6D9323C8 		.long	-937192595
+ 726 0218 C31E7494 		.long	-1804329277
+ 727 021c 608A2788 		.long	-2010674592
+ 728 0220 319364B8 		.long	-1201368271
+ 729 0224 107A707A 		.long	2054191632
+ 730 0228 D6CA9272 		.long	1922222806
+ 731 022c C244C6A7 		.long	-1480178494
+ 732 0230 FA6B15BD 		.long	-1122669574
+ 733 0234 78956C64 		.long	1684837752
+ 734 0238 D5DFF4B7 		.long	-1208688683
+ 735 023c A777829F 		.long	-1618839641
+ 736 0240 4E921370 		.long	1880330830
+ 737 0244 C34C67AD 		.long	-1385739069
+ 738 0248 059DAE2C 		.long	749640965
+ 739 024c 229A2A91 		.long	-1859479006
+ 740 0250 FA537CF6 		.long	-159624198
+ 741 0254 A9227E8D 		.long	-1921113431
+ 742 0258 2B37AE59 		.long	1504589611
+ 743 025c F3990185 		.long	-2063492621
+ 744 0260 2C10A263 		.long	1671565356
+ 745 0264 6112FFD6 		.long	-687926687
+ 746 0268 E18E7356 		.long	1450413793
+ 747 026c 5B1495AA 		.long	-1433070501
+ 748 0270 3228D1FD 		.long	-36624334
+ 749 0274 EB4D685B 		.long	1533562347
+ 750 0278 94DE8407 		.long	126148244
+ 751 027c 0E3962AA 		.long	-1436403442
+ 752 0280 19CF7CBB 		.long	-1149448423
+ 753 0284 72D5EF0F 		.long	267375986
+ 754 0288 CA415B56 		.long	1448821194
+ 755 028c 02D20622 		.long	570872322
+ 756 0290 7984602D 		.long	761300089
+ 757 0294 3DCD0F4C 		.long	1276103997
+ 758 0298 E33B6DD3 		.long	-747815965
+ 759 029c 659A5A15 		.long	358259301
+ 760 02a0 32E7F910 		.long	284813106
+ 761 02a4 1E0F9BAC 		.long	-1399124194
+ 762 02a8 3BA0721F 		.long	527605819
+ 763 02ac AE4094EA 		.long	-359382866
+ 764 02b0 4F4B675B 		.long	1533496143
+ 765 02b4 D127A831 		.long	833103825
+ 766 02b8 4F95CAEC 		.long	-322267825
+ 767 02bc 1ED62C3D 		.long	1026348574
+ 768 02c0 A43D8D76 		.long	1988967844
+ 769 02c4 C15A7493 		.long	-1821091135
+ 770 02c8 CB585D1D 		.long	492656843
+ 771 02cc B6F3864B 		.long	1267135414
+ 772 02d0 3A92BA2A 		.long	716870202
+ 773 02d4 4C81650E 		.long	241533260
+ 774 02d8 D963E08A 		.long	-1965005863
+ 775 02dc B06969CD 		.long	-848729680
+ 776 02e0 85156436 		.long	912528773
+ 777 02e4 9DF52A74 		.long	1948972445
+ 778 02e8 16133A61 		.long	1631195926
+ 779 02ec 71A48E33 		.long	864986225
+ 780 02f0 F31A8647 		.long	1199971059
+ 781 02f4 C39D4730 		.long	809999811
+ 782 02f8 81A47012 		.long	309372033
+ 783 02fc 69107708 		.long	142020713
+ 784 0300 D2F0C4E3 		.long	-473632558
+ 785 0304 4C872902 		.long	36276044
+ 786 0308 C13B8A5A 		.long	1519008705
+ 787 030c 33970DE3 		.long	-485648589
+ 788 0310 A2E55BD0 		.long	-799283806
+ 789 0314 BA31AFE2 		.long	-491834950
+ 790 0318 F9492022 		.long	572541433
+ 791 031c 6A3B929F 		.long	-1617806486
+ 792 0320 EC643F03 		.long	54486252
+ 793 0324 2BB628E5 		.long	-450316757
+ 794 0328 BDEF0182 		.long	-2113802307
+ 795 032c 77D80721 		.long	554162295
+ 796 0330 F12E31D8 		.long	-667865359
+ 797 0334 999F67A5 		.long	-1519935591
+ 798 0338 1BB53017 		.long	389068059
+ 799 033c D2162675 		.long	1965430482
+ 800 0340 09593005 		.long	87054601
+ 801 0344 0B44CA0D 		.long	231359499
+ 802 0348 D9CD9320 		.long	546557401
+ 803 034c 50AB0964 		.long	1678355280
+ 804 0350 CC8E5CBA 		.long	-1168339252
+ 805 0354 EA08478D 		.long	-1924724502
+ 806 0358 17099F42 		.long	1117718807
+ 807 035c B0FA62B7 		.long	-1218250064
+ 808 0360 75EA6151 		.long	1365371509
+ 809 0364 EBA0EB45 		.long	1173070059
+ 810 0368 414BF3B6 		.long	-1225569471
+ 811 036c 23710452 		.long	1376022819
+ 812 0370 231518E4 		.long	-468183773
+ 813 0374 0AE9748D 		.long	-1921718006
+ 814 0378 1C40FA54 		.long	1425686556
+ 815 037c C70CDADD 		.long	-572912441
+ 816 0380 2A18DF63 		.long	1675565098
+ 817 0384 F63E40C6 		.long	-968868106
+ 818 0388 E8C68E34 		.long	881772264
+ 819 038c F557FFB9 		.long	-1174448139
+ 820 0390 BDB852F6 		.long	-162350915
+ 821 0394 F3B0860F 		.long	260485363
+ 822 0398 8A083AFB 		.long	-80082806
+ 823 039c 3315C74D 		.long	1304892723
+ 824 03a0 D217367B 		.long	2067142610
+ 825 03a4 EB874EA3 		.long	-1555134485
+ 826 03a8 DD9B2ABA 		.long	-1171612707
+ 827 03ac 061338E3 		.long	-482864378
+ 828 03b0 BBD6BA14 		.long	347788987
+ 829 03b4 C2C76DC9 		.long	-915552318
+ 830 03b8 B6543B33 		.long	859526326
+ 831 03bc FA7CE49B 		.long	-1679524614
+ 832 03c0 9992CF1D 		.long	500142745
+ 833 03c4 995FEAE7 		.long	-404070503
+ 834 03c8 CDEA8FB3 		.long	-1282413875
+ 835 03cc F7E2CFC3 		.long	-1009786121
+ 836 03d0 22E8875B 		.long	1535633442
+ 837 03d4 56ABC539 		.long	969255766
+ 838 03d8 8FA1F418 		.long	418685327
+ 839 03dc 9C4D482D 		.long	759713180
+ 840 03e0 19D56341 		.long	1097061657
+ 841 03e4 989E7679 		.long	2037816984
+ 842 03e8 F0678AF5 		.long	-175478800
+ 843 03ec 020C5940 		.long	1079577602
+ 844 03f0 C0719631 		.long	831943104
+ 845 03f4 3A136B26 		.long	644551482
+ 846 03f8 87B281AF 		.long	-1350454649
+ 847 03fc 37F7316A 		.long	1781659447
+ 848 0400 9701BCE3 		.long	-474218089
+ 849 0404 13990755 		.long	1426561299
+ 850 0408 96C6729F 		.long	-1619868010
+ 851 040c C8003E36 		.long	910033096
+ 852 0410 47391553 		.long	1393899847
+ 853 0414 7F12FDEB 		.long	-335736193
+ 854 0418 1905F600 		.long	16123161
+ 855 041c 2AB6A646 		.long	1185330730
+ 856 0420 8033B893 		.long	-1816644736
+ 857 0424 2493E23F 		.long	1071813412
+ 858 0428 9170C6DF 		.long	-540643183
+ 859 042c 6D38620F 		.long	258095213
+ 860 0430 795E37DC 		.long	-600351111
+ 861 0434 3E3FEA8F 		.long	-1880473794
+ 862 0438 D06384DF 		.long	-544971824
+ 863 043c 7BFA0237 		.long	922942075
+ 864 0440 5E435439 		.long	961823582
+ 865 0444 48A6CA87 		.long	-2016762296
+ 866 0448 EE8B15A9 		.long	-1458205714
+ 867 044c 250CF308 		.long	150146085
+ 868 0450 3629B866 		.long	1723345206
+ 869 0454 EB3FFCE7 		.long	-402898965
+ 870 0458 50543C18 		.long	406606928
+ 871 045c 4543EFD7 		.long	-672185531
+ 872 0460 63798C79 		.long	2039249251
+ 873 0464 57F52CC0 		.long	-1070795433
+ 874 0468 D1538509 		.long	159732689
+ 875 046c AA1243FA 		.long	-96267606
+ 876 0470 83F89EE2 		.long	-492898173
+ 877 0474 8D12AF7C 		.long	2091848333
+ 878 0478 7DA0B374 		.long	1957929085
+ 879 047c 00000000 		.space 896
+ 879      00000000 
+ 879      00000000 
+ 879      00000000 
+ 879      00000000 
+ 880              		.ident	"GCC: (i686-posix-sjlj-rev2, Built by MinGW-W64 project) 4.9.2"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 farsh.c
+  M:\Temp\ccJkN5ib.s:10     .text:0000000000000000 farsh_keyed
+  M:\Temp\ccJkN5ib.s:297    .text:00000000000003e0 farsh_keyed_n
+  M:\Temp\ccJkN5ib.s:460    .text:00000000000005e0 farsh_n
+  M:\Temp\ccJkN5ib.s:591    .rdata:0000000000000000 FARSH_KEYS
+  M:\Temp\ccJkN5ib.s:580    .text:0000000000000730 farsh
+
+UNDEFINED SYMBOLS
+memcpy
