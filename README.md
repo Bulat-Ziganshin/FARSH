@@ -25,7 +25,7 @@ The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula 
 ```
 
 ## The main loop
-- [Source code](farsh.c#L34)
+- [Source code](farsh.c#L22)
 - Asm code (found by searching for adcl+mull/pmuludq instructions)
   - [gcc -O3 -funroll-loops -m32](asm-listings/gcc-x86.lst#L300)
   - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](asm-listings/gcc-x86-sse2.lst#L323)
