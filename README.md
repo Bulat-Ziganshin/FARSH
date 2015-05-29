@@ -26,11 +26,12 @@ The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula 
 
 ## The main loop
 - [Source code](farsh.c#L34)
-- Asm code (found by adcl/pmuludq)
-  - [gcc -O3 -funroll-loops -m32](gcc32.lst#L286)
-  - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](gcc32sse2.lst#L326)
-  - [gcc -O3 -funroll-loops -m64 -msse2 -DSSE2](gcc64sse2.lst#L257)
-  - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](gcc64avx2.lst#L259)
+- Asm code (found by searching for adcl+mull/pmuludq instructions)
+  - [gcc -O3 -funroll-loops -m32](asm_listings/gcc-x86.lst#L297)
+  - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](asm_listings/gcc-x86-sse2.lst#L320)
+  - [gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2](asm_listings/gcc-x86-avx2.lst#L317)
+  - [gcc -O3 -funroll-loops -m64 -DSSE2](asm_listings/gcc-x64.lst#L257)
+  - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm_listings/gcc-x64-avx2.lst#L259)
 
 ## Benchmark on Haswell i7-4770
 ```
