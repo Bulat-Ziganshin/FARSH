@@ -1,13 +1,11 @@
 #include <stdlib.h>
 #include <memory.h>
 
-#if defined(AVX2) || defined(SSE2)
-#include "emmintrin.h"
-#endif
-
 #if __GNUC__
+#include <x86intrin.h>
 #define ALIGN(n)      __attribute__ ((aligned(n)))
 #elif _MSC_VER
+#include <intrin.h>
 #define ALIGN(n)      __declspec(align(n))
 #else
 #define ALIGN(n)
@@ -40,7 +38,7 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
     for (i=0; i < STRIPE/sizeof(__m256i); i++)
     {
         __m256i d = _mm256_loadu_si256 (xdata+i);
-        __m256i k = _mm256_load_si256  (xkey+i);
+        __m256i k = _mm256_loadu_si256 (xkey+i);
         __m256i dk = _mm256_add_epi32(d,k);                                     // uint32 dk[8]  = {d0+k0, d1+k1 .. d7+k7}
         __m256i res = _mm256_mul_epu32 (dk, _mm256_shuffle_epi32 (dk,0x31));    // uint64 res[4] = {dk0*dk1, dk2*dk3, dk4*dk5, dk6*dk7}
         sum = _mm256_add_epi64(sum,res);
@@ -56,7 +54,7 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
     for (i=0; i < STRIPE/sizeof(__m128i); i++)
     {
         __m128i d = _mm_loadu_si128 (xdata+i);
-        __m128i k = _mm_load_si128  (xkey+i);
+        __m128i k = _mm_loadu_si128 (xkey+i);
         __m128i dk = _mm_add_epi32(d,k);                                        // uint32 dk[4]  = {d0+k0, d1+k1, d2+k2, d3+k3}
         __m128i res = _mm_mul_epu32 (dk, _mm_shuffle_epi32 (dk,0x31));          // uint64 res[2] = {dk0*dk1,dk2*dk3}
         sum = _mm_add_epi64(sum,res);
