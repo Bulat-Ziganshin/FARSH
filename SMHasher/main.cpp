@@ -46,10 +46,10 @@ HashInfo g_hashes[] =
   { DoNothingHash,        64, 0x00000000, "donothing64", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,       128, 0x00000000, "donothing128", "Do-Nothing function (only valid for measuring call overhead)" },
 
-  { farsh32_test,         32, 0x19DA0781, "Farsh32",     "FARSH, 32-bit result" },
-  { farsh64_test,         64, 0xC5863701, "Farsh64",     "FARSH, 64-bit result" },
-  { farsh128_test,       128, 0xDB7BE8E3, "Farsh128",    "FARSH, 128-bit result" },
-  { farsh256_test,       256, 0xECF9C588, "Farsh256",    "FARSH, 256-bit result" },
+  { farsh32_test,         32, 0x10B4C4EF, "Farsh32",     "FARSH, 32-bit result" },
+  { farsh64_test,         64, 0xB7E3E10D, "Farsh64",     "FARSH, 64-bit result" },
+  { farsh128_test,       128, 0x7D1A7224, "Farsh128",    "FARSH, 128-bit result" },
+  { farsh256_test,       256, 0x4ABC872F, "Farsh256",    "FARSH, 256-bit result" },
 };
 
 HashInfo * findHash ( const char * name )

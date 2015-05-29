@@ -20,10 +20,10 @@ static const UINT FARSH_KEYS [STRIPE_ELEMENTS+1024/sizeof(UINT)-1] = {  /* STRIP
     };
 
 /* Internal: hash exactly STRIPE bytes */
-static UINT farsh_fast (const UINT *data, const UINT *key)
+static ULONG farsh_fast (const UINT *data, const UINT *key)
 {
 #ifdef AVX2
-    __m256i sum = _mm256_setzero_si256();  int i;
+    __m256i sum = _mm256_setzero_si256();  __m128i sum128, result;  int i;
     const __m256i *xdata = (const __m256i *) data;
     const __m256i *xkey  = (const __m256i *) key;
 
@@ -35,11 +35,12 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
         __m256i res = _mm256_mul_epu32 (dk, _mm256_shuffle_epi32 (dk,0x31));    // uint64 res[4] = {dk0*dk1, dk2*dk3, dk4*dk5, dk6*dk7}
         sum = _mm256_add_epi64(sum,res);
     }
-     sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));              // sum up four 64-bit values in the sum
-     __m128i sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
-     return _mm_cvtsi128_si32 (_mm_add_epi32 (sum128, _mm_shuffle_epi32(sum128,1)));   // .. and return COMPRESS_ULONG(sum128)
+     sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));             // return sum of four 64-bit values in the sum
+     sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
+    _mm_storel_epi64 (&result, sum128);
+    return *(ULONG*) &result;
 #elif defined(SSE2)
-    __m128i sum = _mm_setzero_si128();  int i;
+    __m128i sum = _mm_setzero_si128(),  result;  int i;
     const __m128i *xdata = (const __m128i *) data;
     const __m128i *xkey  = (const __m128i *) key;
 
@@ -51,29 +52,30 @@ static UINT farsh_fast (const UINT *data, const UINT *key)
         __m128i res = _mm_mul_epu32 (dk, _mm_shuffle_epi32 (dk,0x31));          // uint64 res[2] = {dk0*dk1,dk2*dk3}
         sum = _mm_add_epi64(sum,res);
     }
-    sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));                    // sum up two 64-bit values in the sum
-    return _mm_cvtsi128_si32 (_mm_add_epi32 (sum, _mm_shuffle_epi32(sum,1)));   // .. and return COMPRESS_ULONG(sum)
+    sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));                    // return sum of two 64-bit values in the sum
+    _mm_storel_epi64 (&result, sum);
+    return *(ULONG*) &result;
 #else
     ULONG sum = 0;  int i;
     for (i=0; i < STRIPE_ELEMENTS; i+=2)
         sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
-    return COMPRESS_ULONG(sum);
+    return sum;
 #endif
 }
 
 /* Internal: hash up to STRIPE bytes, consisting of whole UINT pairs, including optional UINT pair in the extra[] */
-static UINT farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *key)
+static ULONG farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *key)
 {
     ULONG sum = 0;  int i;
     for (i=0; i < elements; i+=2)
         sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
     if (extra)
         sum += (extra[0] + key[i]) * (ULONG)(extra[1] + key[i+1]);
-    return COMPRESS_ULONG(sum);
+    return sum;
 }
 
 /* Internal: hash up to STRIPE bytes, with special optimization for exactly STRIPE input bytes and careful handling of partial UINT pair at the end of buffer */
-static UINT farsh_block (const UINT *data, size_t bytes, const UINT *key)
+static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
 {
     if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
@@ -86,27 +88,19 @@ static UINT farsh_block (const UINT *data, size_t bytes, const UINT *key)
 /* Hash the buffer with the user-supplied key material */
 UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
-    ULONG sum = 0;  int i = 0;  int j = 0;
+    UINT sum = 0;
     const UINT *key_ptr = (const UINT*) key;
     const char *ptr = (const char*) data,  *end = ptr+bytes;
     while (ptr < end)
     {
         size_t minbytes = (bytes<STRIPE? bytes : STRIPE);
-        UINT h = farsh_block ((const UINT*)ptr, minbytes, key_ptr);
+        ULONG h = farsh_block ((const UINT*)ptr, minbytes, key_ptr);
         ptr += minbytes;
 
         // Level-1 hashsum combining
-        sum += h * (ULONG)(key_ptr[i]+minbytes);
-        if (++i == STRIPE_ELEMENTS)
-        {
-            i = 0;
-            // Level-2 hashsum combining
-            sum += COMPRESS_ULONG(sum) * (ULONG)key_ptr[j];
-            if (++j == STRIPE_ELEMENTS)
-                j = 0;
-        }
+        sum = _mm_crc32_u64(sum, h+minbytes);
     }
-    return COMPRESS_ULONG(sum);
+    return sum;
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
