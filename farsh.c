@@ -101,11 +101,11 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         ULONG h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
         ptr += chunk;  bytes -= chunk;
 
-        // Level-2 hashsum combining
+        /* Hashsum combining */
         sum1 = _mm_crc32_u32 (sum1, (UINT)h);
-        sum2 = _mm_crc32_u32 (sum2, (UINT)(h>>32));
+        sum2 = _mm_crc32_u32 (sum2, sum1 ^ (UINT)(h>>32));
     }
-    return _mm_crc32_u32 (sum1,sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];
+    return sum2 ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will change the hash value */
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
