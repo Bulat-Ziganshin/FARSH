@@ -5,6 +5,17 @@
 
 int main()
 {
+    // CHECK THE ZEROES HASHING
+    const size_t ZEROES = 64*1024;
+    static char zero[ZEROES] = {0};
+    for (int i=0; i<=ZEROES; i++)
+    {
+        //unsigned h = farsh (zero, i);
+        //printf("%5d %08x\n", i, h);
+        //printf("%4d %08x %08x %08x %08x :: ", minbytes, (UINT)(h), (UINT)(h>>32), sum1, sum2);
+    }
+
+
     // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 28*1024;
     static char data[DATASIZE+1];
@@ -13,7 +24,7 @@ int main()
 
 
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
-    for (int i=0; i<=16; i++)
+    for (int i=0; i<=32; i++)
     {
         unsigned h = farsh (data+i, DATASIZE+1-i);
         if (h==42)  break;   // anti-optimization trick
@@ -38,7 +49,7 @@ int main()
         unsigned h = farsh (data, DATASIZE);
         if (h==42)  break;
         if (i==42)  printf(" (%x)", h);
-        //printf("\n %5d %x ", i, h);
+        //printf("\n %5d %08x ", i, h);
     }
 
     t.Stop();  double speed = DATASET/(t.Elapsed()/1000);
