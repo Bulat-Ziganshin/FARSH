@@ -88,7 +88,7 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
 /* Hash the buffer with the user-supplied key material */
 UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
-    UINT sum = 0;
+    UINT sum1 = 0, sum2 = 0;
     const UINT *key_ptr = (const UINT*) key;
     const char *ptr = (const char*) data,  *end = ptr+bytes;
     while (ptr < end)
@@ -98,9 +98,10 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         ptr += minbytes;
 
         // Level-1 hashsum combining
-        sum = _mm_crc32_u64(sum, h+minbytes);
+        sum1 = _mm_crc32_u32 (sum1, (UINT)(h+minbytes));
+        sum2 = _mm_crc32_u32 (sum2, (UINT)(h>>32));
     }
-    return sum;
+    return _mm_crc32_u32 (sum1,sum2);
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
