@@ -13,7 +13,7 @@
 
 #define UINT  /*uint32_t*/ unsigned
 #define ULONG /*uint64_t*/ unsigned long long
-#define COMPRESS_ULONG(value) ((UINT)((value) >> 32) + (UINT)(value))   /* return sum of 32-bit halves of the value */
+#define combine_hashes  _mm_crc32_u32
 
 #define STRIPE          1024
 #define STRIPE_ELEMENTS (STRIPE/sizeof(UINT))  /* should be power of 2 due to use of 'x % STRIPE_ELEMENTS' below */
@@ -102,10 +102,10 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         ptr += chunk;  bytes -= chunk;
 
         /* Hashsum combining */
-        sum1 = _mm_crc32_u32 (sum1, (UINT)h);
-        sum2 = _mm_crc32_u32 (sum2, sum1 ^ (UINT)(h>>32));
+        sum1 = combine_hashes (sum1, (UINT)h);
+        sum2 = combine_hashes (sum2, (UINT)(h>>32));
     }
-    return sum2 ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will change the hash value */
+    return combine_hashes(sum1,sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];  /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
