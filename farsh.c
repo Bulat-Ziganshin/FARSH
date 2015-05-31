@@ -44,7 +44,8 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
     }
      sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));             // return sum of four 64-bit values in the sum
      sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
-    return _mm_cvtsi128_si64 (sum128);
+    _mm_storel_epi64 (&result, sum128);
+    return *(ULONG*) &result;
 #elif defined(SSE2)
     __m128i sum = _mm_setzero_si128(),  result;  int i;
     const __m128i *xdata = (const __m128i *) data;
@@ -59,7 +60,8 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
         sum = _mm_add_epi64(sum,res);
     }
     sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));                    // return sum of two 64-bit values in the sum
-    return _mm_cvtsi128_si64 (sum);
+    _mm_storel_epi64 (&result, sum);
+    return *(ULONG*) &result;
 #else
     ULONG sum = 0;  int i;
     for (i=0; i < STRIPE_ELEMENTS; i+=2)
