@@ -11,9 +11,46 @@
 #define ALIGN(n)
 #endif
 
-#define UINT  /*uint32_t*/ unsigned
-#define ULONG /*uint64_t*/ unsigned long long
+#define UINT   /*uint32_t*/ unsigned
+#define ULONG  /*uint64_t*/ unsigned long long
+#define UINT16 /*uint32_t*/ unsigned short
+#define UINT32 UINT
+#define UINT64 ULONG
 #define combine_hashes  _mm_crc32_u32
+//#define combine_hashes(x,y) ((x)+(y))
+
+
+
+/* ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+/* ----- Primitive Routines --------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------- */
+/* --- 32-bit by 32-bit to 64-bit Multiplication ------------------------ */
+/* ---------------------------------------------------------------------- */
+
+#define MUL64(a,b) ((UINT64)((UINT64)(UINT32)(a) * (UINT64)(UINT32)(b)))
+
+/* ---------------------------------------------------------------------- */
+/* --- Endian Conversion --- Forcing assembly on some platforms           */
+/* ---------------------------------------------------------------------- */
+
+/* The following definitions use the above reversal-primitives to do the right
+ * thing on endian specific load and stores.
+ */
+
+#if (__LITTLE_ENDIAN__)
+#define LOAD_UINT32_LITTLE(ptr)     (*(UINT32 *)(ptr))
+#define STORE_UINT32_BIG(ptr,x)     STORE_UINT32_REVERSED(ptr,x)
+#else
+#define LOAD_UINT32_LITTLE(ptr)     LOAD_UINT32_REVERSED(ptr)
+#define STORE_UINT32_BIG(ptr,x)     (*(UINT32 *)(ptr) = (UINT32)(x))
+#endif
+
+
+/* ---------------------------------------------------------------------- */
 
 #define STRIPE          1024
 #define STRIPE_ELEMENTS (STRIPE/sizeof(UINT))  /* should be power of 2 due to use of 'x % STRIPE_ELEMENTS' below */
@@ -92,23 +129,120 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
 }
 
+
+/* ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+/* ----- Begin UHASH Section -------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
+
+/* UHASH is a multi-layered algorithm. Data presented to UHASH is first
+ * hashed by NH. The NH output is then hashed by a polynomial-hash layer
+ * unless the initial data to be hashed is short. After the polynomial-
+ * layer, an inner-product hash is used to produce the final UHASH output.
+ *
+ * UHASH provides two interfaces, one all-at-once and another where data
+ * buffers are presented sequentially. In the sequential interface, the
+ * UHASH client calls the routine uhash_update() as many times as necessary.
+ * When there is no more data to be fed to UHASH, the client calls
+ * uhash_final() which
+ * calculates the UHASH output. Before beginning another UHASH calculation
+ * the uhash_reset() routine must be called. The all-at-once UHASH routine,
+ * uhash(), is equivalent to the sequence of calls uhash_update() and
+ * uhash_final(); however it is optimized and should be
+ * used whenever the sequential interface is not necessary.
+ *
+ * The routine uhash_init() initializes the uhash_ctx data structure and
+ * must be called once, before any other UHASH routine.
+ */
+
+/* ---------------------------------------------------------------------- */
+/* ----- Constants and uhash_ctx ---------------------------------------- */
+/* ---------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------- */
+/* ----- Poly hash and Inner-Product hash Constants --------------------- */
+/* ---------------------------------------------------------------------- */
+
+/* Primes and masks */
+#define p36    ((UINT64)0x0000000FFFFFFFFBull)              /* 2^36 -  5 */
+#define p64    ((UINT64)0xFFFFFFFFFFFFFFC5ull)              /* 2^64 - 59 */
+#define m36    ((UINT64)0x0000000FFFFFFFFFull)  /* The low 36 of 64 bits */
+
+
+/* ---------------------------------------------------------------------- */
+/* The final step in UHASH is an inner-product hash. The poly hash
+ * produces a result not neccesarily WORD_LEN bytes long. The inner-
+ * product hash breaks the polyhash output into 16-bit chunks and
+ * multiplies each with a 36 bit key.
+ */
+
+static UINT64 ip_aux (UINT64 t, UINT64 *ipkp, UINT64 data)
+{
+    t = t + ipkp[0] * (UINT64)(UINT16)(data >> 48);
+    t = t + ipkp[1] * (UINT64)(UINT16)(data >> 32);
+    t = t + ipkp[2] * (UINT64)(UINT16)(data >> 16);
+    t = t + ipkp[3] * (UINT64)(UINT16)(data);
+
+    return t;
+}
+
+static UINT32 ip_reduce_p36 (UINT64 t)
+{
+/* Divisionless modular reduction */
+    UINT64 ret;
+
+    ret = (t & m36) + 5 * (t >> 36);
+    if (ret >= p36)
+        ret -= p36;
+
+    /* return least significant 32 bits */
+    return (UINT32)(ret);
+}
+
+
+/* If the data being hashed by UHASH is no longer than L1_KEY_LEN, then
+ * the polyhash stage is skipped and ip_short is applied directly to the
+ * NH output.
+ */
+static UINT ip_short (ULONG hash)
+{
+    UINT32 ip_keys[8] = {0xaf2b9f2b,0x93c10187,0x805acb30,0xfe02521a,0x0ba18535,0xa2b62188,0xd10b8511,0x7d9350a6};
+    UINT32 ip_trans = 0x3c00d8b6;
+
+    UINT64 t = ip_aux (0, (UINT64*)ip_keys, hash);
+    return (ip_reduce_p36(t) ^ ip_trans);
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* High-level code */
+
 /* Hash the buffer with the user-supplied 16byte-aligned 1024-byte key material */
 UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
-    UINT sum1 = 0, sum2 = 0;  size_t chunk = 0;
+    UINT sum1 = 0, sum2 = 0;  size_t chunk = 0;  ULONG h;
     const char *ptr     = (const char*) data;
     const UINT *key_ptr = (const UINT*) key;
-    while (bytes)
-    {
-        chunk = (bytes<STRIPE? bytes : STRIPE);
-        ULONG h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
-        ptr += chunk;  bytes -= chunk;
 
-        /* Hashsum combining */
-        sum1 = combine_hashes (sum1, (UINT)h);
-        sum2 = combine_hashes (sum2, (UINT)(h>>32));
+    /* If the message to be hashed is no longer than STRIPE, we skip the polyhash. */
+    if (bytes <= STRIPE) {
+        chunk = bytes;
+        h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
+        sum2 = ip_short(h);
+    } else {
+        while (bytes)
+        {
+            chunk = (bytes<STRIPE? bytes : STRIPE);
+            h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
+            ptr += chunk;  bytes -= chunk;
+
+            /* Hashsum combining */
+            sum1 = combine_hashes (sum1, (UINT)h);
+            sum2 = combine_hashes (sum2, sum1 ^ (UINT)(h>>32));
+        }
     }
-    return combine_hashes(sum1,sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];  /* ensure that zeroes at the end of data will affect the hash value */
+    return sum2 ^ key_ptr[chunk%STRIPE_ELEMENTS];  /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied 16byte-aligned, 1008+n*16 bytes long key material and return hash of 32*n bits long */
