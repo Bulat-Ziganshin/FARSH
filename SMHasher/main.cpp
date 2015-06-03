@@ -48,8 +48,12 @@ HashInfo g_hashes[] =
 
   { farsh32_test,         32, 0x852EACB6, "Farsh32",     "FARSH, 32-bit result" },
   { farsh64_test,         64, 0xC4B1D109, "Farsh64",     "FARSH, 64-bit result" },
-  { farsh128_test,       128, 0xA7488C1E, "Farsh128",    "FARSH, 128-bit result" },
-  { farsh256_test,       256, 0x1F3962B8, "Farsh256",    "FARSH, 256-bit result" },
+  { farsh128_test,       128, 0xA7488C1E, "Farsh128",    "FARSH, 128-bit result"},
+  { farsh256_test,       256, 0x1F3962B8, "Farsh256",    "FARSH, 256-bit result"},
+
+  { uhash32_test,         32, 0x852EACB6, "UHash32",     "UHASH, 32-bit result" },
+  { uhash32_test,         64, 0x852EACB6, "UHash64",     "UHASH, 64-bit result" },
+  { uhash32_test,        128, 0x852EACB6, "UHash128",    "UHASH, 128-bit result" },
 };
 
 HashInfo * findHash ( const char * name )
