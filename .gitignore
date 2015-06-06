@@ -31,3 +31,6 @@
 1/*
 2/*
 keys/
+asm-listings/aaa.cmd
+benchmark/aaa.cmd
+SMHasher/aaa.cmd

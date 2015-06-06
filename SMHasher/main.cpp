@@ -54,6 +54,8 @@ HashInfo g_hashes[] =
   { uhash32_test,         32, 0x852EACB6, "UHash32",     "UHASH, 32-bit result" },
   { uhash32_test,         64, 0x852EACB6, "UHash64",     "UHASH, 64-bit result" },
   { uhash32_test,        128, 0x852EACB6, "UHash128",    "UHASH, 128-bit result" },
+
+  { vhash64_test,         64, 0x852EACB6, "VHash64",     "VHASH, 64-bit result" },
 };
 
 HashInfo * findHash ( const char * name )

@@ -24,3 +24,8 @@ void farsh256_test ( const void * key, int len, unsigned seed, void * out );
 // Test harnesses for UHASH
 
 void uhash32_test ( const void * key, int len, unsigned seed, void * out );
+
+//-----------------------------------------------------------------------------
+// Test harnesses for VHASH
+
+void vhash64_test ( const void * key, int len, unsigned seed, void * out );
