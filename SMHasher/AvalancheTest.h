@@ -69,7 +69,7 @@ template < typename keytype, typename hashtype >
 bool AvalancheTest ( pfHash hash, const int reps )
 {
   Rand r(48273);
-  
+
   const int keybytes = sizeof(keytype);
   const int hashbytes = sizeof(hashtype);
 
@@ -83,7 +83,7 @@ bool AvalancheTest ( pfHash hash, const int reps )
   std::vector<int> bins(keybits*hashbits,0);
 
   calcBias<keytype,hashtype>(hash,bins,reps,r);
-  
+
   //----------
 
   bool result = true;
@@ -94,7 +94,17 @@ bool AvalancheTest ( pfHash hash, const int reps )
 
   if(b > AVALANCHE_FAIL)
   {
-    printf(" !!!!! ");
+    int * cursor = &bins[0];
+
+    for(int iBit = 0; iBit < keybits; iBit++)
+    {
+      for(int iOut = 0; iOut < hashbits; iOut++)
+      {
+        double k = *cursor++/(double)reps;
+        if (k>0.51 || k<0.49)
+          printf(", %d->%d %f%%",iBit,iOut,k * 100.0);
+      }
+    }
     result = false;
   }
 
@@ -111,7 +121,7 @@ template< typename keytype, typename hashtype >
 void BicTest ( pfHash hash, const int keybit, const int reps, double & maxBias, int & maxA, int & maxB, bool verbose )
 {
   Rand r(11938);
-  
+
   const int keybytes = sizeof(keytype);
   const int hashbytes = sizeof(hashtype);
   const int hashbits = hashbytes * 8;
@@ -178,7 +188,7 @@ void BicTest ( pfHash hash, const int keybit, const int reps, double & maxBias, 
         maxB = out2;
       }
 
-      if(verbose) 
+      if(verbose)
       {
         if     (bias < 0.01) printf(".");
         else if(bias < 0.05) printf("o");
@@ -210,7 +220,7 @@ bool BicTest ( pfHash hash, const int reps )
 
     double bias;
     int a,b;
-    
+
     BicTest<keytype,hashtype>(hash,i,reps,bias,a,b,true);
 
     if(bias > maxBias)
@@ -314,7 +324,7 @@ void BicTest3 ( pfHash hash, const int reps, bool verbose = true )
           maxB = out2;
         }
 
-        if(verbose) 
+        if(verbose)
         {
           if     (bias < 0.01) printf(".");
           else if(bias < 0.05) printf("o");
@@ -402,7 +412,7 @@ void BicTest2 ( pfHash hash, const int reps, bool verbose = true )
         maxB = out2;
       }
 
-      if(verbose) 
+      if(verbose)
       {
         if     (bias < 0.05) printf(".");
         else if(bias < 0.10) printf("o");

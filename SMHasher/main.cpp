@@ -111,6 +111,39 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
   printf("--- Testing %s (%s)\n\n",info->name,info->desc);
 
   //-----------------------------------------------------------------------------
+  // Avalanche tests
+
+  if(g_testAvalanche || g_testAll)
+  {
+    printf("[[[ Avalanche Tests ]]]\n\n");
+
+    bool result = true;
+
+    result &= AvalancheTest< Blob< 32>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 40>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 48>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 56>, hashtype > (hash,300000);
+
+    result &= AvalancheTest< Blob< 64>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 72>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 80>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob< 88>, hashtype > (hash,300000);
+
+    result &= AvalancheTest< Blob< 96>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<104>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<112>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<120>, hashtype > (hash,300000);
+
+    result &= AvalancheTest< Blob<128>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<136>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<144>, hashtype > (hash,300000);
+    result &= AvalancheTest< Blob<152>, hashtype > (hash,300000);
+
+    if(!result) printf("*********FAIL*********\n");
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
   // Sanity tests
 
   if(g_testSanity || g_testAll)
@@ -172,39 +205,6 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
 
     result &= DiffDistTest2<uint64_t,hashtype>(hash);
 
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
-  // Avalanche tests
-
-  if(g_testAvalanche || g_testAll)
-  {
-    printf("[[[ Avalanche Tests ]]]\n\n");
-
-    bool result = true;
-
-    result &= AvalancheTest< Blob< 32>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 40>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 48>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 56>, hashtype > (hash,300000);
-
-    result &= AvalancheTest< Blob< 64>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 72>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 80>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob< 88>, hashtype > (hash,300000);
-
-    result &= AvalancheTest< Blob< 96>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<104>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<112>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<120>, hashtype > (hash,300000);
-
-    result &= AvalancheTest< Blob<128>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<136>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<144>, hashtype > (hash,300000);
-    result &= AvalancheTest< Blob<152>, hashtype > (hash,300000);
-
-    if(!result) printf("*********FAIL*********\n");
     printf("\n");
   }
 
