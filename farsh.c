@@ -105,7 +105,7 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         sum1 = combine_hashes (sum1, (UINT)h);
         sum2 = combine_hashes (sum2, sum1 ^ (UINT)(h>>32));
     }
-    return sum2 ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
+    return combine_hashes (sum1, sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
