@@ -29,3 +29,8 @@ void uhash32_test ( const void * key, int len, unsigned seed, void * out );
 // Test harnesses for VHASH
 
 void vhash64_test ( const void * key, int len, unsigned seed, void * out );
+
+//-----------------------------------------------------------------------------
+// Test harnesses for poly-1305
+
+void poly1305_test ( const void * key, int len, unsigned seed, void * out );
