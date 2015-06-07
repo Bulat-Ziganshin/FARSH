@@ -14,6 +14,7 @@
 #define UINT  /*uint32_t*/ unsigned
 #define ULONG /*uint64_t*/ unsigned long long
 #define combine_hashes  _mm_crc32_u32
+//#define combine_hashes(x,y)  _mm_crc32_u32((y),(x))
 
 #define STRIPE          1024
 #define STRIPE_ELEMENTS (STRIPE/sizeof(UINT))  /* should be power of 2 due to use of 'x % STRIPE_ELEMENTS' below */
@@ -83,7 +84,9 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
 {
     if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
-    UINT extra_data[2] = {0};
+    UINT extra_data[2] = {0x7caf128d,0x74b3a07d};
+    if (bytes >= sizeof(extra_data))
+        memcpy (extra_data, data, sizeof(extra_data));
     size_t extra_bytes = bytes - elements*sizeof(UINT);
     memcpy (extra_data, data+elements, extra_bytes);
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
@@ -102,7 +105,7 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         ptr += chunk;  bytes -= chunk;
 
         /* Hashsum combining */
-        sum1 = combine_hashes (sum1, (UINT)h);
+        sum1 = combine_hashes (sum1, sum2 ^ (UINT)h);
         sum2 = combine_hashes (sum2, sum1 ^ (UINT)(h>>32));
     }
     return combine_hashes (sum1, sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
