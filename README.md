@@ -39,8 +39,9 @@ Hence, I propose you to clone the repository and try to develop your own version
 # Universal hashing
 The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula used here (and derived from UMAC) is as simple as
 ```C
+    uint64 sum = 0;  uint32 *data, *key;
     for (i=0; i < elements; i+=2)
-        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
+        sum += (uint64)(data[i] + key[i]) * (uint64)(data[i+1] + key[i+1]);
 ```
 
 ## The main loop
