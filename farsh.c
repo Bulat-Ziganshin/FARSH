@@ -84,9 +84,7 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
 {
     if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
-    UINT extra_data[2] = {0x7caf128d,0x74b3a07d};
-    if (bytes >= sizeof(extra_data))
-        memcpy (extra_data, data, sizeof(extra_data));
+    UINT extra_data[2] = {0};
     size_t extra_bytes = bytes - elements*sizeof(UINT);
     memcpy (extra_data, data+elements, extra_bytes);
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
@@ -108,7 +106,7 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         sum1 = combine_hashes (sum1, sum2 ^ (UINT)h);
         sum2 = combine_hashes (sum2, sum1 ^ (UINT)(h>>32));
     }
-    return combine_hashes (sum1, sum2) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
+    return combine_hashes(combine_hashes(combine_hashes(sum1,sum2),0x7caf128d),0x74b3a07d) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
