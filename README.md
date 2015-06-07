@@ -1,6 +1,15 @@
 # FARSH
 Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). You can use the FARSH as keyed hash by calling `farsh_keyed()` with 1024-byte key or `farsh_keyed_n()` with key of `1008+n*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
 
+# Features / to-do list
+- [x] hashes up to 1024 bits long (`farsh_n`)
+- [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
+- [x] SSE2/AVX2 manually-optimized main loop
+- [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
+- [x] fixed [issues](https://github.com/Bulat-Ziganshin/FARSH/blob/v0.1/SMHasher/reports/smhasher-farsh32-report.txt) found by [SMHasher](https://code.google.com/p/smhasher) testsuite
+- [ ] `farsh_init/farsh_update/farsh_result` streaming API
+
+# Internals
 FARSH is essentially [UHASH](https://tools.ietf.org/html/rfc4418#section-5) with higher-level hashing algorithms replaced by simpler non-cryptographic ones. [Universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) kernel derived from UHASH returns 64-bit hash having 32-bit entropy for each successive 1024-byte block of input data, and higher-level hash combining code derived from xxHash64 mix block hashes. 
 
 We can try to further improve the hash combining by employing tabulated hashing, CRC and formulas from XXHash and MurMurHash.
@@ -11,17 +20,7 @@ FARSH is essentially [UHASH](https://tools.ietf.org/html/rfc4418#section-5) with
 
 Hence, I propose you to clone the repository and try to develop your own versions of the bit mixers, checking results with bundled [SMHasher](https://code.google.com/p/smhasher). Other areas of improvements you can do include reliable system for unrolling of main loop (since compilers are very weak in this area and MSVC/ICL were unable to unroll main loop), and streaming API - but this probably should be postponed until development of good bit mixing algorithms.
 
-# Features / to-do list
-- [x] hashes up to 1024 bits long (`farsh_n`)
-- [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
-- [x] SSE2/AVX2 manually-optimized main loop
-- [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
-- [x] [SMHasher](https://code.google.com/p/smhasher) testsuite
-- [x] fix [issues found by SMHasher](SMHasher/reports/smhasher-farsh32-report.txt) by tuning hashsum combining
-- [ ] `farsh_init/farsh_update/farsh_result` streaming API
-
 # Universal hashing
-
 The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula used here (and derived from UMAC) is as simple as
 ```C
     for (i=0; i < elements; i+=2)
