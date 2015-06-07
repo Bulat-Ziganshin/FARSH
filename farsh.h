@@ -1,3 +1,5 @@
+/* The 'seed' value in any function below may be used to "personalize" the hash function. Use seed==0 if you don't need this. */
+
 /* Hash the buffer with the user-supplied 16byte-aligned 1024-byte key material */
 unsigned farsh_keyed (const void *data, size_t bytes, const void *key, unsigned long long seed);
 
