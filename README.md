@@ -8,9 +8,22 @@ Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, u
 - [ ] even faster and better quality hash mixing
 - [x] SSE2/AVX2 manually-optimized main loop
 - [x] 16-byte aligned key material and (optionally) input data for maximum speed on older CPUs
-- [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
-- [ ] try PSLLQ instead of PSHUFD in SSE2 code
+- [ ] manual unrolling of main loop (since msvc/icl can't do it themselves) or asm code
+- [ ] try PSLLQ instead of PSHUFD in SSE2 code to improve speed on older CPUs
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
+- [ ] `farsh64*/farsh128*` APIs for faster computation of multi-word hashes
+
+# Internals
+The current FARSH version is built from two hashing algorithms. 
+
+Lower-level hash algorithm splits all input data into 1024-byte blocks and computes hash value for every block. It's the very simple cycle borrowed from UHASH that combines 1024 bytes of input data with 1024 bytes of key material. The hash value returned by this cycle is 64-bit long, and there is a math proof that it has 32 bits of entropy. So the lower-level algorithm compresses 1024-byte blocks of input data into 64-bit values each carrying 32 bits of entropy. 
+
+Higher-level hash algorithm is stripped-down version of xxHash64. It gets sequence of 64-bit values from the previous level and combines them into 32-bit hash value. Since the original xxHash64 algorithm successfully passes all SMHasher tests while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash from sequence of numbers with 32-bit entropy.
+
+
+
+
+
 
 # Internals
 FARSH is essentially [UHASH](https://tools.ietf.org/html/rfc4418#section-5) with higher-level hashing algorithms replaced by simpler non-cryptographic ones. [Universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) kernel derived from UHASH returns 64-bit hash having 32-bit entropy for each successive 1024-byte block of input data, and higher-level hash combining code derived from xxHash64 mix block hashes. 
