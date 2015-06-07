@@ -13,7 +13,7 @@
 
 #define UINT  /*uint32_t*/ unsigned
 #define ULONG /*uint64_t*/ unsigned long long
-#define combine_hashes  _mm_crc32_u32
+//#define combine_hashes  _mm_crc32_u32
 //#define combine_hashes(x,y)  _mm_crc32_u32((y),(x))
 
 #define STRIPE          1024
@@ -90,10 +90,34 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
 }
 
+#define PRIME64_1 11400714785074694791ULL
+#define PRIME64_2 14029467366897019727ULL
+#define PRIME64_3  1609587929392839161ULL
+#define PRIME64_4  9650029242287828579ULL
+
+static ULONG combine_hashes (ULONG h64, ULONG k1)
+{
+    k1 *= PRIME64_2;
+    k1 += k1 >> 31;
+    k1 *= PRIME64_1;
+    h64 ^= k1;
+    h64 = (h64+(h64>>27)) * PRIME64_1 + PRIME64_4;
+    return h64;
+}
+
+static UINT final_hash (ULONG h64)
+{
+    h64 ^= h64 >> 33;
+    h64 *= PRIME64_2;
+    h64 ^= h64 >> 29;
+    h64 *= PRIME64_3;
+    return (UINT)h64 ^ (UINT)(h64 >> 32);
+}
+
 /* Hash the buffer with the user-supplied key material */
 UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 {
-    UINT sum1 = 0, sum2 = 0;  size_t chunk = 0;
+    ULONG sum = 0;  size_t chunk = 0;
     const char *ptr     = (const char*) data;
     const UINT *key_ptr = (const UINT*) key;
     while (bytes)
@@ -103,10 +127,9 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
         ptr += chunk;  bytes -= chunk;
 
         /* Hashsum combining */
-        sum1 = combine_hashes (sum1, sum2 ^ (UINT)h);
-        sum2 = combine_hashes (sum2, sum1 ^ (UINT)(h>>32));
+        sum = combine_hashes (sum, h);
     }
-    return combine_hashes(combine_hashes(combine_hashes(sum1,sum2),0x7caf128d),0x74b3a07d) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
+    return final_hash(sum) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
