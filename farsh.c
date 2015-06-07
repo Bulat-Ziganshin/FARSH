@@ -29,7 +29,7 @@ ALIGN(64) static const UINT FARSH_KEYS [STRIPE_ELEMENTS + EXTRA_ELEMENTS] = {  /
 static ULONG farsh_fast (const UINT *data, const UINT *key)
 {
 #ifdef AVX2
-    __m256i sum = _mm256_setzero_si256();  __m128i sum128, result;  int i;
+    __m256i sum = _mm256_setzero_si256();  __m128i sum128;  int i;
     const __m256i *xdata = (const __m256i *) data;
     const __m256i *xkey  = (const __m256i *) key;
 
@@ -43,10 +43,9 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
     }
     sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));              // return sum of four 64-bit values in the sum
     sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
-    _mm_storel_epi64 (&result, sum128);
-    return *(ULONG*) &result;
+    return *(ULONG*) &sum128;
 #elif defined(SSE2)
-    __m128i sum = _mm_setzero_si128(),  result;  int i;
+    __m128i sum = _mm_setzero_si128();  int i;
     const __m128i *xdata = (const __m128i *) data;
     const __m128i *xkey  = (const __m128i *) key;
 
@@ -63,8 +62,7 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
         sum = _mm_add_epi64(sum,res);
     }
     sum = _mm_add_epi64 (sum, _mm_shuffle_epi32(sum,3*4+2));                    // return sum of two 64-bit values in the sum
-    _mm_storel_epi64 (&result, sum);
-    return *(ULONG*) &result;
+    return *(ULONG*) &sum;
 #else
     ULONG sum = 0;  int i;
     for (i=0; i < STRIPE_ELEMENTS; i+=2)
