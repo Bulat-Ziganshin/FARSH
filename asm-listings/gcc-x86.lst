@@ -10,1219 +10,1249 @@
   11 0001 57       		pushl	%edi
   12 0002 56       		pushl	%esi
   13 0003 53       		pushl	%ebx
-  14 0004 83EC54   		subl	$84, %esp
-  15 0007 8B44246C 		movl	108(%esp), %eax
-  16 000b 8B7C2468 		movl	104(%esp), %edi
-  17 000f 01C7     		addl	%eax, %edi
-  18 0011 397C2468 		cmpl	%edi, 104(%esp)
-  19 0015 897C2424 		movl	%edi, 36(%esp)
-  20 0019 0F833204 		jae	L18
-  20      0000
-  21 001f 3D000400 		cmpl	$1024, %eax
-  21      00
-  22 0024 BA000400 		movl	$1024, %edx
-  22      00
-  23 0029 8D7C2448 		leal	72(%esp), %edi
-  24 002d 0F46D0   		cmovbe	%eax, %edx
-  25 0030 B8000000 		movl	$0, %eax
+  14 0004 83EC3C   		subl	$60, %esp
+  15 0007 8B7C2454 		movl	84(%esp), %edi
+  16 000b 8B44245C 		movl	92(%esp), %eax
+  17 000f 8B542460 		movl	96(%esp), %edx
+  18 0013 85FF     		testl	%edi, %edi
+  19 0015 89442418 		movl	%eax, 24(%esp)
+  20 0019 8954241C 		movl	%edx, 28(%esp)
+  21 001d 0F849A04 		je	L16
+  21      0000
+  22              		.p2align 4,,10
+  23              	L13:
+  24 0023 817C2454 		cmpl	$1024, 84(%esp)
+  24      00040000 
+  25 002b B9000400 		movl	$1024, %ecx
   25      00
-  26 0035 C7442434 		movl	$0, 52(%esp)
-  26      00000000 
-  27 003d 89D1     		movl	%edx, %ecx
-  28 003f 89D6     		movl	%edx, %esi
-  29 0041 89542414 		movl	%edx, 20(%esp)
-  30 0045 C1E902   		shrl	$2, %ecx
-  31 0048 C7442410 		movl	$0, 16(%esp)
-  31      00000000 
-  32 0050 C7442418 		movl	$0, 24(%esp)
-  32      00000000 
-  33 0058 83E1FE   		andl	$-2, %ecx
-  34 005b C744241C 		movl	$0, 28(%esp)
+  26 0030 0F464C24 		cmovbe	84(%esp), %ecx
+  26      54
+  27 0035 81F90004 		cmpl	$1024, %ecx
+  27      0000
+  28 003b 894C2420 		movl	%ecx, 32(%esp)
+  29 003f 0F840C03 		je	L60
+  29      0000
+  30 0045 89CE     		movl	%ecx, %esi
+  31 0047 89C8     		movl	%ecx, %eax
+  32 0049 8B542450 		movl	80(%esp), %edx
+  33 004d C1EE02   		shrl	$2, %esi
+  34 0050 C7442430 		movl	$0, 48(%esp)
   34      00000000 
-  35 0063 894C240C 		movl	%ecx, 12(%esp)
-  36 0067 C1E102   		sall	$2, %ecx
-  37 006a 29CE     		subl	%ecx, %esi
-  38 006c 894C2428 		movl	%ecx, 40(%esp)
-  39 0070 89F2     		movl	%esi, %edx
-  40 0072 89F1     		movl	%esi, %ecx
-  41 0074 89F3     		movl	%esi, %ebx
-  42 0076 0F45C7   		cmovne	%edi, %eax
-  43 0079 83E202   		andl	$2, %edx
-  44 007c 83E101   		andl	$1, %ecx
-  45 007f C1EB02   		shrl	$2, %ebx
-  46 0082 89742420 		movl	%esi, 32(%esp)
-  47 0086 89442438 		movl	%eax, 56(%esp)
-  48 008a 8954242C 		movl	%edx, 44(%esp)
-  49 008e 894C2430 		movl	%ecx, 48(%esp)
-  50 0092 895C243C 		movl	%ebx, 60(%esp)
-  51 0096 8D76008D 		.p2align 4,,10
-  51      BC270000 
-  51      0000
-  52              	L15:
-  53 00a0 817C2414 		cmpl	$1024, 20(%esp)
-  53      00040000 
-  54 00a8 0F845202 		je	L60
-  54      0000
-  55 00ae 837C2420 		cmpl	$4, 32(%esp)
-  55      04
-  56 00b3 8B742468 		movl	104(%esp), %esi
-  57 00b7 8D7C2448 		leal	72(%esp), %edi
-  58 00bb 8B6C2428 		movl	40(%esp), %ebp
-  59 00bf C7442448 		movl	$0, 72(%esp)
-  59      00000000 
-  60 00c7 C744244C 		movl	$0, 76(%esp)
-  60      00000000 
-  61 00cf 8D342E   		leal	(%esi,%ebp), %esi
-  62 00d2 7206     		jb	L6
-  63 00d4 8B4C243C 		movl	60(%esp), %ecx
-  64 00d8 F3A5     		rep movsl
-  65              	L6:
-  66 00da 8B54242C 		movl	44(%esp), %edx
-  67 00de 31ED     		xorl	%ebp, %ebp
-  68 00e0 85D2     		testl	%edx, %edx
-  69 00e2 740B     		je	L7
-  70 00e4 0FB706   		movzwl	(%esi), %eax
-  71 00e7 BD020000 		movl	$2, %ebp
-  71      00
-  72 00ec 668907   		movw	%ax, (%edi)
-  73              	L7:
-  74 00ef 8B5C2430 		movl	48(%esp), %ebx
-  75 00f3 85DB     		testl	%ebx, %ebx
-  76 00f5 7407     		je	L8
-  77 00f7 0FB60C2E 		movzbl	(%esi,%ebp), %ecx
-  78 00fb 880C2F   		movb	%cl, (%edi,%ebp)
-  79              	L8:
-  80 00fe 8B7C2420 		movl	32(%esp), %edi
-  81 0102 85FF     		testl	%edi, %edi
-  82 0104 0F84D602 		je	L61
-  82      0000
-  83 010a 8B54240C 		movl	12(%esp), %edx
-  84 010e 85D2     		testl	%edx, %edx
-  85 0110 0F841C03 		je	L62
-  85      0000
-  86              	L16:
-  87 0116 8B442468 		movl	104(%esp), %eax
-  88 011a 8B74240C 		movl	12(%esp), %esi
-  89 011e 8B18     		movl	(%eax), %ebx
-  90 0120 8B442470 		movl	112(%esp), %eax
-  91 0124 8D4EFF   		leal	-1(%esi), %ecx
-  92 0127 D1E9     		shrl	%ecx
-  93 0129 0318     		addl	(%eax), %ebx
-  94 012b 8B442468 		movl	104(%esp), %eax
-  95 012f 83E103   		andl	$3, %ecx
-  96 0132 8B5004   		movl	4(%eax), %edx
-  97 0135 8B442470 		movl	112(%esp), %eax
-  98 0139 8B7804   		movl	4(%eax), %edi
-  99 013c 01D7     		addl	%edx, %edi
- 100 013e 89F8     		movl	%edi, %eax
- 101 0140 BF020000 		movl	$2, %edi
+  35 0058 C7442434 		movl	$0, 52(%esp)
+  35      00000000 
+  36 0060 83E6FE   		andl	$-2, %esi
+  37 0063 8D7C2430 		leal	48(%esp), %edi
+  38 0067 8D2CB500 		leal	0(,%esi,4), %ebp
+  38      000000
+  39 006e 8974240C 		movl	%esi, 12(%esp)
+  40 0072 29E8     		subl	%ebp, %eax
+  41 0074 8D342A   		leal	(%edx,%ebp), %esi
+  42 0077 83F804   		cmpl	$4, %eax
+  43 007a 7207     		jb	L6
+  44 007c 89C1     		movl	%eax, %ecx
+  45 007e C1E902   		shrl	$2, %ecx
+  46 0081 F3A5     		rep movsl
+  47              	L6:
+  48 0083 31ED     		xorl	%ebp, %ebp
+  49 0085 A802     		testb	$2, %al
+  50 0087 740B     		je	L7
+  51 0089 0FB71E   		movzwl	(%esi), %ebx
+  52 008c BD020000 		movl	$2, %ebp
+  52      00
+  53 0091 66891F   		movw	%bx, (%edi)
+  54              	L7:
+  55 0094 A801     		testb	$1, %al
+  56 0096 7407     		je	L8
+  57 0098 0FB6142E 		movzbl	(%esi,%ebp), %edx
+  58 009c 88142F   		movb	%dl, (%edi,%ebp)
+  59              	L8:
+  60 009f 85C0     		testl	%eax, %eax
+  61 00a1 0F849903 		je	L61
+  61      0000
+  62 00a7 8B74240C 		movl	12(%esp), %esi
+  63 00ab 8D7C2430 		leal	48(%esp), %edi
+  64 00af 897C2424 		movl	%edi, 36(%esp)
+  65 00b3 85F6     		testl	%esi, %esi
+  66 00b5 0F84E703 		je	L62
+  66      0000
+  67              	L14:
+  68 00bb 8B7C2458 		movl	88(%esp), %edi
+  69 00bf 8B442450 		movl	80(%esp), %eax
+  70 00c3 8B74240C 		movl	12(%esp), %esi
+  71 00c7 8B00     		movl	(%eax), %eax
+  72 00c9 0307     		addl	(%edi), %eax
+  73 00cb 8D4EFF   		leal	-1(%esi), %ecx
+  74 00ce D1E9     		shrl	%ecx
+  75 00d0 89C7     		movl	%eax, %edi
+  76 00d2 8B442450 		movl	80(%esp), %eax
+  77 00d6 83E103   		andl	$3, %ecx
+  78 00d9 8B5004   		movl	4(%eax), %edx
+  79 00dc 8B442458 		movl	88(%esp), %eax
+  80 00e0 8B5804   		movl	4(%eax), %ebx
+  81 00e3 01D3     		addl	%edx, %ebx
+  82 00e5 89D8     		movl	%ebx, %eax
+  83 00e7 F7E7     		mull	%edi
+  84 00e9 83FE02   		cmpl	$2, %esi
+  85 00ec BF020000 		movl	$2, %edi
+  85      00
+  86 00f1 890424   		movl	%eax, (%esp)
+  87 00f4 8B442450 		movl	80(%esp), %eax
+  88 00f8 89542404 		movl	%edx, 4(%esp)
+  89 00fc 8D5808   		leal	8(%eax), %ebx
+  90 00ff 8B442458 		movl	88(%esp), %eax
+  91 0103 8D6808   		leal	8(%eax), %ebp
+  92 0106 0F86F600 		jbe	L52
+  92      0000
+  93 010c 85C9     		testl	%ecx, %ecx
+  94 010e 7475     		je	L55
+  95 0110 83F901   		cmpl	$1, %ecx
+  96 0113 744D     		je	L44
+  97 0115 83F902   		cmpl	$2, %ecx
+  98 0118 742B     		je	L45
+  99 011a 8B542458 		movl	88(%esp), %edx
+ 100 011e 8B0B     		movl	(%ebx), %ecx
+ 101 0120 BF040000 		movl	$4, %edi
  101      00
- 102 0145 F7E3     		mull	%ebx
- 103 0147 83FE02   		cmpl	$2, %esi
- 104 014a 890424   		movl	%eax, (%esp)
- 105 014d 8B442468 		movl	104(%esp), %eax
- 106 0151 89542404 		movl	%edx, 4(%esp)
- 107 0155 8D5808   		leal	8(%eax), %ebx
- 108 0158 8B442470 		movl	112(%esp), %eax
- 109 015c 8D6808   		leal	8(%eax), %ebp
- 110 015f 0F86F800 		jbe	L53
- 110      0000
- 111 0165 85C9     		testl	%ecx, %ecx
- 112 0167 7477     		je	L56
- 113 0169 83F901   		cmpl	$1, %ecx
- 114 016c 744F     		je	L45
- 115 016e 83F902   		cmpl	$2, %ecx
- 116 0171 742D     		je	L46
- 117 0173 8B4C2470 		movl	112(%esp), %ecx
- 118 0177 8B03     		movl	(%ebx), %eax
- 119 0179 BF040000 		movl	$4, %edi
- 119      00
- 120 017e 8B742470 		movl	112(%esp), %esi
- 121 0182 034108   		addl	8(%ecx), %eax
- 122 0185 89C2     		movl	%eax, %edx
- 123 0187 8B4304   		movl	4(%ebx), %eax
- 124 018a 034504   		addl	4(%ebp), %eax
- 125 018d 8B6C2468 		movl	104(%esp), %ebp
- 126 0191 F7E2     		mull	%edx
- 127 0193 010424   		addl	%eax, (%esp)
- 128 0196 8D5D10   		leal	16(%ebp), %ebx
- 129 0199 11542404 		adcl	%edx, 4(%esp)
- 130 019d 8D6E10   		leal	16(%esi), %ebp
- 131              	L46:
- 132 01a0 8B03     		movl	(%ebx), %eax
- 133 01a2 8B5304   		movl	4(%ebx), %edx
- 134 01a5 034500   		addl	0(%ebp), %eax
- 135 01a8 035504   		addl	4(%ebp), %edx
- 136 01ab F7E2     		mull	%edx
- 137 01ad 010424   		addl	%eax, (%esp)
- 138 01b0 11542404 		adcl	%edx, 4(%esp)
- 139 01b4 83C702   		addl	$2, %edi
- 140 01b7 83C308   		addl	$8, %ebx
- 141 01ba 83C508   		addl	$8, %ebp
- 142              	L45:
- 143 01bd 8B03     		movl	(%ebx), %eax
- 144 01bf 8B5304   		movl	4(%ebx), %edx
- 145 01c2 034500   		addl	0(%ebp), %eax
- 146 01c5 035504   		addl	4(%ebp), %edx
- 147 01c8 F7E2     		mull	%edx
- 148 01ca 010424   		addl	%eax, (%esp)
- 149 01cd 11542404 		adcl	%edx, 4(%esp)
- 150 01d1 83C702   		addl	$2, %edi
- 151 01d4 83C308   		addl	$8, %ebx
- 152 01d7 83C508   		addl	$8, %ebp
- 153 01da 397C240C 		cmpl	%edi, 12(%esp)
- 154 01de 767D     		jbe	L53
- 155              	L56:
- 156 01e0 897C2408 		movl	%edi, 8(%esp)
- 157 01e4 8B3424   		movl	(%esp), %esi
- 158 01e7 8B7C2404 		movl	4(%esp), %edi
- 159              	L11:
- 160 01eb 8B03     		movl	(%ebx), %eax
- 161 01ed 034500   		addl	0(%ebp), %eax
- 162 01f0 8B4D08   		movl	8(%ebp), %ecx
- 163 01f3 89C2     		movl	%eax, %edx
- 164 01f5 8B4304   		movl	4(%ebx), %eax
- 165 01f8 034504   		addl	4(%ebp), %eax
- 166 01fb F7E2     		mull	%edx
- 167 01fd 01C6     		addl	%eax, %esi
- 168 01ff 11D7     		adcl	%edx, %edi
- 169 0201 8B5308   		movl	8(%ebx), %edx
- 170 0204 01D1     		addl	%edx, %ecx
- 171 0206 8B530C   		movl	12(%ebx), %edx
- 172 0209 03550C   		addl	12(%ebp), %edx
- 173 020c 89D0     		movl	%edx, %eax
- 174 020e 891424   		movl	%edx, (%esp)
- 175 0211 F7E1     		mull	%ecx
- 176 0213 01C6     		addl	%eax, %esi
- 177 0215 8B4310   		movl	16(%ebx), %eax
- 178 0218 11D7     		adcl	%edx, %edi
- 179 021a 034510   		addl	16(%ebp), %eax
- 180 021d 89C2     		movl	%eax, %edx
- 181 021f 8B4314   		movl	20(%ebx), %eax
- 182 0222 034514   		addl	20(%ebp), %eax
- 183 0225 F7E2     		mull	%edx
- 184 0227 01C6     		addl	%eax, %esi
- 185 0229 8B4318   		movl	24(%ebx), %eax
- 186 022c 11D7     		adcl	%edx, %edi
- 187 022e 034518   		addl	24(%ebp), %eax
- 188 0231 89C2     		movl	%eax, %edx
- 189 0233 8B431C   		movl	28(%ebx), %eax
- 190 0236 03451C   		addl	28(%ebp), %eax
- 191 0239 F7E2     		mull	%edx
- 192 023b 01C6     		addl	%eax, %esi
- 193 023d 11D7     		adcl	%edx, %edi
- 194 023f 83442408 		addl	$8, 8(%esp)
- 194      08
- 195 0244 83C320   		addl	$32, %ebx
- 196 0247 8B442408 		movl	8(%esp), %eax
- 197 024b 83C520   		addl	$32, %ebp
- 198 024e 3944240C 		cmpl	%eax, 12(%esp)
- 199 0252 7797     		ja	L11
- 200 0254 897C2404 		movl	%edi, 4(%esp)
- 201 0258 893424   		movl	%esi, (%esp)
- 202 025b 89C7     		movl	%eax, %edi
- 203              	L53:
- 204 025d 8B1424   		movl	(%esp), %edx
- 205 0260 8B5C2404 		movl	4(%esp), %ebx
- 206 0264 8B742438 		movl	56(%esp), %esi
- 207 0268 89D0     		movl	%edx, %eax
- 208 026a 89DD     		movl	%ebx, %ebp
- 209 026c 8D1CBD00 		leal	0(,%edi,4), %ebx
- 209      000000
- 210 0273 01E8     		addl	%ebp, %eax
- 211 0275 31D2     		xorl	%edx, %edx
- 212 0277 85F6     		testl	%esi, %esi
- 213 0279 8D7B04   		leal	4(%ebx), %edi
- 214 027c 89F1     		movl	%esi, %ecx
- 215 027e 7426     		je	L5
- 216              	L17:
- 217 0280 8B442470 		movl	112(%esp), %eax
- 218 0284 8B11     		movl	(%ecx), %edx
- 219 0286 031418   		addl	(%eax,%ebx), %edx
- 220 0289 89D3     		movl	%edx, %ebx
- 221 028b 8B5104   		movl	4(%ecx), %edx
- 222 028e 031438   		addl	(%eax,%edi), %edx
- 223 0291 8B0C24   		movl	(%esp), %ecx
- 224 0294 89D0     		movl	%edx, %eax
- 225 0296 F7E3     		mull	%ebx
- 226 0298 8B5C2404 		movl	4(%esp), %ebx
- 227 029c 01C1     		addl	%eax, %ecx
- 228 029e 11D3     		adcl	%edx, %ebx
- 229 02a0 31D2     		xorl	%edx, %edx
- 230 02a2 89D8     		movl	%ebx, %eax
- 231 02a4 01C8     		addl	%ecx, %eax
- 232              	L5:
- 233 02a6 8B7C2410 		movl	16(%esp), %edi
- 234 02aa 8B742470 		movl	112(%esp), %esi
- 235 02ae 89D3     		movl	%edx, %ebx
- 236 02b0 8B4C2414 		movl	20(%esp), %ecx
- 237 02b4 014C2468 		addl	%ecx, 104(%esp)
- 238 02b8 030CBE   		addl	(%esi,%edi,4), %ecx
- 239 02bb 0FAFD9   		imull	%ecx, %ebx
- 240 02be F7E1     		mull	%ecx
- 241 02c0 01DA     		addl	%ebx, %edx
- 242 02c2 01442418 		addl	%eax, 24(%esp)
- 243 02c6 1154241C 		adcl	%edx, 28(%esp)
- 244 02ca 83C701   		addl	$1, %edi
- 245 02cd 81FF0001 		cmpl	$256, %edi
- 245      0000
- 246 02d3 897C2410 		movl	%edi, 16(%esp)
- 247 02d7 0F841801 		je	L63
- 247      0000
- 248              	L14:
- 249 02dd 8B442424 		movl	36(%esp), %eax
- 250 02e1 3B442468 		cmpl	104(%esp), %eax
- 251 02e5 0F87B5FD 		ja	L15
- 251      FFFF
- 252 02eb 8B54241C 		movl	28(%esp), %edx
- 253 02ef 8B4C2418 		movl	24(%esp), %ecx
- 254 02f3 83C454   		addl	$84, %esp
- 255 02f6 5B       		popl	%ebx
- 256 02f7 5E       		popl	%esi
- 257 02f8 89D0     		movl	%edx, %eax
- 258 02fa 01C8     		addl	%ecx, %eax
- 259 02fc 5F       		popl	%edi
- 260 02fd 5D       		popl	%ebp
- 261 02fe C3       		ret
- 262 02ff 90       		.p2align 4,,10
- 263              	L60:
- 264 0300 8B5C2468 		movl	104(%esp), %ebx
- 265 0304 8B6C2470 		movl	112(%esp), %ebp
- 266 0308 31F6     		xorl	%esi, %esi
- 267 030a 89DF     		movl	%ebx, %edi
- 268 030c 81C70004 		addl	$1024, %edi
- 268      0000
- 269 0312 893C24   		movl	%edi, (%esp)
- 270 0315 31FF     		xorl	%edi, %edi
- 271 0317 89F68DBC 		.p2align 4,,10
- 271      27000000 
- 271      00
- 272              	L4:
- 273 0320 8B03     		movl	(%ebx), %eax
- 274 0322 034500   		addl	0(%ebp), %eax
- 275 0325 8B4D08   		movl	8(%ebp), %ecx
- 276 0328 89C2     		movl	%eax, %edx
- 277 032a 8B4304   		movl	4(%ebx), %eax
- 278 032d 034504   		addl	4(%ebp), %eax
- 279 0330 F7E2     		mull	%edx
- 280 0332 01C6     		addl	%eax, %esi
- 281 0334 11D7     		adcl	%edx, %edi
- 282 0336 8B5308   		movl	8(%ebx), %edx
- 283 0339 01D1     		addl	%edx, %ecx
- 284 033b 8B530C   		movl	12(%ebx), %edx
- 285 033e 03550C   		addl	12(%ebp), %edx
- 286 0341 89D0     		movl	%edx, %eax
- 287 0343 89542408 		movl	%edx, 8(%esp)
- 288 0347 F7E1     		mull	%ecx
- 289 0349 01C6     		addl	%eax, %esi
- 290 034b 8B4310   		movl	16(%ebx), %eax
- 291 034e 11D7     		adcl	%edx, %edi
- 292 0350 034510   		addl	16(%ebp), %eax
- 293 0353 89C2     		movl	%eax, %edx
- 294 0355 8B4314   		movl	20(%ebx), %eax
- 295 0358 034514   		addl	20(%ebp), %eax
- 296 035b F7E2     		mull	%edx
- 297 035d 01C6     		addl	%eax, %esi
- 298 035f 8B4318   		movl	24(%ebx), %eax
- 299 0362 11D7     		adcl	%edx, %edi
- 300 0364 034518   		addl	24(%ebp), %eax
- 301 0367 89C2     		movl	%eax, %edx
- 302 0369 8B431C   		movl	28(%ebx), %eax
- 303 036c 03451C   		addl	28(%ebp), %eax
- 304 036f F7E2     		mull	%edx
- 305 0371 01C6     		addl	%eax, %esi
- 306 0373 8B4320   		movl	32(%ebx), %eax
- 307 0376 11D7     		adcl	%edx, %edi
- 308 0378 034520   		addl	32(%ebp), %eax
- 309 037b 89C2     		movl	%eax, %edx
- 310 037d 8B4324   		movl	36(%ebx), %eax
- 311 0380 034524   		addl	36(%ebp), %eax
- 312 0383 F7E2     		mull	%edx
- 313 0385 01C6     		addl	%eax, %esi
- 314 0387 8B4328   		movl	40(%ebx), %eax
- 315 038a 11D7     		adcl	%edx, %edi
- 316 038c 034528   		addl	40(%ebp), %eax
- 317 038f 89C2     		movl	%eax, %edx
- 318 0391 8B432C   		movl	44(%ebx), %eax
- 319 0394 03452C   		addl	44(%ebp), %eax
- 320 0397 F7E2     		mull	%edx
- 321 0399 01C6     		addl	%eax, %esi
- 322 039b 8B4330   		movl	48(%ebx), %eax
- 323 039e 11D7     		adcl	%edx, %edi
- 324 03a0 034530   		addl	48(%ebp), %eax
- 325 03a3 89C2     		movl	%eax, %edx
- 326 03a5 8B4334   		movl	52(%ebx), %eax
- 327 03a8 034534   		addl	52(%ebp), %eax
- 328 03ab F7E2     		mull	%edx
- 329 03ad 01C6     		addl	%eax, %esi
- 330 03af 8B4338   		movl	56(%ebx), %eax
- 331 03b2 11D7     		adcl	%edx, %edi
- 332 03b4 034538   		addl	56(%ebp), %eax
- 333 03b7 89C2     		movl	%eax, %edx
- 334 03b9 8B433C   		movl	60(%ebx), %eax
- 335 03bc 03453C   		addl	60(%ebp), %eax
- 336 03bf F7E2     		mull	%edx
- 337 03c1 01C6     		addl	%eax, %esi
- 338 03c3 11D7     		adcl	%edx, %edi
- 339 03c5 83C340   		addl	$64, %ebx
- 340 03c8 83C540   		addl	$64, %ebp
- 341 03cb 3B1C24   		cmpl	(%esp), %ebx
- 342 03ce 0F854CFF 		jne	L4
- 342      FFFF
- 343 03d4 89F8     		movl	%edi, %eax
- 344 03d6 31D2     		xorl	%edx, %edx
- 345 03d8 01F0     		addl	%esi, %eax
- 346 03da E9C7FEFF 		jmp	L5
- 346      FF
- 347 03df 90       		.p2align 4,,10
- 348              	L61:
- 349 03e0 8B74240C 		movl	12(%esp), %esi
- 350 03e4 85F6     		testl	%esi, %esi
- 351 03e6 0F852AFD 		jne	L16
- 351      FFFF
- 352 03ec 31C0     		xorl	%eax, %eax
- 353 03ee 31D2     		xorl	%edx, %edx
- 354 03f0 E9B1FEFF 		jmp	L5
- 354      FF
- 355              		.p2align 4,,10
- 356              	L63:
- 357 03f5 8B6C241C 		movl	28(%esp), %ebp
- 358 03f9 8B7C2418 		movl	24(%esp), %edi
- 359 03fd C7442410 		movl	$0, 16(%esp)
- 359      00000000 
- 360 0405 89E8     		movl	%ebp, %eax
- 361 0407 01F8     		addl	%edi, %eax
- 362 0409 8B7C2434 		movl	52(%esp), %edi
- 363 040d F724BE   		mull	(%esi,%edi,4)
- 364 0410 01442418 		addl	%eax, 24(%esp)
- 365 0414 B8000000 		movl	$0, %eax
- 365      00
- 366 0419 1154241C 		adcl	%edx, 28(%esp)
- 367 041d 83C701   		addl	$1, %edi
- 368 0420 81FF0001 		cmpl	$256, %edi
- 368      0000
- 369 0426 0F45C7   		cmovne	%edi, %eax
- 370 0429 89442434 		movl	%eax, 52(%esp)
- 371 042d E9ABFEFF 		jmp	L14
- 371      FF
- 372              	L62:
- 373 0432 BF040000 		movl	$4, %edi
- 373      00
- 374 0437 31DB     		xorl	%ebx, %ebx
- 375 0439 C7042400 		movl	$0, (%esp)
- 375      000000
- 376 0440 C7442404 		movl	$0, 4(%esp)
- 376      00000000 
- 377 0448 8D4C2448 		leal	72(%esp), %ecx
- 378 044c E92FFEFF 		jmp	L17
- 378      FF
- 379              	L18:
- 380 0451 83C454   		addl	$84, %esp
- 381 0454 31C0     		xorl	%eax, %eax
- 382 0456 5B       		popl	%ebx
- 383 0457 5E       		popl	%esi
- 384 0458 5F       		popl	%edi
- 385 0459 5D       		popl	%ebp
- 386 045a C3       		ret
- 387              		.section	.text.unlikely,"x"
- 388              	LCOLDE0:
- 389              		.text
- 390              	LHOTE0:
- 391              		.section	.text.unlikely,"x"
- 392              	LCOLDB1:
- 393              		.text
- 394              	LHOTB1:
- 395 045b 908D7426 		.p2align 4,,15
- 395      00
- 396              		.globl	_farsh_keyed_n
- 398              	_farsh_keyed_n:
- 399 0460 55       		pushl	%ebp
- 400 0461 57       		pushl	%edi
- 401 0462 56       		pushl	%esi
- 402 0463 53       		pushl	%ebx
- 403 0464 83EC1C   		subl	$28, %esp
- 404 0467 8B44243C 		movl	60(%esp), %eax
- 405 046b 8B7C2430 		movl	48(%esp), %edi
- 406 046f 8B6C2434 		movl	52(%esp), %ebp
- 407 0473 85C0     		testl	%eax, %eax
- 408 0475 0F8E7902 		jle	L64
- 408      0000
- 409 047b 8B54243C 		movl	60(%esp), %edx
- 410 047f 8B5C2438 		movl	56(%esp), %ebx
- 411 0483 896C2404 		movl	%ebp, 4(%esp)
- 412 0487 893C24   		movl	%edi, (%esp)
- 413 048a 8D4AFF   		leal	-1(%edx), %ecx
- 414 048d 895C2408 		movl	%ebx, 8(%esp)
- 415 0491 BB010000 		movl	$1, %ebx
- 415      00
- 416 0496 83E107   		andl	$7, %ecx
- 417 0499 894C2414 		movl	%ecx, 20(%esp)
- 418 049d E85EFBFF 		call	_farsh_keyed
+ 102 0125 8B4304   		movl	4(%ebx), %eax
+ 103 0128 034504   		addl	4(%ebp), %eax
+ 104 012b 8B5C2450 		movl	80(%esp), %ebx
+ 105 012f 8B6C2458 		movl	88(%esp), %ebp
+ 106 0133 034A08   		addl	8(%edx), %ecx
+ 107 0136 8D5B10   		leal	16(%ebx), %ebx
+ 108 0139 8D6D10   		leal	16(%ebp), %ebp
+ 109 013c F7E1     		mull	%ecx
+ 110 013e 010424   		addl	%eax, (%esp)
+ 111 0141 11542404 		adcl	%edx, 4(%esp)
+ 112              	L45:
+ 113 0145 8B03     		movl	(%ebx), %eax
+ 114 0147 8B5304   		movl	4(%ebx), %edx
+ 115 014a 034500   		addl	0(%ebp), %eax
+ 116 014d 035504   		addl	4(%ebp), %edx
+ 117 0150 F7E2     		mull	%edx
+ 118 0152 010424   		addl	%eax, (%esp)
+ 119 0155 11542404 		adcl	%edx, 4(%esp)
+ 120 0159 83C702   		addl	$2, %edi
+ 121 015c 83C308   		addl	$8, %ebx
+ 122 015f 83C508   		addl	$8, %ebp
+ 123              	L44:
+ 124 0162 8B03     		movl	(%ebx), %eax
+ 125 0164 8B5304   		movl	4(%ebx), %edx
+ 126 0167 034500   		addl	0(%ebp), %eax
+ 127 016a 035504   		addl	4(%ebp), %edx
+ 128 016d F7E2     		mull	%edx
+ 129 016f 010424   		addl	%eax, (%esp)
+ 130 0172 11542404 		adcl	%edx, 4(%esp)
+ 131 0176 83C702   		addl	$2, %edi
+ 132 0179 83C308   		addl	$8, %ebx
+ 133 017c 83C508   		addl	$8, %ebp
+ 134 017f 397C240C 		cmpl	%edi, 12(%esp)
+ 135 0183 767D     		jbe	L52
+ 136              	L55:
+ 137 0185 897C2408 		movl	%edi, 8(%esp)
+ 138 0189 8B3424   		movl	(%esp), %esi
+ 139 018c 8B7C2404 		movl	4(%esp), %edi
+ 140              	L11:
+ 141 0190 8B03     		movl	(%ebx), %eax
+ 142 0192 034500   		addl	0(%ebp), %eax
+ 143 0195 8B4D08   		movl	8(%ebp), %ecx
+ 144 0198 89C2     		movl	%eax, %edx
+ 145 019a 8B4304   		movl	4(%ebx), %eax
+ 146 019d 034504   		addl	4(%ebp), %eax
+ 147 01a0 F7E2     		mull	%edx
+ 148 01a2 01C6     		addl	%eax, %esi
+ 149 01a4 11D7     		adcl	%edx, %edi
+ 150 01a6 8B5308   		movl	8(%ebx), %edx
+ 151 01a9 01D1     		addl	%edx, %ecx
+ 152 01ab 8B530C   		movl	12(%ebx), %edx
+ 153 01ae 03550C   		addl	12(%ebp), %edx
+ 154 01b1 89D0     		movl	%edx, %eax
+ 155 01b3 891424   		movl	%edx, (%esp)
+ 156 01b6 F7E1     		mull	%ecx
+ 157 01b8 01C6     		addl	%eax, %esi
+ 158 01ba 8B4310   		movl	16(%ebx), %eax
+ 159 01bd 11D7     		adcl	%edx, %edi
+ 160 01bf 034510   		addl	16(%ebp), %eax
+ 161 01c2 89C2     		movl	%eax, %edx
+ 162 01c4 8B4314   		movl	20(%ebx), %eax
+ 163 01c7 034514   		addl	20(%ebp), %eax
+ 164 01ca F7E2     		mull	%edx
+ 165 01cc 01C6     		addl	%eax, %esi
+ 166 01ce 8B4318   		movl	24(%ebx), %eax
+ 167 01d1 11D7     		adcl	%edx, %edi
+ 168 01d3 034518   		addl	24(%ebp), %eax
+ 169 01d6 89C2     		movl	%eax, %edx
+ 170 01d8 8B431C   		movl	28(%ebx), %eax
+ 171 01db 03451C   		addl	28(%ebp), %eax
+ 172 01de F7E2     		mull	%edx
+ 173 01e0 01C6     		addl	%eax, %esi
+ 174 01e2 11D7     		adcl	%edx, %edi
+ 175 01e4 83442408 		addl	$8, 8(%esp)
+ 175      08
+ 176 01e9 83C320   		addl	$32, %ebx
+ 177 01ec 8B442408 		movl	8(%esp), %eax
+ 178 01f0 83C520   		addl	$32, %ebp
+ 179 01f3 3944240C 		cmpl	%eax, 12(%esp)
+ 180 01f7 7797     		ja	L11
+ 181 01f9 897C2404 		movl	%edi, 4(%esp)
+ 182 01fd 893424   		movl	%esi, (%esp)
+ 183 0200 89C7     		movl	%eax, %edi
+ 184              	L52:
+ 185 0202 8B742424 		movl	36(%esp), %esi
+ 186 0206 8D0CBD00 		leal	0(,%edi,4), %ecx
+ 186      000000
+ 187 020d 8B0424   		movl	(%esp), %eax
+ 188 0210 8B5C2404 		movl	4(%esp), %ebx
+ 189 0214 8D7904   		leal	4(%ecx), %edi
+ 190 0217 85F6     		testl	%esi, %esi
+ 191 0219 0F844102 		je	L63
+ 191      0000
+ 192              	L15:
+ 193 021f 8B742424 		movl	36(%esp), %esi
+ 194 0223 8B5C2458 		movl	88(%esp), %ebx
+ 195 0227 8B06     		movl	(%esi), %eax
+ 196 0229 03040B   		addl	(%ebx,%ecx), %eax
+ 197 022c 89C1     		movl	%eax, %ecx
+ 198 022e 8B4604   		movl	4(%esi), %eax
+ 199 0231 03043B   		addl	(%ebx,%edi), %eax
+ 200 0234 8B3424   		movl	(%esp), %esi
+ 201 0237 8B7C2404 		movl	4(%esp), %edi
+ 202 023b F7E1     		mull	%ecx
+ 203 023d 01C6     		addl	%eax, %esi
+ 204 023f 11D7     		adcl	%edx, %edi
+ 205 0241 69DF4FEB 		imull	$668265295, %edi, %ebx
+ 205      D427
+ 206 0247 69C63DAE 		imull	$-1028477379, %esi, %eax
+ 206      B2C2
+ 207 024d 01C3     		addl	%eax, %ebx
+ 208 024f B84FEBD4 		movl	$668265295, %eax
+ 208      27
+ 209 0254 F7E6     		mull	%esi
+ 210              	L57:
+ 211 0256 01DA     		addl	%ebx, %edx
+ 212 0258 89C6     		movl	%eax, %esi
+ 213 025a 0FACD61F 		shrdl	$31, %edx, %esi
+ 214 025e 89D7     		movl	%edx, %edi
+ 215 0260 C1EF1F   		shrl	$31, %edi
+ 216 0263 01C6     		addl	%eax, %esi
+ 217 0265 11D7     		adcl	%edx, %edi
+ 218 0267 69CF87CA 		imull	$-2048144761, %edi, %ecx
+ 218      EB85
+ 219 026d 69C6B179 		imull	$-1640531535, %esi, %eax
+ 219      379E
+ 220 0273 01C1     		addl	%eax, %ecx
+ 221 0275 B887CAEB 		movl	$-2048144761, %eax
+ 221      85
+ 222 027a F7E6     		mull	%esi
+ 223 027c 01CA     		addl	%ecx, %edx
+ 224              	L5:
+ 225 027e 8B4C2418 		movl	24(%esp), %ecx
+ 226 0282 8B5C241C 		movl	28(%esp), %ebx
+ 227 0286 89CD     		movl	%ecx, %ebp
+ 228 0288 31DA     		xorl	%ebx, %edx
+ 229 028a 31C5     		xorl	%eax, %ebp
+ 230 028c 89542414 		movl	%edx, 20(%esp)
+ 231 0290 8B7C2414 		movl	20(%esp), %edi
+ 232 0294 896C2410 		movl	%ebp, 16(%esp)
+ 233 0298 8B742410 		movl	16(%esp), %esi
+ 234 029c BA87CAEB 		movl	$-2048144761, %edx
+ 234      85
+ 235 02a1 89F9     		movl	%edi, %ecx
+ 236 02a3 89F0     		movl	%esi, %eax
+ 237 02a5 C1E91B   		shrl	$27, %ecx
+ 238 02a8 0FACF81B 		shrdl	$27, %edi, %eax
+ 239 02ac 01F0     		addl	%esi, %eax
+ 240 02ae 11F9     		adcl	%edi, %ecx
+ 241 02b0 69D987CA 		imull	$-2048144761, %ecx, %ebx
+ 241      EB85
+ 242 02b6 69E8B179 		imull	$-1640531535, %eax, %ebp
+ 242      379E
+ 243 02bc F7E2     		mull	%edx
+ 244 02be 01EB     		addl	%ebp, %ebx
+ 245 02c0 01DA     		addl	%ebx, %edx
+ 246 02c2 0563AEB2 		addl	$-1028477341, %eax
+ 246      C2
+ 247 02c7 81D277CA 		adcl	$-2048144777, %edx
+ 247      EB85
+ 248 02cd 89442418 		movl	%eax, 24(%esp)
+ 249 02d1 8B442420 		movl	32(%esp), %eax
+ 250 02d5 01442450 		addl	%eax, 80(%esp)
+ 251 02d9 29442454 		subl	%eax, 84(%esp)
+ 252 02dd 8954241C 		movl	%edx, 28(%esp)
+ 253 02e1 0F853CFD 		jne	L13
+ 253      FFFF
+ 254 02e7 0FB65C24 		movzbl	32(%esp), %ebx
+ 254      20
+ 255 02ec C1E302   		sall	$2, %ebx
+ 256              	L2:
+ 257 02ef 8B6C241C 		movl	28(%esp), %ebp
+ 258 02f3 8B7C2418 		movl	24(%esp), %edi
+ 259 02f7 89E8     		movl	%ebp, %eax
+ 260 02f9 D1E8     		shrl	%eax
+ 261 02fb 31F8     		xorl	%edi, %eax
+ 262 02fd BF4FEBD4 		movl	$668265295, %edi
+ 262      27
+ 263 0302 69F54FEB 		imull	$668265295, %ebp, %esi
+ 263      D427
+ 264 0308 69D03DAE 		imull	$-1028477379, %eax, %edx
+ 264      B2C2
+ 265 030e 01D6     		addl	%edx, %esi
+ 266 0310 F7E7     		mull	%edi
+ 267 0312 89D1     		movl	%edx, %ecx
+ 268 0314 89C2     		movl	%eax, %edx
+ 269 0316 01F1     		addl	%esi, %ecx
+ 270 0318 89C6     		movl	%eax, %esi
+ 271 031a 0FACCE1D 		shrdl	$29, %ecx, %esi
+ 272 031e 89CF     		movl	%ecx, %edi
+ 273 0320 C1EF1D   		shrl	$29, %edi
+ 274 0323 89F0     		movl	%esi, %eax
+ 275 0325 31D0     		xorl	%edx, %eax
+ 276 0327 31F9     		xorl	%edi, %ecx
+ 277 0329 8B7C2458 		movl	88(%esp), %edi
+ 278 032d 69D0B167 		imull	$374761393, %eax, %edx
+ 278      5616
+ 279 0333 69C9F979 		imull	$-1640531463, %ecx, %ecx
+ 279      379E
+ 280 0339 01D1     		addl	%edx, %ecx
+ 281 033b BAF97937 		movl	$-1640531463, %edx
+ 281      9E
+ 282 0340 F7E2     		mull	%edx
+ 283 0342 33041F   		xorl	(%edi,%ebx), %eax
+ 284 0345 83C43C   		addl	$60, %esp
+ 285 0348 5B       		popl	%ebx
+ 286 0349 5E       		popl	%esi
+ 287 034a 01CA     		addl	%ecx, %edx
+ 288 034c 31D0     		xorl	%edx, %eax
+ 289 034e 5F       		popl	%edi
+ 290 034f 5D       		popl	%ebp
+ 291 0350 C3       		ret
+ 292              		.p2align 4,,10
+ 293              	L60:
+ 294 0351 8B5C2450 		movl	80(%esp), %ebx
+ 295 0355 8B6C2458 		movl	88(%esp), %ebp
+ 296 0359 31F6     		xorl	%esi, %esi
+ 297 035b 89DF     		movl	%ebx, %edi
+ 298 035d 81C70004 		addl	$1024, %edi
+ 298      0000
+ 299 0363 893C24   		movl	%edi, (%esp)
+ 300 0366 31FF     		xorl	%edi, %edi
+ 301 0368 908DB426 		.p2align 4,,10
+ 301      00000000 
+ 302              	L4:
+ 303 0370 8B03     		movl	(%ebx), %eax
+ 304 0372 034500   		addl	0(%ebp), %eax
+ 305 0375 8B4D08   		movl	8(%ebp), %ecx
+ 306 0378 89C2     		movl	%eax, %edx
+ 307 037a 8B4304   		movl	4(%ebx), %eax
+ 308 037d 034504   		addl	4(%ebp), %eax
+ 309 0380 F7E2     		mull	%edx
+ 310 0382 01C6     		addl	%eax, %esi
+ 311 0384 11D7     		adcl	%edx, %edi
+ 312 0386 8B5308   		movl	8(%ebx), %edx
+ 313 0389 01D1     		addl	%edx, %ecx
+ 314 038b 8B530C   		movl	12(%ebx), %edx
+ 315 038e 03550C   		addl	12(%ebp), %edx
+ 316 0391 89D0     		movl	%edx, %eax
+ 317 0393 89542408 		movl	%edx, 8(%esp)
+ 318 0397 F7E1     		mull	%ecx
+ 319 0399 01C6     		addl	%eax, %esi
+ 320 039b 8B4310   		movl	16(%ebx), %eax
+ 321 039e 11D7     		adcl	%edx, %edi
+ 322 03a0 034510   		addl	16(%ebp), %eax
+ 323 03a3 89C2     		movl	%eax, %edx
+ 324 03a5 8B4314   		movl	20(%ebx), %eax
+ 325 03a8 034514   		addl	20(%ebp), %eax
+ 326 03ab F7E2     		mull	%edx
+ 327 03ad 01C6     		addl	%eax, %esi
+ 328 03af 8B4318   		movl	24(%ebx), %eax
+ 329 03b2 11D7     		adcl	%edx, %edi
+ 330 03b4 034518   		addl	24(%ebp), %eax
+ 331 03b7 89C2     		movl	%eax, %edx
+ 332 03b9 8B431C   		movl	28(%ebx), %eax
+ 333 03bc 03451C   		addl	28(%ebp), %eax
+ 334 03bf F7E2     		mull	%edx
+ 335 03c1 01C6     		addl	%eax, %esi
+ 336 03c3 8B4320   		movl	32(%ebx), %eax
+ 337 03c6 11D7     		adcl	%edx, %edi
+ 338 03c8 034520   		addl	32(%ebp), %eax
+ 339 03cb 89C2     		movl	%eax, %edx
+ 340 03cd 8B4324   		movl	36(%ebx), %eax
+ 341 03d0 034524   		addl	36(%ebp), %eax
+ 342 03d3 F7E2     		mull	%edx
+ 343 03d5 01C6     		addl	%eax, %esi
+ 344 03d7 8B4328   		movl	40(%ebx), %eax
+ 345 03da 11D7     		adcl	%edx, %edi
+ 346 03dc 034528   		addl	40(%ebp), %eax
+ 347 03df 89C2     		movl	%eax, %edx
+ 348 03e1 8B432C   		movl	44(%ebx), %eax
+ 349 03e4 03452C   		addl	44(%ebp), %eax
+ 350 03e7 F7E2     		mull	%edx
+ 351 03e9 01C6     		addl	%eax, %esi
+ 352 03eb 8B4330   		movl	48(%ebx), %eax
+ 353 03ee 11D7     		adcl	%edx, %edi
+ 354 03f0 034530   		addl	48(%ebp), %eax
+ 355 03f3 89C2     		movl	%eax, %edx
+ 356 03f5 8B4334   		movl	52(%ebx), %eax
+ 357 03f8 034534   		addl	52(%ebp), %eax
+ 358 03fb F7E2     		mull	%edx
+ 359 03fd 01C6     		addl	%eax, %esi
+ 360 03ff 8B4338   		movl	56(%ebx), %eax
+ 361 0402 11D7     		adcl	%edx, %edi
+ 362 0404 034538   		addl	56(%ebp), %eax
+ 363 0407 89C2     		movl	%eax, %edx
+ 364 0409 8B433C   		movl	60(%ebx), %eax
+ 365 040c 03453C   		addl	60(%ebp), %eax
+ 366 040f F7E2     		mull	%edx
+ 367 0411 01C6     		addl	%eax, %esi
+ 368 0413 11D7     		adcl	%edx, %edi
+ 369 0415 83C340   		addl	$64, %ebx
+ 370 0418 83C540   		addl	$64, %ebp
+ 371 041b 3B1C24   		cmpl	(%esp), %ebx
+ 372 041e 0F854CFF 		jne	L4
+ 372      FFFF
+ 373 0424 69C63DAE 		imull	$-1028477379, %esi, %eax
+ 373      B2C2
+ 374 042a B94FEBD4 		movl	$668265295, %ecx
+ 374      27
+ 375 042f 69DF4FEB 		imull	$668265295, %edi, %ebx
+ 375      D427
+ 376 0435 01C3     		addl	%eax, %ebx
+ 377 0437 89F0     		movl	%esi, %eax
+ 378 0439 F7E1     		mull	%ecx
+ 379 043b E916FEFF 		jmp	L57
+ 379      FF
+ 380              		.p2align 4,,10
+ 381              	L61:
+ 382 0440 8B44240C 		movl	12(%esp), %eax
+ 383 0444 C7442424 		movl	$0, 36(%esp)
+ 383      00000000 
+ 384 044c 85C0     		testl	%eax, %eax
+ 385 044e 0F8567FC 		jne	L14
+ 385      FFFF
+ 386 0454 31C0     		xorl	%eax, %eax
+ 387 0456 31D2     		xorl	%edx, %edx
+ 388 0458 E921FEFF 		jmp	L5
+ 388      FF
+ 389 045d 8D7600   		.p2align 4,,10
+ 390              	L63:
+ 391 0460 69D03DAE 		imull	$-1028477379, %eax, %edx
+ 391      B2C2
+ 392 0466 69DB4FEB 		imull	$668265295, %ebx, %ebx
+ 392      D427
+ 393 046c 01D3     		addl	%edx, %ebx
+ 394 046e BA4FEBD4 		movl	$668265295, %edx
+ 394      27
+ 395 0473 F7E2     		mull	%edx
+ 396 0475 01DA     		addl	%ebx, %edx
+ 397 0477 89C6     		movl	%eax, %esi
+ 398 0479 0FACD61F 		shrdl	$31, %edx, %esi
+ 399 047d 89D7     		movl	%edx, %edi
+ 400 047f C1EF1F   		shrl	$31, %edi
+ 401 0482 01F0     		addl	%esi, %eax
+ 402 0484 11FA     		adcl	%edi, %edx
+ 403 0486 69CA87CA 		imull	$-2048144761, %edx, %ecx
+ 403      EB85
+ 404 048c 69D0B179 		imull	$-1640531535, %eax, %edx
+ 404      379E
+ 405 0492 01D1     		addl	%edx, %ecx
+ 406 0494 BA87CAEB 		movl	$-2048144761, %edx
+ 406      85
+ 407 0499 F7E2     		mull	%edx
+ 408 049b 01CA     		addl	%ecx, %edx
+ 409 049d E9DCFDFF 		jmp	L5
+ 409      FF
+ 410              	L62:
+ 411 04a2 BF040000 		movl	$4, %edi
+ 411      00
+ 412 04a7 31C9     		xorl	%ecx, %ecx
+ 413 04a9 C7042400 		movl	$0, (%esp)
+ 413      000000
+ 414 04b0 C7442404 		movl	$0, 4(%esp)
+ 414      00000000 
+ 415 04b8 E962FDFF 		jmp	L15
+ 415      FF
+ 416              	L16:
+ 417 04bd 31DB     		xorl	%ebx, %ebx
+ 418 04bf E92BFEFF 		jmp	L2
  418      FF
- 419 04a2 8B742440 		movl	64(%esp), %esi
- 420 04a6 3B5C243C 		cmpl	60(%esp), %ebx
- 421 04aa 8B542414 		movl	20(%esp), %edx
- 422 04ae 8906     		movl	%eax, (%esi)
- 423 04b0 8B442438 		movl	56(%esp), %eax
- 424 04b4 8D7004   		leal	4(%eax), %esi
- 425 04b7 0F843702 		je	L64
- 425      0000
- 426 04bd 85D2     		testl	%edx, %edx
- 427 04bf 0F840501 		je	L68
- 427      0000
- 428 04c5 83FA01   		cmpl	$1, %edx
- 429 04c8 0F84D500 		je	L94
- 429      0000
- 430 04ce 83FA02   		cmpl	$2, %edx
- 431 04d1 0F84AF00 		je	L95
- 431      0000
- 432 04d7 83FA03   		cmpl	$3, %edx
- 433 04da 0F848900 		je	L96
- 433      0000
- 434 04e0 83FA04   		cmpl	$4, %edx
- 435 04e3 7467     		je	L97
- 436 04e5 83FA05   		cmpl	$5, %edx
- 437 04e8 7445     		je	L98
- 438 04ea 83FA06   		cmpl	$6, %edx
- 439 04ed 7423     		je	L99
- 440 04ef 89742408 		movl	%esi, 8(%esp)
- 441 04f3 896C2404 		movl	%ebp, 4(%esp)
- 442 04f7 893C24   		movl	%edi, (%esp)
- 443 04fa E801FBFF 		call	_farsh_keyed
- 443      FF
- 444 04ff 8B742438 		movl	56(%esp), %esi
- 445 0503 8B4C2440 		movl	64(%esp), %ecx
- 446 0507 8D7608   		leal	8(%esi), %esi
- 447 050a 890499   		movl	%eax, (%ecx,%ebx,4)
- 448 050d BB020000 		movl	$2, %ebx
- 448      00
- 449              	L99:
- 450 0512 89742408 		movl	%esi, 8(%esp)
- 451 0516 896C2404 		movl	%ebp, 4(%esp)
- 452 051a 83C604   		addl	$4, %esi
- 453 051d 893C24   		movl	%edi, (%esp)
- 454 0520 E8DBFAFF 		call	_farsh_keyed
+ 419              		.section	.text.unlikely,"x"
+ 420              	LCOLDE0:
+ 421              		.text
+ 422              	LHOTE0:
+ 423              		.section	.text.unlikely,"x"
+ 424              	LCOLDB1:
+ 425              		.text
+ 426              	LHOTB1:
+ 427 04c4 8DB60000 		.p2align 4,,15
+ 427      00008DBF 
+ 427      00000000 
+ 428              		.globl	_farsh_keyed_n
+ 430              	_farsh_keyed_n:
+ 431 04d0 55       		pushl	%ebp
+ 432 04d1 57       		pushl	%edi
+ 433 04d2 56       		pushl	%esi
+ 434 04d3 53       		pushl	%ebx
+ 435 04d4 83EC24   		subl	$36, %esp
+ 436 04d7 8B442444 		movl	68(%esp), %eax
+ 437 04db 8B7C2448 		movl	72(%esp), %edi
+ 438 04df 8B6C244C 		movl	76(%esp), %ebp
+ 439 04e3 85C0     		testl	%eax, %eax
+ 440 04e5 0F8ED101 		jle	L64
+ 440      0000
+ 441 04eb 8B542444 		movl	68(%esp), %edx
+ 442 04ef 8B5C2440 		movl	64(%esp), %ebx
+ 443 04f3 8B74243C 		movl	60(%esp), %esi
+ 444 04f7 8B442438 		movl	56(%esp), %eax
+ 445 04fb 897C240C 		movl	%edi, 12(%esp)
+ 446 04ff 896C2410 		movl	%ebp, 16(%esp)
+ 447 0503 8D4AFF   		leal	-1(%edx), %ecx
+ 448 0506 895C2408 		movl	%ebx, 8(%esp)
+ 449 050a BB010000 		movl	$1, %ebx
+ 449      00
+ 450 050f 89742404 		movl	%esi, 4(%esp)
+ 451 0513 890424   		movl	%eax, (%esp)
+ 452 0516 83E103   		andl	$3, %ecx
+ 453 0519 894C241C 		movl	%ecx, 28(%esp)
+ 454 051d E8DEFAFF 		call	_farsh_keyed
  454      FF
- 455 0525 8B542440 		movl	64(%esp), %edx
- 456 0529 89049A   		movl	%eax, (%edx,%ebx,4)
- 457 052c 83C301   		addl	$1, %ebx
- 458              	L98:
- 459 052f 89742408 		movl	%esi, 8(%esp)
- 460 0533 896C2404 		movl	%ebp, 4(%esp)
- 461 0537 83C604   		addl	$4, %esi
- 462 053a 893C24   		movl	%edi, (%esp)
- 463 053d E8BEFAFF 		call	_farsh_keyed
- 463      FF
- 464 0542 8B4C2440 		movl	64(%esp), %ecx
- 465 0546 890499   		movl	%eax, (%ecx,%ebx,4)
- 466 0549 83C301   		addl	$1, %ebx
- 467              	L97:
- 468 054c 89742408 		movl	%esi, 8(%esp)
- 469 0550 896C2404 		movl	%ebp, 4(%esp)
- 470 0554 83C604   		addl	$4, %esi
- 471 0557 893C24   		movl	%edi, (%esp)
- 472 055a E8A1FAFF 		call	_farsh_keyed
- 472      FF
- 473 055f 8B542440 		movl	64(%esp), %edx
- 474 0563 89049A   		movl	%eax, (%edx,%ebx,4)
- 475 0566 83C301   		addl	$1, %ebx
- 476              	L96:
- 477 0569 89742408 		movl	%esi, 8(%esp)
- 478 056d 896C2404 		movl	%ebp, 4(%esp)
- 479 0571 83C604   		addl	$4, %esi
- 480 0574 893C24   		movl	%edi, (%esp)
- 481 0577 E884FAFF 		call	_farsh_keyed
- 481      FF
- 482 057c 8B4C2440 		movl	64(%esp), %ecx
- 483 0580 890499   		movl	%eax, (%ecx,%ebx,4)
- 484 0583 83C301   		addl	$1, %ebx
- 485              	L95:
- 486 0586 89742408 		movl	%esi, 8(%esp)
- 487 058a 896C2404 		movl	%ebp, 4(%esp)
- 488 058e 83C604   		addl	$4, %esi
- 489 0591 893C24   		movl	%edi, (%esp)
- 490 0594 E867FAFF 		call	_farsh_keyed
+ 455 0522 3B5C2444 		cmpl	68(%esp), %ebx
+ 456 0526 8B542450 		movl	80(%esp), %edx
+ 457 052a 8B4C2440 		movl	64(%esp), %ecx
+ 458 052e 8902     		movl	%eax, (%edx)
+ 459 0530 8B44241C 		movl	28(%esp), %eax
+ 460 0534 8D7110   		leal	16(%ecx), %esi
+ 461 0537 0F847F01 		je	L64
+ 461      0000
+ 462 053d 85C0     		testl	%eax, %eax
+ 463 053f 0F84A100 		je	L68
+ 463      0000
+ 464 0545 83F801   		cmpl	$1, %eax
+ 465 0548 7465     		je	L82
+ 466 054a 83F802   		cmpl	$2, %eax
+ 467 054d 7433     		je	L83
+ 468 054f 89742408 		movl	%esi, 8(%esp)
+ 469 0553 8B542438 		movl	56(%esp), %edx
+ 470 0557 8B74243C 		movl	60(%esp), %esi
+ 471 055b 897C240C 		movl	%edi, 12(%esp)
+ 472 055f 896C2410 		movl	%ebp, 16(%esp)
+ 473 0563 891424   		movl	%edx, (%esp)
+ 474 0566 89742404 		movl	%esi, 4(%esp)
+ 475 056a E891FAFF 		call	_farsh_keyed
+ 475      FF
+ 476 056f 8B4C2450 		movl	80(%esp), %ecx
+ 477 0573 890499   		movl	%eax, (%ecx,%ebx,4)
+ 478 0576 8B442440 		movl	64(%esp), %eax
+ 479 057a BB020000 		movl	$2, %ebx
+ 479      00
+ 480 057f 8D7020   		leal	32(%eax), %esi
+ 481              	L83:
+ 482 0582 8B54243C 		movl	60(%esp), %edx
+ 483 0586 8B4C2438 		movl	56(%esp), %ecx
+ 484 058a 89742408 		movl	%esi, 8(%esp)
+ 485 058e 897C240C 		movl	%edi, 12(%esp)
+ 486 0592 83C610   		addl	$16, %esi
+ 487 0595 896C2410 		movl	%ebp, 16(%esp)
+ 488 0599 89542404 		movl	%edx, 4(%esp)
+ 489 059d 890C24   		movl	%ecx, (%esp)
+ 490 05a0 E85BFAFF 		call	_farsh_keyed
  490      FF
- 491 0599 8B542440 		movl	64(%esp), %edx
- 492 059d 89049A   		movl	%eax, (%edx,%ebx,4)
- 493 05a0 83C301   		addl	$1, %ebx
- 494              	L94:
- 495 05a3 89742408 		movl	%esi, 8(%esp)
- 496 05a7 896C2404 		movl	%ebp, 4(%esp)
- 497 05ab 83C604   		addl	$4, %esi
- 498 05ae 893C24   		movl	%edi, (%esp)
- 499 05b1 E84AFAFF 		call	_farsh_keyed
- 499      FF
- 500 05b6 8B4C2440 		movl	64(%esp), %ecx
- 501 05ba 890499   		movl	%eax, (%ecx,%ebx,4)
- 502 05bd 83C301   		addl	$1, %ebx
- 503 05c0 3B5C243C 		cmpl	60(%esp), %ebx
- 504 05c4 0F842A01 		je	L64
- 504      0000
- 505              	L68:
- 506 05ca 89742408 		movl	%esi, 8(%esp)
- 507 05ce 896C2404 		movl	%ebp, 4(%esp)
- 508 05d2 893C24   		movl	%edi, (%esp)
- 509 05d5 E826FAFF 		call	_farsh_keyed
- 509      FF
- 510 05da 8B542440 		movl	64(%esp), %edx
- 511 05de 8D4E04   		leal	4(%esi), %ecx
- 512 05e1 89049A   		movl	%eax, (%edx,%ebx,4)
- 513 05e4 8D4301   		leal	1(%ebx), %eax
- 514 05e7 894C2408 		movl	%ecx, 8(%esp)
- 515 05eb 896C2404 		movl	%ebp, 4(%esp)
- 516 05ef 893C24   		movl	%edi, (%esp)
- 517 05f2 89442414 		movl	%eax, 20(%esp)
- 518 05f6 E805FAFF 		call	_farsh_keyed
- 518      FF
- 519 05fb 8B542414 		movl	20(%esp), %edx
- 520 05ff 8B4C2440 		movl	64(%esp), %ecx
- 521 0603 890491   		movl	%eax, (%ecx,%edx,4)
- 522 0606 8D4E08   		leal	8(%esi), %ecx
- 523 0609 8D4302   		leal	2(%ebx), %eax
- 524 060c 896C2404 		movl	%ebp, 4(%esp)
- 525 0610 893C24   		movl	%edi, (%esp)
- 526 0613 894C2408 		movl	%ecx, 8(%esp)
- 527 0617 89442414 		movl	%eax, 20(%esp)
- 528 061b E8E0F9FF 		call	_farsh_keyed
- 528      FF
- 529 0620 8B542414 		movl	20(%esp), %edx
- 530 0624 8B4C2440 		movl	64(%esp), %ecx
- 531 0628 890491   		movl	%eax, (%ecx,%edx,4)
- 532 062b 8D4E0C   		leal	12(%esi), %ecx
- 533 062e 8D4303   		leal	3(%ebx), %eax
- 534 0631 896C2404 		movl	%ebp, 4(%esp)
- 535 0635 893C24   		movl	%edi, (%esp)
- 536 0638 894C2408 		movl	%ecx, 8(%esp)
- 537 063c 89442414 		movl	%eax, 20(%esp)
- 538 0640 E8BBF9FF 		call	_farsh_keyed
- 538      FF
- 539 0645 8B542414 		movl	20(%esp), %edx
- 540 0649 8B4C2440 		movl	64(%esp), %ecx
- 541 064d 890491   		movl	%eax, (%ecx,%edx,4)
- 542 0650 8D4E10   		leal	16(%esi), %ecx
- 543 0653 8D4304   		leal	4(%ebx), %eax
- 544 0656 896C2404 		movl	%ebp, 4(%esp)
- 545 065a 893C24   		movl	%edi, (%esp)
- 546 065d 894C2408 		movl	%ecx, 8(%esp)
- 547 0661 89442414 		movl	%eax, 20(%esp)
- 548 0665 E896F9FF 		call	_farsh_keyed
- 548      FF
- 549 066a 8B542414 		movl	20(%esp), %edx
- 550 066e 8B4C2440 		movl	64(%esp), %ecx
- 551 0672 890491   		movl	%eax, (%ecx,%edx,4)
- 552 0675 8D4E14   		leal	20(%esi), %ecx
- 553 0678 8D4305   		leal	5(%ebx), %eax
- 554 067b 896C2404 		movl	%ebp, 4(%esp)
- 555 067f 893C24   		movl	%edi, (%esp)
- 556 0682 894C2408 		movl	%ecx, 8(%esp)
- 557 0686 89442414 		movl	%eax, 20(%esp)
- 558 068a E871F9FF 		call	_farsh_keyed
- 558      FF
- 559 068f 8B542414 		movl	20(%esp), %edx
- 560 0693 8B4C2440 		movl	64(%esp), %ecx
- 561 0697 890491   		movl	%eax, (%ecx,%edx,4)
- 562 069a 8D4E18   		leal	24(%esi), %ecx
- 563 069d 8D4306   		leal	6(%ebx), %eax
- 564 06a0 896C2404 		movl	%ebp, 4(%esp)
- 565 06a4 893C24   		movl	%edi, (%esp)
- 566 06a7 894C2408 		movl	%ecx, 8(%esp)
- 567 06ab 89442414 		movl	%eax, 20(%esp)
- 568 06af E84CF9FF 		call	_farsh_keyed
- 568      FF
- 569 06b4 8B542414 		movl	20(%esp), %edx
- 570 06b8 8B4C2440 		movl	64(%esp), %ecx
- 571 06bc 890491   		movl	%eax, (%ecx,%edx,4)
- 572 06bf 8D4E1C   		leal	28(%esi), %ecx
- 573 06c2 8D4307   		leal	7(%ebx), %eax
- 574 06c5 896C2404 		movl	%ebp, 4(%esp)
- 575 06c9 893C24   		movl	%edi, (%esp)
- 576 06cc 83C308   		addl	$8, %ebx
- 577 06cf 894C2408 		movl	%ecx, 8(%esp)
- 578 06d3 89442414 		movl	%eax, 20(%esp)
- 579 06d7 83C620   		addl	$32, %esi
- 580 06da E821F9FF 		call	_farsh_keyed
- 580      FF
- 581 06df 3B5C243C 		cmpl	60(%esp), %ebx
- 582 06e3 8B4C2440 		movl	64(%esp), %ecx
- 583 06e7 8B542414 		movl	20(%esp), %edx
- 584 06eb 890491   		movl	%eax, (%ecx,%edx,4)
- 585 06ee 0F85D6FE 		jne	L68
- 585      FFFF
- 586              	L64:
- 587 06f4 83C41C   		addl	$28, %esp
- 588 06f7 5B       		popl	%ebx
- 589 06f8 5E       		popl	%esi
- 590 06f9 5F       		popl	%edi
- 591 06fa 5D       		popl	%ebp
- 592 06fb C3       		ret
- 593              		.section	.text.unlikely,"x"
- 594              	LCOLDE1:
- 595              		.text
- 596              	LHOTE1:
- 597              		.section	.text.unlikely,"x"
- 598              	LCOLDB2:
- 599              		.text
- 600              	LHOTB2:
- 601 06fc 8D742600 		.p2align 4,,15
- 602              		.globl	_farsh_n
- 604              	_farsh_n:
- 605 0700 55       		pushl	%ebp
- 606 0701 57       		pushl	%edi
- 607 0702 56       		pushl	%esi
- 608 0703 53       		pushl	%ebx
- 609 0704 83EC1C   		subl	$28, %esp
- 610 0707 8B442438 		movl	56(%esp), %eax
- 611 070b 8B54243C 		movl	60(%esp), %edx
- 612 070f 8B7C2430 		movl	48(%esp), %edi
- 613 0713 8B6C2434 		movl	52(%esp), %ebp
- 614 0717 8D1C8500 		leal	_FARSH_KEYS(,%eax,4), %ebx
- 614      000000
- 615 071e 85D2     		testl	%edx, %edx
- 616 0720 89DE     		movl	%ebx, %esi
- 617 0722 895C2410 		movl	%ebx, 16(%esp)
- 618 0726 0F8E7102 		jle	L110
- 618      0000
- 619 072c 8B4C243C 		movl	60(%esp), %ecx
- 620 0730 895C2408 		movl	%ebx, 8(%esp)
- 621 0734 8D7604   		leal	4(%esi), %esi
- 622 0737 896C2404 		movl	%ebp, 4(%esp)
- 623 073b 893C24   		movl	%edi, (%esp)
- 624 073e 8D41FF   		leal	-1(%ecx), %eax
- 625 0741 83E007   		andl	$7, %eax
- 626 0744 89442414 		movl	%eax, 20(%esp)
- 627 0748 E8B3F8FF 		call	_farsh_keyed
- 627      FF
- 628 074d 8B5C2440 		movl	64(%esp), %ebx
- 629 0751 8B542414 		movl	20(%esp), %edx
- 630 0755 8903     		movl	%eax, (%ebx)
- 631 0757 BB010000 		movl	$1, %ebx
- 631      00
- 632 075c 3B5C243C 		cmpl	60(%esp), %ebx
- 633 0760 0F843702 		je	L110
- 633      0000
- 634 0766 85D2     		testl	%edx, %edx
- 635 0768 0F840501 		je	L114
- 635      0000
- 636 076e 83FA01   		cmpl	$1, %edx
- 637 0771 0F84D500 		je	L140
- 637      0000
- 638 0777 83FA02   		cmpl	$2, %edx
- 639 077a 0F84AF00 		je	L141
- 639      0000
- 640 0780 83FA03   		cmpl	$3, %edx
- 641 0783 0F848900 		je	L142
- 641      0000
- 642 0789 83FA04   		cmpl	$4, %edx
- 643 078c 7467     		je	L143
- 644 078e 83FA05   		cmpl	$5, %edx
- 645 0791 7445     		je	L144
- 646 0793 83FA06   		cmpl	$6, %edx
- 647 0796 7423     		je	L145
- 648 0798 89742408 		movl	%esi, 8(%esp)
- 649 079c 896C2404 		movl	%ebp, 4(%esp)
- 650 07a0 893C24   		movl	%edi, (%esp)
- 651 07a3 E858F8FF 		call	_farsh_keyed
+ 491 05a5 8B542450 		movl	80(%esp), %edx
+ 492 05a9 89049A   		movl	%eax, (%edx,%ebx,4)
+ 493 05ac 83C301   		addl	$1, %ebx
+ 494              	L82:
+ 495 05af 8B44243C 		movl	60(%esp), %eax
+ 496 05b3 8B4C2438 		movl	56(%esp), %ecx
+ 497 05b7 89742408 		movl	%esi, 8(%esp)
+ 498 05bb 897C240C 		movl	%edi, 12(%esp)
+ 499 05bf 83C610   		addl	$16, %esi
+ 500 05c2 896C2410 		movl	%ebp, 16(%esp)
+ 501 05c6 89442404 		movl	%eax, 4(%esp)
+ 502 05ca 890C24   		movl	%ecx, (%esp)
+ 503 05cd E82EFAFF 		call	_farsh_keyed
+ 503      FF
+ 504 05d2 8B542450 		movl	80(%esp), %edx
+ 505 05d6 89049A   		movl	%eax, (%edx,%ebx,4)
+ 506 05d9 83C301   		addl	$1, %ebx
+ 507 05dc 3B5C2444 		cmpl	68(%esp), %ebx
+ 508 05e0 0F84D600 		je	L64
+ 508      0000
+ 509              	L68:
+ 510 05e6 8B4C2438 		movl	56(%esp), %ecx
+ 511 05ea 8B44243C 		movl	60(%esp), %eax
+ 512 05ee 89742408 		movl	%esi, 8(%esp)
+ 513 05f2 897C240C 		movl	%edi, 12(%esp)
+ 514 05f6 896C2410 		movl	%ebp, 16(%esp)
+ 515 05fa 890C24   		movl	%ecx, (%esp)
+ 516 05fd 89442404 		movl	%eax, 4(%esp)
+ 517 0601 E8FAF9FF 		call	_farsh_keyed
+ 517      FF
+ 518 0606 8B542450 		movl	80(%esp), %edx
+ 519 060a 8D4E10   		leal	16(%esi), %ecx
+ 520 060d 89049A   		movl	%eax, (%edx,%ebx,4)
+ 521 0610 8D4301   		leal	1(%ebx), %eax
+ 522 0613 8B54243C 		movl	60(%esp), %edx
+ 523 0617 894C2408 		movl	%ecx, 8(%esp)
+ 524 061b 897C240C 		movl	%edi, 12(%esp)
+ 525 061f 8944241C 		movl	%eax, 28(%esp)
+ 526 0623 8B442438 		movl	56(%esp), %eax
+ 527 0627 89542404 		movl	%edx, 4(%esp)
+ 528 062b 896C2410 		movl	%ebp, 16(%esp)
+ 529 062f 890424   		movl	%eax, (%esp)
+ 530 0632 E8C9F9FF 		call	_farsh_keyed
+ 530      FF
+ 531 0637 8B54241C 		movl	28(%esp), %edx
+ 532 063b 8B4C2450 		movl	80(%esp), %ecx
+ 533 063f 890491   		movl	%eax, (%ecx,%edx,4)
+ 534 0642 8D4302   		leal	2(%ebx), %eax
+ 535 0645 8B54243C 		movl	60(%esp), %edx
+ 536 0649 8D4E20   		leal	32(%esi), %ecx
+ 537 064c 897C240C 		movl	%edi, 12(%esp)
+ 538 0650 896C2410 		movl	%ebp, 16(%esp)
+ 539 0654 8944241C 		movl	%eax, 28(%esp)
+ 540 0658 8B442438 		movl	56(%esp), %eax
+ 541 065c 894C2408 		movl	%ecx, 8(%esp)
+ 542 0660 89542404 		movl	%edx, 4(%esp)
+ 543 0664 890424   		movl	%eax, (%esp)
+ 544 0667 E894F9FF 		call	_farsh_keyed
+ 544      FF
+ 545 066c 8B54241C 		movl	28(%esp), %edx
+ 546 0670 8B4C2450 		movl	80(%esp), %ecx
+ 547 0674 890491   		movl	%eax, (%ecx,%edx,4)
+ 548 0677 8D4303   		leal	3(%ebx), %eax
+ 549 067a 8B54243C 		movl	60(%esp), %edx
+ 550 067e 8D4E30   		leal	48(%esi), %ecx
+ 551 0681 897C240C 		movl	%edi, 12(%esp)
+ 552 0685 896C2410 		movl	%ebp, 16(%esp)
+ 553 0689 8944241C 		movl	%eax, 28(%esp)
+ 554 068d 8B442438 		movl	56(%esp), %eax
+ 555 0691 83C304   		addl	$4, %ebx
+ 556 0694 894C2408 		movl	%ecx, 8(%esp)
+ 557 0698 89542404 		movl	%edx, 4(%esp)
+ 558 069c 83C640   		addl	$64, %esi
+ 559 069f 890424   		movl	%eax, (%esp)
+ 560 06a2 E859F9FF 		call	_farsh_keyed
+ 560      FF
+ 561 06a7 3B5C2444 		cmpl	68(%esp), %ebx
+ 562 06ab 8B4C2450 		movl	80(%esp), %ecx
+ 563 06af 8B54241C 		movl	28(%esp), %edx
+ 564 06b3 890491   		movl	%eax, (%ecx,%edx,4)
+ 565 06b6 0F852AFF 		jne	L68
+ 565      FFFF
+ 566              	L64:
+ 567 06bc 83C424   		addl	$36, %esp
+ 568 06bf 5B       		popl	%ebx
+ 569 06c0 5E       		popl	%esi
+ 570 06c1 5F       		popl	%edi
+ 571 06c2 5D       		popl	%ebp
+ 572 06c3 C3       		ret
+ 573              		.section	.text.unlikely,"x"
+ 574              	LCOLDE1:
+ 575              		.text
+ 576              	LHOTE1:
+ 577              		.section	.text.unlikely,"x"
+ 578              	LCOLDB2:
+ 579              		.text
+ 580              	LHOTB2:
+ 581 06c4 8DB60000 		.p2align 4,,15
+ 581      00008DBF 
+ 581      00000000 
+ 582              		.globl	_farsh_n
+ 584              	_farsh_n:
+ 585 06d0 55       		pushl	%ebp
+ 586 06d1 57       		pushl	%edi
+ 587 06d2 56       		pushl	%esi
+ 588 06d3 53       		pushl	%ebx
+ 589 06d4 83EC3C   		subl	$60, %esp
+ 590 06d7 8B442458 		movl	88(%esp), %eax
+ 591 06db 8B54245C 		movl	92(%esp), %edx
+ 592 06df 8B7C2460 		movl	96(%esp), %edi
+ 593 06e3 8B6C2464 		movl	100(%esp), %ebp
+ 594 06e7 01C2     		addl	%eax, %edx
+ 595 06e9 83FA20   		cmpl	$32, %edx
+ 596 06ec 0F87EB01 		ja	L117
+ 596      0000
+ 597 06f2 8B4C245C 		movl	92(%esp), %ecx
+ 598 06f6 C1E004   		sall	$4, %eax
+ 599 06f9 05000000 		addl	$_FARSH_KEYS, %eax
+ 599      00
+ 600 06fe 89C6     		movl	%eax, %esi
+ 601 0700 89442428 		movl	%eax, 40(%esp)
+ 602 0704 85C9     		testl	%ecx, %ecx
+ 603 0706 0F8EC901 		jle	L90
+ 603      0000
+ 604 070c 8B5C245C 		movl	92(%esp), %ebx
+ 605 0710 89442408 		movl	%eax, 8(%esp)
+ 606 0714 8D7610   		leal	16(%esi), %esi
+ 607 0717 8B442454 		movl	84(%esp), %eax
+ 608 071b 8B4C2450 		movl	80(%esp), %ecx
+ 609 071f 897C240C 		movl	%edi, 12(%esp)
+ 610 0723 896C2410 		movl	%ebp, 16(%esp)
+ 611 0727 8D53FF   		leal	-1(%ebx), %edx
+ 612 072a 89442404 		movl	%eax, 4(%esp)
+ 613 072e 890C24   		movl	%ecx, (%esp)
+ 614 0731 83E203   		andl	$3, %edx
+ 615 0734 8954242C 		movl	%edx, 44(%esp)
+ 616 0738 E8C3F8FF 		call	_farsh_keyed
+ 616      FF
+ 617 073d 8B5C2468 		movl	104(%esp), %ebx
+ 618 0741 8B54242C 		movl	44(%esp), %edx
+ 619 0745 8903     		movl	%eax, (%ebx)
+ 620 0747 BB010000 		movl	$1, %ebx
+ 620      00
+ 621 074c 3B5C245C 		cmpl	92(%esp), %ebx
+ 622 0750 0F847F01 		je	L90
+ 622      0000
+ 623 0756 85D2     		testl	%edx, %edx
+ 624 0758 0F84A100 		je	L95
+ 624      0000
+ 625 075e 83FA01   		cmpl	$1, %edx
+ 626 0761 7465     		je	L109
+ 627 0763 83FA02   		cmpl	$2, %edx
+ 628 0766 7433     		je	L110
+ 629 0768 8B442454 		movl	84(%esp), %eax
+ 630 076c 8B4C2450 		movl	80(%esp), %ecx
+ 631 0770 89742408 		movl	%esi, 8(%esp)
+ 632 0774 897C240C 		movl	%edi, 12(%esp)
+ 633 0778 896C2410 		movl	%ebp, 16(%esp)
+ 634 077c 89442404 		movl	%eax, 4(%esp)
+ 635 0780 890C24   		movl	%ecx, (%esp)
+ 636 0783 E878F8FF 		call	_farsh_keyed
+ 636      FF
+ 637 0788 8B742468 		movl	104(%esp), %esi
+ 638 078c 89049E   		movl	%eax, (%esi,%ebx,4)
+ 639 078f 8B742428 		movl	40(%esp), %esi
+ 640 0793 BB020000 		movl	$2, %ebx
+ 640      00
+ 641 0798 83C620   		addl	$32, %esi
+ 642              	L110:
+ 643 079b 8B542454 		movl	84(%esp), %edx
+ 644 079f 8B442450 		movl	80(%esp), %eax
+ 645 07a3 89742408 		movl	%esi, 8(%esp)
+ 646 07a7 897C240C 		movl	%edi, 12(%esp)
+ 647 07ab 83C610   		addl	$16, %esi
+ 648 07ae 896C2410 		movl	%ebp, 16(%esp)
+ 649 07b2 89542404 		movl	%edx, 4(%esp)
+ 650 07b6 890424   		movl	%eax, (%esp)
+ 651 07b9 E842F8FF 		call	_farsh_keyed
  651      FF
- 652 07a8 8B4C2440 		movl	64(%esp), %ecx
- 653 07ac 8B742410 		movl	16(%esp), %esi
- 654 07b0 890499   		movl	%eax, (%ecx,%ebx,4)
- 655 07b3 83C608   		addl	$8, %esi
- 656 07b6 BB020000 		movl	$2, %ebx
- 656      00
- 657              	L145:
- 658 07bb 89742408 		movl	%esi, 8(%esp)
- 659 07bf 896C2404 		movl	%ebp, 4(%esp)
- 660 07c3 83C604   		addl	$4, %esi
- 661 07c6 893C24   		movl	%edi, (%esp)
- 662 07c9 E832F8FF 		call	_farsh_keyed
- 662      FF
- 663 07ce 8B542440 		movl	64(%esp), %edx
- 664 07d2 89049A   		movl	%eax, (%edx,%ebx,4)
- 665 07d5 83C301   		addl	$1, %ebx
- 666              	L144:
- 667 07d8 89742408 		movl	%esi, 8(%esp)
- 668 07dc 896C2404 		movl	%ebp, 4(%esp)
- 669 07e0 83C604   		addl	$4, %esi
- 670 07e3 893C24   		movl	%edi, (%esp)
- 671 07e6 E815F8FF 		call	_farsh_keyed
- 671      FF
- 672 07eb 8B4C2440 		movl	64(%esp), %ecx
- 673 07ef 890499   		movl	%eax, (%ecx,%ebx,4)
- 674 07f2 83C301   		addl	$1, %ebx
- 675              	L143:
- 676 07f5 89742408 		movl	%esi, 8(%esp)
- 677 07f9 896C2404 		movl	%ebp, 4(%esp)
- 678 07fd 83C604   		addl	$4, %esi
- 679 0800 893C24   		movl	%edi, (%esp)
- 680 0803 E8F8F7FF 		call	_farsh_keyed
- 680      FF
- 681 0808 8B542440 		movl	64(%esp), %edx
- 682 080c 89049A   		movl	%eax, (%edx,%ebx,4)
- 683 080f 83C301   		addl	$1, %ebx
- 684              	L142:
- 685 0812 89742408 		movl	%esi, 8(%esp)
- 686 0816 896C2404 		movl	%ebp, 4(%esp)
- 687 081a 83C604   		addl	$4, %esi
- 688 081d 893C24   		movl	%edi, (%esp)
- 689 0820 E8DBF7FF 		call	_farsh_keyed
- 689      FF
- 690 0825 8B4C2440 		movl	64(%esp), %ecx
- 691 0829 890499   		movl	%eax, (%ecx,%ebx,4)
- 692 082c 83C301   		addl	$1, %ebx
- 693              	L141:
- 694 082f 89742408 		movl	%esi, 8(%esp)
- 695 0833 896C2404 		movl	%ebp, 4(%esp)
- 696 0837 83C604   		addl	$4, %esi
- 697 083a 893C24   		movl	%edi, (%esp)
- 698 083d E8BEF7FF 		call	_farsh_keyed
- 698      FF
- 699 0842 8B542440 		movl	64(%esp), %edx
- 700 0846 89049A   		movl	%eax, (%edx,%ebx,4)
- 701 0849 83C301   		addl	$1, %ebx
- 702              	L140:
- 703 084c 89742408 		movl	%esi, 8(%esp)
- 704 0850 896C2404 		movl	%ebp, 4(%esp)
- 705 0854 83C604   		addl	$4, %esi
- 706 0857 893C24   		movl	%edi, (%esp)
- 707 085a E8A1F7FF 		call	_farsh_keyed
- 707      FF
- 708 085f 8B4C2440 		movl	64(%esp), %ecx
- 709 0863 890499   		movl	%eax, (%ecx,%ebx,4)
- 710 0866 83C301   		addl	$1, %ebx
- 711 0869 3B5C243C 		cmpl	60(%esp), %ebx
- 712 086d 0F842A01 		je	L110
- 712      0000
- 713              	L114:
- 714 0873 89742408 		movl	%esi, 8(%esp)
- 715 0877 896C2404 		movl	%ebp, 4(%esp)
- 716 087b 893C24   		movl	%edi, (%esp)
- 717 087e E87DF7FF 		call	_farsh_keyed
- 717      FF
- 718 0883 8B542440 		movl	64(%esp), %edx
- 719 0887 8D4E04   		leal	4(%esi), %ecx
- 720 088a 89049A   		movl	%eax, (%edx,%ebx,4)
- 721 088d 8D4301   		leal	1(%ebx), %eax
- 722 0890 894C2408 		movl	%ecx, 8(%esp)
- 723 0894 896C2404 		movl	%ebp, 4(%esp)
- 724 0898 893C24   		movl	%edi, (%esp)
- 725 089b 89442410 		movl	%eax, 16(%esp)
- 726 089f E85CF7FF 		call	_farsh_keyed
- 726      FF
- 727 08a4 8B542410 		movl	16(%esp), %edx
- 728 08a8 8B4C2440 		movl	64(%esp), %ecx
- 729 08ac 890491   		movl	%eax, (%ecx,%edx,4)
- 730 08af 8D4E08   		leal	8(%esi), %ecx
- 731 08b2 8D4302   		leal	2(%ebx), %eax
- 732 08b5 896C2404 		movl	%ebp, 4(%esp)
- 733 08b9 893C24   		movl	%edi, (%esp)
- 734 08bc 894C2408 		movl	%ecx, 8(%esp)
- 735 08c0 89442410 		movl	%eax, 16(%esp)
- 736 08c4 E837F7FF 		call	_farsh_keyed
- 736      FF
- 737 08c9 8B542410 		movl	16(%esp), %edx
- 738 08cd 8B4C2440 		movl	64(%esp), %ecx
- 739 08d1 890491   		movl	%eax, (%ecx,%edx,4)
- 740 08d4 8D4E0C   		leal	12(%esi), %ecx
- 741 08d7 8D4303   		leal	3(%ebx), %eax
- 742 08da 896C2404 		movl	%ebp, 4(%esp)
- 743 08de 893C24   		movl	%edi, (%esp)
- 744 08e1 894C2408 		movl	%ecx, 8(%esp)
- 745 08e5 89442410 		movl	%eax, 16(%esp)
- 746 08e9 E812F7FF 		call	_farsh_keyed
- 746      FF
- 747 08ee 8B542410 		movl	16(%esp), %edx
- 748 08f2 8B4C2440 		movl	64(%esp), %ecx
- 749 08f6 890491   		movl	%eax, (%ecx,%edx,4)
- 750 08f9 8D4E10   		leal	16(%esi), %ecx
- 751 08fc 8D4304   		leal	4(%ebx), %eax
- 752 08ff 896C2404 		movl	%ebp, 4(%esp)
- 753 0903 893C24   		movl	%edi, (%esp)
- 754 0906 894C2408 		movl	%ecx, 8(%esp)
- 755 090a 89442410 		movl	%eax, 16(%esp)
- 756 090e E8EDF6FF 		call	_farsh_keyed
- 756      FF
- 757 0913 8B542410 		movl	16(%esp), %edx
- 758 0917 8B4C2440 		movl	64(%esp), %ecx
- 759 091b 890491   		movl	%eax, (%ecx,%edx,4)
- 760 091e 8D4E14   		leal	20(%esi), %ecx
- 761 0921 8D4305   		leal	5(%ebx), %eax
- 762 0924 896C2404 		movl	%ebp, 4(%esp)
- 763 0928 893C24   		movl	%edi, (%esp)
- 764 092b 894C2408 		movl	%ecx, 8(%esp)
- 765 092f 89442410 		movl	%eax, 16(%esp)
- 766 0933 E8C8F6FF 		call	_farsh_keyed
- 766      FF
- 767 0938 8B542410 		movl	16(%esp), %edx
- 768 093c 8B4C2440 		movl	64(%esp), %ecx
- 769 0940 890491   		movl	%eax, (%ecx,%edx,4)
- 770 0943 8D4E18   		leal	24(%esi), %ecx
- 771 0946 8D4306   		leal	6(%ebx), %eax
- 772 0949 896C2404 		movl	%ebp, 4(%esp)
- 773 094d 893C24   		movl	%edi, (%esp)
- 774 0950 894C2408 		movl	%ecx, 8(%esp)
- 775 0954 89442410 		movl	%eax, 16(%esp)
- 776 0958 E8A3F6FF 		call	_farsh_keyed
- 776      FF
- 777 095d 8B542410 		movl	16(%esp), %edx
- 778 0961 8B4C2440 		movl	64(%esp), %ecx
- 779 0965 890491   		movl	%eax, (%ecx,%edx,4)
- 780 0968 8D4E1C   		leal	28(%esi), %ecx
- 781 096b 8D4307   		leal	7(%ebx), %eax
- 782 096e 896C2404 		movl	%ebp, 4(%esp)
- 783 0972 893C24   		movl	%edi, (%esp)
- 784 0975 83C308   		addl	$8, %ebx
- 785 0978 894C2408 		movl	%ecx, 8(%esp)
- 786 097c 89442410 		movl	%eax, 16(%esp)
- 787 0980 83C620   		addl	$32, %esi
- 788 0983 E878F6FF 		call	_farsh_keyed
- 788      FF
- 789 0988 3B5C243C 		cmpl	60(%esp), %ebx
- 790 098c 8B4C2440 		movl	64(%esp), %ecx
- 791 0990 8B542410 		movl	16(%esp), %edx
- 792 0994 890491   		movl	%eax, (%ecx,%edx,4)
- 793 0997 0F85D6FE 		jne	L114
- 793      FFFF
- 794              	L110:
- 795 099d 83C41C   		addl	$28, %esp
- 796 09a0 5B       		popl	%ebx
- 797 09a1 5E       		popl	%esi
- 798 09a2 5F       		popl	%edi
- 799 09a3 5D       		popl	%ebp
- 800 09a4 C3       		ret
- 801              		.section	.text.unlikely,"x"
- 802              	LCOLDE2:
- 803              		.text
- 804              	LHOTE2:
- 805              		.section	.text.unlikely,"x"
- 806              	LCOLDB3:
- 807              		.text
- 808              	LHOTB3:
- 809 09a5 8D742600 		.p2align 4,,15
- 809      8DBC2700 
- 809      000000
- 810              		.globl	_farsh
- 812              	_farsh:
- 813 09b0 83EC14   		subl	$20, %esp
- 814 09b3 8B44241C 		movl	28(%esp), %eax
- 815 09b7 8B542418 		movl	24(%esp), %edx
- 816 09bb C7442408 		movl	$_FARSH_KEYS, 8(%esp)
- 816      00000000 
- 817 09c3 89442404 		movl	%eax, 4(%esp)
- 818 09c7 891424   		movl	%edx, (%esp)
- 819 09ca E831F6FF 		call	_farsh_keyed
- 819      FF
- 820 09cf 83C414   		addl	$20, %esp
- 821 09d2 C3       		ret
- 822              		.section	.text.unlikely,"x"
- 823              	LCOLDE3:
- 824              		.text
- 825              	LHOTE3:
- 826 09d3 90909090 		.section .rdata,"dr"
- 826      90909090 
- 826      90909090 
- 826      90
- 827              		.align 64
- 828              	_FARSH_KEYS:
- 829 0000 396CFEB8 		.long	-1191285703
- 830 0004 BE4BA423 		.long	597969854
- 831 0008 2C81017C 		.long	2080473388
- 832 000c 1CAD21F7 		.long	-148787940
- 833 0010 E96DD4DE 		.long	-556503575
- 834 0014 DB979083 		.long	-2087675941
- 835 0018 A4A44072 		.long	1916839076
- 836 001c 1F67B3B7 		.long	-1212979425
- 837 0020 4EE679CB 		.long	-881203634
- 838 0024 78E5C0CC 		.long	-859773576
- 839 0028 7DD05A82 		.long	-2107977603
- 840 002c 2172FFCC 		.long	-855674335
- 841 0030 744608B8 		.long	-1207417228
- 842 0034 8E2443F7 		.long	-146594674
- 843 0038 E69035E0 		.long	-533360410
- 844 003c 4C263A81 		.long	-2126895540
- 845 0040 BB52283C 		.long	1009275579
- 846 0044 CB00C391 		.long	-1849491253
- 847 0048 8B65D088 		.long	-1999608437
- 848 004c A32E531B 		.long	458436259
- 849 0050 97486471 		.long	1902397591
- 850 0054 4EF90DA2 		.long	-1576142514
- 851 0058 46EF1938 		.long	941223750
- 852 005c D8ACDEA9 		.long	-1445024552
- 853 0060 3F76FAA8 		.long	-1459980737
- 854 0064 3F349CE3 		.long	-476302273
- 855 0068 C7BBDCF9 		.long	-102974521
- 856 006c 1D4F0BC7 		.long	-955560163
- 857 0070 4BE0518A 		.long	-1974345653
- 858 0074 3159B4CD 		.long	-843818703
- 859 0078 C97E9FC8 		.long	-929071415
- 860 007c 647378D9 		.long	-646417564
- 861 0080 52076A4F 		.long	1332348754
- 862 0084 9C079BA7 		.long	-1483012196
- 863 0088 9994C48F 		.long	-1882942311
- 864 008c A9B7C98E 		.long	-1899382871
- 865 0090 4922C933 		.long	868819529
- 866 0094 4F40B64E 		.long	1320566863
- 867 0098 4EFB2AFB 		.long	-81069234
- 868 009c 554281A4 		.long	-1535032747
- 869 00a0 981B0E2F 		.long	789453720
- 870 00a4 243BE9AC 		.long	-1394001116
- 871 00a8 CD508818 		.long	411586765
- 872 00ac A7745C6C 		.long	1817998503
- 873 00b0 0444FA66 		.long	1727677444
- 874 00b4 83ACC5EA 		.long	-356143997
- 875 00b8 C3EBD334 		.long	886303683
- 876 00bc FFA081C5 		.long	-981360385
- 877 00c0 EB6313FA 		.long	-99392533
- 878 00c4 51DD0D17 		.long	386784593
- 879 00c8 49DAF0B7 		.long	-1208952247
- 880 00cc 265516D3 		.long	-753511130
- 881 00d0 9E68D429 		.long	701786270
- 882 00d4 58BE162B 		.long	722910808
- 883 00d8 FCA1477D 		.long	2101846524
- 884 00dc D1B8F88F 		.long	-1879525167
- 885 00e0 CE31D07A 		.long	2060464590
- 886 00e4 8F3ACB45 		.long	1170946703
- 887 00e8 28041695 		.long	-1793719256
- 888 00ec CAFBD7AF 		.long	-1344799798
- 889 00f0 7E404BBB 		.long	-1152696194
- 890 00f4 A4745299 		.long	-1722649436
- 891 00f8 932D9AEB 		.long	-342217325
- 892 00fc 0889E73B 		.long	1005029640
- 893 0100 6C5F47ED 		.long	-314089620
- 894 0104 F2D89C91 		.long	-1851991822
- 895 0108 5A1E86D3 		.long	-746185126
- 896 010c 0C39316E 		.long	1848719628
- 897 0110 493A6AFE 		.long	-26592695
- 898 0114 1409ADDC 		.long	-592639724
- 899 0118 EB8B5006 		.long	105941995
- 900 011c F39983A8 		.long	-1467770381
- 901 0120 2F1158B0 		.long	-1336405713
- 902 0124 79FAB0E8 		.long	-391054727
- 903 0128 06DAB429 		.long	699718150
- 904 012c FB53C2ED 		.long	-306031621
- 905 0130 AD6DE9C3 		.long	-1008112211
- 906 0134 832B376E 		.long	1849109379
- 907 0138 53B1784F 		.long	1333309779
- 908 013c 866EFAFF 		.long	-364922
- 909 0140 ECEEBE21 		.long	566161132
- 910 0144 02EACA01 		.long	30075394
- 911 0148 0DE56712 		.long	308798733
- 912 014c 2F09E611 		.long	300288303
- 913 0150 98D219E8 		.long	-400960872
- 914 0154 DD802F83 		.long	-2094038819
- 915 0158 77244E0C 		.long	206447735
- 916 015c EB8678BC 		.long	-1132951829
- 917 0160 37665001 		.long	22046263
- 918 0164 6896A88B 		.long	-1951885720
- 919 0168 A0E7116D 		.long	1829889952
- 920 016c 15FD12FC 		.long	-65864427
- 921 0170 194CA586 		.long	-2035987431
- 922 0174 DDE33C59 		.long	1497162717
- 923 0178 E53FB1D2 		.long	-760135707
- 924 017c 532B778E 		.long	-1904792749
- 925 0180 CC604AAE 		.long	-1370857268
- 926 0184 1B3B7A64 		.long	1685732123
- 927 0188 E0867754 		.long	1417119456
- 928 018c 8E37C43E 		.long	1053046670
- 929 0190 89CF7A8D 		.long	-1921331319
- 930 0194 47F936CA 		.long	-902366905
- 931 0198 EFD5890E 		.long	243914223
- 932 019c 3C6ADAAA 		.long	-1428526532
- 933 01a0 09A1A46D 		.long	1839505673
- 934 01a4 1CE1C69A 		.long	-1698242276
- 935 01a8 EF916668 		.long	1751552495
- 936 01ac 2BBD57A3 		.long	-1554531029
- 937 01b0 9A1B6FD1 		.long	-781247590
- 938 01b4 0303C738 		.long	952566531
- 939 01b8 B322467D 		.long	2101748403
- 940 01bc 8FFA6829 		.long	694745743
- 941 01c0 B9BCA58C 		.long	-1935295303
- 942 01c4 0510D6FC 		.long	-53080059
- 943 01c8 965E8B22 		.long	579559062
- 944 01cc 19CC9D2C 		.long	748538905
- 945 01d0 3C24CF57 		.long	1473193020
- 946 01d4 C1F9533C 		.long	1012136385
- 947 01d8 2C95C70C 		.long	214406444
- 948 01dc F0E46D68 		.long	1752032496
- 949 01e0 B547A793 		.long	-1817753675
- 950 01e4 10A5874E 		.long	1317512464
- 951 01e8 AE915E97 		.long	-1755410002
- 952 01ec 8EB9104C 		.long	1276164494
- 953 01f0 8C067F8A 		.long	-1971386740
- 954 01f4 AB196B34 		.long	879434155
- 955 01f8 25A63C35 		.long	893167141
- 956 01fc E0500AF2 		.long	-234204960
- 957 0200 F62199CE 		.long	-828825098
- 958 0204 14E066DF 		.long	-546906092
- 959 0208 4BEF110A 		.long	168947531
- 960 020c DF4DC88B 		.long	-1949807137
- 961 0210 225DD284 		.long	-2066588382
- 962 0214 6D9323C8 		.long	-937192595
- 963 0218 C31E7494 		.long	-1804329277
- 964 021c 608A2788 		.long	-2010674592
- 965 0220 319364B8 		.long	-1201368271
- 966 0224 107A707A 		.long	2054191632
- 967 0228 D6CA9272 		.long	1922222806
- 968 022c C244C6A7 		.long	-1480178494
- 969 0230 FA6B15BD 		.long	-1122669574
- 970 0234 78956C64 		.long	1684837752
- 971 0238 D5DFF4B7 		.long	-1208688683
- 972 023c A777829F 		.long	-1618839641
- 973 0240 4E921370 		.long	1880330830
- 974 0244 C34C67AD 		.long	-1385739069
- 975 0248 059DAE2C 		.long	749640965
- 976 024c 229A2A91 		.long	-1859479006
- 977 0250 FA537CF6 		.long	-159624198
- 978 0254 A9227E8D 		.long	-1921113431
- 979 0258 2B37AE59 		.long	1504589611
- 980 025c F3990185 		.long	-2063492621
- 981 0260 2C10A263 		.long	1671565356
- 982 0264 6112FFD6 		.long	-687926687
- 983 0268 E18E7356 		.long	1450413793
- 984 026c 5B1495AA 		.long	-1433070501
- 985 0270 3228D1FD 		.long	-36624334
- 986 0274 EB4D685B 		.long	1533562347
- 987 0278 94DE8407 		.long	126148244
- 988 027c 0E3962AA 		.long	-1436403442
- 989 0280 19CF7CBB 		.long	-1149448423
- 990 0284 72D5EF0F 		.long	267375986
- 991 0288 CA415B56 		.long	1448821194
- 992 028c 02D20622 		.long	570872322
- 993 0290 7984602D 		.long	761300089
- 994 0294 3DCD0F4C 		.long	1276103997
- 995 0298 E33B6DD3 		.long	-747815965
- 996 029c 659A5A15 		.long	358259301
- 997 02a0 32E7F910 		.long	284813106
- 998 02a4 1E0F9BAC 		.long	-1399124194
- 999 02a8 3BA0721F 		.long	527605819
- 1000 02ac AE4094EA 		.long	-359382866
- 1001 02b0 4F4B675B 		.long	1533496143
- 1002 02b4 D127A831 		.long	833103825
- 1003 02b8 4F95CAEC 		.long	-322267825
- 1004 02bc 1ED62C3D 		.long	1026348574
- 1005 02c0 A43D8D76 		.long	1988967844
- 1006 02c4 C15A7493 		.long	-1821091135
- 1007 02c8 CB585D1D 		.long	492656843
- 1008 02cc B6F3864B 		.long	1267135414
- 1009 02d0 3A92BA2A 		.long	716870202
- 1010 02d4 4C81650E 		.long	241533260
- 1011 02d8 D963E08A 		.long	-1965005863
- 1012 02dc B06969CD 		.long	-848729680
- 1013 02e0 85156436 		.long	912528773
- 1014 02e4 9DF52A74 		.long	1948972445
- 1015 02e8 16133A61 		.long	1631195926
- 1016 02ec 71A48E33 		.long	864986225
- 1017 02f0 F31A8647 		.long	1199971059
- 1018 02f4 C39D4730 		.long	809999811
- 1019 02f8 81A47012 		.long	309372033
- 1020 02fc 69107708 		.long	142020713
- 1021 0300 D2F0C4E3 		.long	-473632558
- 1022 0304 4C872902 		.long	36276044
- 1023 0308 C13B8A5A 		.long	1519008705
- 1024 030c 33970DE3 		.long	-485648589
- 1025 0310 A2E55BD0 		.long	-799283806
- 1026 0314 BA31AFE2 		.long	-491834950
- 1027 0318 F9492022 		.long	572541433
- 1028 031c 6A3B929F 		.long	-1617806486
- 1029 0320 EC643F03 		.long	54486252
- 1030 0324 2BB628E5 		.long	-450316757
- 1031 0328 BDEF0182 		.long	-2113802307
- 1032 032c 77D80721 		.long	554162295
- 1033 0330 F12E31D8 		.long	-667865359
- 1034 0334 999F67A5 		.long	-1519935591
- 1035 0338 1BB53017 		.long	389068059
- 1036 033c D2162675 		.long	1965430482
- 1037 0340 09593005 		.long	87054601
- 1038 0344 0B44CA0D 		.long	231359499
- 1039 0348 D9CD9320 		.long	546557401
- 1040 034c 50AB0964 		.long	1678355280
- 1041 0350 CC8E5CBA 		.long	-1168339252
- 1042 0354 EA08478D 		.long	-1924724502
- 1043 0358 17099F42 		.long	1117718807
- 1044 035c B0FA62B7 		.long	-1218250064
- 1045 0360 75EA6151 		.long	1365371509
- 1046 0364 EBA0EB45 		.long	1173070059
- 1047 0368 414BF3B6 		.long	-1225569471
- 1048 036c 23710452 		.long	1376022819
- 1049 0370 231518E4 		.long	-468183773
- 1050 0374 0AE9748D 		.long	-1921718006
- 1051 0378 1C40FA54 		.long	1425686556
- 1052 037c C70CDADD 		.long	-572912441
- 1053 0380 2A18DF63 		.long	1675565098
- 1054 0384 F63E40C6 		.long	-968868106
- 1055 0388 E8C68E34 		.long	881772264
- 1056 038c F557FFB9 		.long	-1174448139
- 1057 0390 BDB852F6 		.long	-162350915
- 1058 0394 F3B0860F 		.long	260485363
- 1059 0398 8A083AFB 		.long	-80082806
- 1060 039c 3315C74D 		.long	1304892723
- 1061 03a0 D217367B 		.long	2067142610
- 1062 03a4 EB874EA3 		.long	-1555134485
- 1063 03a8 DD9B2ABA 		.long	-1171612707
- 1064 03ac 061338E3 		.long	-482864378
- 1065 03b0 BBD6BA14 		.long	347788987
- 1066 03b4 C2C76DC9 		.long	-915552318
- 1067 03b8 B6543B33 		.long	859526326
- 1068 03bc FA7CE49B 		.long	-1679524614
- 1069 03c0 9992CF1D 		.long	500142745
- 1070 03c4 995FEAE7 		.long	-404070503
- 1071 03c8 CDEA8FB3 		.long	-1282413875
- 1072 03cc F7E2CFC3 		.long	-1009786121
- 1073 03d0 22E8875B 		.long	1535633442
- 1074 03d4 56ABC539 		.long	969255766
- 1075 03d8 8FA1F418 		.long	418685327
- 1076 03dc 9C4D482D 		.long	759713180
- 1077 03e0 19D56341 		.long	1097061657
- 1078 03e4 989E7679 		.long	2037816984
- 1079 03e8 F0678AF5 		.long	-175478800
- 1080 03ec 020C5940 		.long	1079577602
- 1081 03f0 C0719631 		.long	831943104
- 1082 03f4 3A136B26 		.long	644551482
- 1083 03f8 87B281AF 		.long	-1350454649
- 1084 03fc 37F7316A 		.long	1781659447
- 1085 0400 9701BCE3 		.long	-474218089
- 1086 0404 13990755 		.long	1426561299
- 1087 0408 96C6729F 		.long	-1619868010
- 1088 040c C8003E36 		.long	910033096
- 1089 0410 47391553 		.long	1393899847
- 1090 0414 7F12FDEB 		.long	-335736193
- 1091 0418 1905F600 		.long	16123161
- 1092 041c 2AB6A646 		.long	1185330730
- 1093 0420 8033B893 		.long	-1816644736
- 1094 0424 2493E23F 		.long	1071813412
- 1095 0428 9170C6DF 		.long	-540643183
- 1096 042c 6D38620F 		.long	258095213
- 1097 0430 795E37DC 		.long	-600351111
- 1098 0434 3E3FEA8F 		.long	-1880473794
- 1099 0438 D06384DF 		.long	-544971824
- 1100 043c 7BFA0237 		.long	922942075
- 1101 0440 5E435439 		.long	961823582
- 1102 0444 48A6CA87 		.long	-2016762296
- 1103 0448 EE8B15A9 		.long	-1458205714
- 1104 044c 250CF308 		.long	150146085
- 1105 0450 3629B866 		.long	1723345206
- 1106 0454 EB3FFCE7 		.long	-402898965
- 1107 0458 50543C18 		.long	406606928
- 1108 045c 4543EFD7 		.long	-672185531
- 1109 0460 63798C79 		.long	2039249251
- 1110 0464 57F52CC0 		.long	-1070795433
- 1111 0468 D1538509 		.long	159732689
- 1112 046c AA1243FA 		.long	-96267606
- 1113 0470 83F89EE2 		.long	-492898173
- 1114 0474 8D12AF7C 		.long	2091848333
- 1115 0478 7DA0B374 		.long	1957929085
- 1116 047c 00000000 		.space 896
- 1116      00000000 
- 1116      00000000 
- 1116      00000000 
- 1116      00000000 
- 1117 07fc 00000000 		.ident	"GCC: (i686-posix-sjlj-rev2, Built by MinGW-W64 project) 4.9.2"
+ 652 07be 8B4C2468 		movl	104(%esp), %ecx
+ 653 07c2 890499   		movl	%eax, (%ecx,%ebx,4)
+ 654 07c5 83C301   		addl	$1, %ebx
+ 655              	L109:
+ 656 07c8 8B542454 		movl	84(%esp), %edx
+ 657 07cc 8B442450 		movl	80(%esp), %eax
+ 658 07d0 89742408 		movl	%esi, 8(%esp)
+ 659 07d4 897C240C 		movl	%edi, 12(%esp)
+ 660 07d8 83C610   		addl	$16, %esi
+ 661 07db 896C2410 		movl	%ebp, 16(%esp)
+ 662 07df 89542404 		movl	%edx, 4(%esp)
+ 663 07e3 890424   		movl	%eax, (%esp)
+ 664 07e6 E815F8FF 		call	_farsh_keyed
+ 664      FF
+ 665 07eb 8B4C2468 		movl	104(%esp), %ecx
+ 666 07ef 890499   		movl	%eax, (%ecx,%ebx,4)
+ 667 07f2 83C301   		addl	$1, %ebx
+ 668 07f5 3B5C245C 		cmpl	92(%esp), %ebx
+ 669 07f9 0F84D600 		je	L90
+ 669      0000
+ 670              	L95:
+ 671 07ff 8B542454 		movl	84(%esp), %edx
+ 672 0803 8B442450 		movl	80(%esp), %eax
+ 673 0807 89742408 		movl	%esi, 8(%esp)
+ 674 080b 897C240C 		movl	%edi, 12(%esp)
+ 675 080f 896C2410 		movl	%ebp, 16(%esp)
+ 676 0813 89542404 		movl	%edx, 4(%esp)
+ 677 0817 890424   		movl	%eax, (%esp)
+ 678 081a E8E1F7FF 		call	_farsh_keyed
+ 678      FF
+ 679 081f 8B4C2468 		movl	104(%esp), %ecx
+ 680 0823 8D5301   		leal	1(%ebx), %edx
+ 681 0826 89542428 		movl	%edx, 40(%esp)
+ 682 082a 8B542450 		movl	80(%esp), %edx
+ 683 082e 890499   		movl	%eax, (%ecx,%ebx,4)
+ 684 0831 8B4C2454 		movl	84(%esp), %ecx
+ 685 0835 8D4610   		leal	16(%esi), %eax
+ 686 0838 897C240C 		movl	%edi, 12(%esp)
+ 687 083c 896C2410 		movl	%ebp, 16(%esp)
+ 688 0840 891424   		movl	%edx, (%esp)
+ 689 0843 89442408 		movl	%eax, 8(%esp)
+ 690 0847 894C2404 		movl	%ecx, 4(%esp)
+ 691 084b E8B0F7FF 		call	_farsh_keyed
+ 691      FF
+ 692 0850 8B542428 		movl	40(%esp), %edx
+ 693 0854 8B4C2468 		movl	104(%esp), %ecx
+ 694 0858 890491   		movl	%eax, (%ecx,%edx,4)
+ 695 085b 8D4302   		leal	2(%ebx), %eax
+ 696 085e 8B542454 		movl	84(%esp), %edx
+ 697 0862 8D4E20   		leal	32(%esi), %ecx
+ 698 0865 897C240C 		movl	%edi, 12(%esp)
+ 699 0869 896C2410 		movl	%ebp, 16(%esp)
+ 700 086d 89442428 		movl	%eax, 40(%esp)
+ 701 0871 8B442450 		movl	80(%esp), %eax
+ 702 0875 894C2408 		movl	%ecx, 8(%esp)
+ 703 0879 89542404 		movl	%edx, 4(%esp)
+ 704 087d 890424   		movl	%eax, (%esp)
+ 705 0880 E87BF7FF 		call	_farsh_keyed
+ 705      FF
+ 706 0885 8B542428 		movl	40(%esp), %edx
+ 707 0889 8B4C2468 		movl	104(%esp), %ecx
+ 708 088d 890491   		movl	%eax, (%ecx,%edx,4)
+ 709 0890 8D4303   		leal	3(%ebx), %eax
+ 710 0893 8B542454 		movl	84(%esp), %edx
+ 711 0897 8D4E30   		leal	48(%esi), %ecx
+ 712 089a 897C240C 		movl	%edi, 12(%esp)
+ 713 089e 896C2410 		movl	%ebp, 16(%esp)
+ 714 08a2 89442428 		movl	%eax, 40(%esp)
+ 715 08a6 8B442450 		movl	80(%esp), %eax
+ 716 08aa 83C304   		addl	$4, %ebx
+ 717 08ad 894C2408 		movl	%ecx, 8(%esp)
+ 718 08b1 89542404 		movl	%edx, 4(%esp)
+ 719 08b5 83C640   		addl	$64, %esi
+ 720 08b8 890424   		movl	%eax, (%esp)
+ 721 08bb E840F7FF 		call	_farsh_keyed
+ 721      FF
+ 722 08c0 3B5C245C 		cmpl	92(%esp), %ebx
+ 723 08c4 8B4C2468 		movl	104(%esp), %ecx
+ 724 08c8 8B542428 		movl	40(%esp), %edx
+ 725 08cc 890491   		movl	%eax, (%ecx,%edx,4)
+ 726 08cf 0F852AFF 		jne	L95
+ 726      FFFF
+ 727              	L90:
+ 728 08d5 83C43C   		addl	$60, %esp
+ 729 08d8 5B       		popl	%ebx
+ 730 08d9 5E       		popl	%esi
+ 731 08da 5F       		popl	%edi
+ 732 08db 5D       		popl	%ebp
+ 733 08dc C3       		ret
+ 734              	L117:
+ 735 08dd E8000000 		call	_abort
+ 735      00
+ 736              		.section	.text.unlikely,"x"
+ 737              	LCOLDE2:
+ 738              		.text
+ 739              	LHOTE2:
+ 740              		.section	.text.unlikely,"x"
+ 741              	LCOLDB3:
+ 742              		.text
+ 743              	LHOTB3:
+ 744 08e2 8DB42600 		.p2align 4,,15
+ 744      0000008D 
+ 744      BC270000 
+ 744      0000
+ 745              		.globl	_farsh
+ 747              	_farsh:
+ 748 08f0 83EC1C   		subl	$28, %esp
+ 749 08f3 8B442428 		movl	40(%esp), %eax
+ 750 08f7 8B54242C 		movl	44(%esp), %edx
+ 751 08fb 8B4C2424 		movl	36(%esp), %ecx
+ 752 08ff C7442408 		movl	$_FARSH_KEYS, 8(%esp)
+ 752      00000000 
+ 753 0907 8944240C 		movl	%eax, 12(%esp)
+ 754 090b 8B442420 		movl	32(%esp), %eax
+ 755 090f 89542410 		movl	%edx, 16(%esp)
+ 756 0913 894C2404 		movl	%ecx, 4(%esp)
+ 757 0917 890424   		movl	%eax, (%esp)
+ 758 091a E8E1F6FF 		call	_farsh_keyed
+ 758      FF
+ 759 091f 83C41C   		addl	$28, %esp
+ 760 0922 C3       		ret
+ 761              		.section	.text.unlikely,"x"
+ 762              	LCOLDE3:
+ 763              		.text
+ 764              	LHOTE3:
+ 765 0923 90909090 		.section .rdata,"dr"
+ 765      90909090 
+ 765      90909090 
+ 765      90
+ 766              		.align 64
+ 767              	_FARSH_KEYS:
+ 768 0000 396CFEB8 		.long	-1191285703
+ 769 0004 BE4BA423 		.long	597969854
+ 770 0008 2C81017C 		.long	2080473388
+ 771 000c 1CAD21F7 		.long	-148787940
+ 772 0010 E96DD4DE 		.long	-556503575
+ 773 0014 DB979083 		.long	-2087675941
+ 774 0018 A4A44072 		.long	1916839076
+ 775 001c 1F67B3B7 		.long	-1212979425
+ 776 0020 4EE679CB 		.long	-881203634
+ 777 0024 78E5C0CC 		.long	-859773576
+ 778 0028 7DD05A82 		.long	-2107977603
+ 779 002c 2172FFCC 		.long	-855674335
+ 780 0030 744608B8 		.long	-1207417228
+ 781 0034 8E2443F7 		.long	-146594674
+ 782 0038 E69035E0 		.long	-533360410
+ 783 003c 4C263A81 		.long	-2126895540
+ 784 0040 BB52283C 		.long	1009275579
+ 785 0044 CB00C391 		.long	-1849491253
+ 786 0048 8B65D088 		.long	-1999608437
+ 787 004c A32E531B 		.long	458436259
+ 788 0050 97486471 		.long	1902397591
+ 789 0054 4EF90DA2 		.long	-1576142514
+ 790 0058 46EF1938 		.long	941223750
+ 791 005c D8ACDEA9 		.long	-1445024552
+ 792 0060 3F76FAA8 		.long	-1459980737
+ 793 0064 3F349CE3 		.long	-476302273
+ 794 0068 C7BBDCF9 		.long	-102974521
+ 795 006c 1D4F0BC7 		.long	-955560163
+ 796 0070 4BE0518A 		.long	-1974345653
+ 797 0074 3159B4CD 		.long	-843818703
+ 798 0078 C97E9FC8 		.long	-929071415
+ 799 007c 647378D9 		.long	-646417564
+ 800 0080 52076A4F 		.long	1332348754
+ 801 0084 9C079BA7 		.long	-1483012196
+ 802 0088 9994C48F 		.long	-1882942311
+ 803 008c A9B7C98E 		.long	-1899382871
+ 804 0090 4922C933 		.long	868819529
+ 805 0094 4F40B64E 		.long	1320566863
+ 806 0098 4EFB2AFB 		.long	-81069234
+ 807 009c 554281A4 		.long	-1535032747
+ 808 00a0 981B0E2F 		.long	789453720
+ 809 00a4 243BE9AC 		.long	-1394001116
+ 810 00a8 CD508818 		.long	411586765
+ 811 00ac A7745C6C 		.long	1817998503
+ 812 00b0 0444FA66 		.long	1727677444
+ 813 00b4 83ACC5EA 		.long	-356143997
+ 814 00b8 C3EBD334 		.long	886303683
+ 815 00bc FFA081C5 		.long	-981360385
+ 816 00c0 EB6313FA 		.long	-99392533
+ 817 00c4 51DD0D17 		.long	386784593
+ 818 00c8 49DAF0B7 		.long	-1208952247
+ 819 00cc 265516D3 		.long	-753511130
+ 820 00d0 9E68D429 		.long	701786270
+ 821 00d4 58BE162B 		.long	722910808
+ 822 00d8 FCA1477D 		.long	2101846524
+ 823 00dc D1B8F88F 		.long	-1879525167
+ 824 00e0 CE31D07A 		.long	2060464590
+ 825 00e4 8F3ACB45 		.long	1170946703
+ 826 00e8 28041695 		.long	-1793719256
+ 827 00ec CAFBD7AF 		.long	-1344799798
+ 828 00f0 7E404BBB 		.long	-1152696194
+ 829 00f4 A4745299 		.long	-1722649436
+ 830 00f8 932D9AEB 		.long	-342217325
+ 831 00fc 0889E73B 		.long	1005029640
+ 832 0100 6C5F47ED 		.long	-314089620
+ 833 0104 F2D89C91 		.long	-1851991822
+ 834 0108 5A1E86D3 		.long	-746185126
+ 835 010c 0C39316E 		.long	1848719628
+ 836 0110 493A6AFE 		.long	-26592695
+ 837 0114 1409ADDC 		.long	-592639724
+ 838 0118 EB8B5006 		.long	105941995
+ 839 011c F39983A8 		.long	-1467770381
+ 840 0120 2F1158B0 		.long	-1336405713
+ 841 0124 79FAB0E8 		.long	-391054727
+ 842 0128 06DAB429 		.long	699718150
+ 843 012c FB53C2ED 		.long	-306031621
+ 844 0130 AD6DE9C3 		.long	-1008112211
+ 845 0134 832B376E 		.long	1849109379
+ 846 0138 53B1784F 		.long	1333309779
+ 847 013c 866EFAFF 		.long	-364922
+ 848 0140 ECEEBE21 		.long	566161132
+ 849 0144 02EACA01 		.long	30075394
+ 850 0148 0DE56712 		.long	308798733
+ 851 014c 2F09E611 		.long	300288303
+ 852 0150 98D219E8 		.long	-400960872
+ 853 0154 DD802F83 		.long	-2094038819
+ 854 0158 77244E0C 		.long	206447735
+ 855 015c EB8678BC 		.long	-1132951829
+ 856 0160 37665001 		.long	22046263
+ 857 0164 6896A88B 		.long	-1951885720
+ 858 0168 A0E7116D 		.long	1829889952
+ 859 016c 15FD12FC 		.long	-65864427
+ 860 0170 194CA586 		.long	-2035987431
+ 861 0174 DDE33C59 		.long	1497162717
+ 862 0178 E53FB1D2 		.long	-760135707
+ 863 017c 532B778E 		.long	-1904792749
+ 864 0180 CC604AAE 		.long	-1370857268
+ 865 0184 1B3B7A64 		.long	1685732123
+ 866 0188 E0867754 		.long	1417119456
+ 867 018c 8E37C43E 		.long	1053046670
+ 868 0190 89CF7A8D 		.long	-1921331319
+ 869 0194 47F936CA 		.long	-902366905
+ 870 0198 EFD5890E 		.long	243914223
+ 871 019c 3C6ADAAA 		.long	-1428526532
+ 872 01a0 09A1A46D 		.long	1839505673
+ 873 01a4 1CE1C69A 		.long	-1698242276
+ 874 01a8 EF916668 		.long	1751552495
+ 875 01ac 2BBD57A3 		.long	-1554531029
+ 876 01b0 9A1B6FD1 		.long	-781247590
+ 877 01b4 0303C738 		.long	952566531
+ 878 01b8 B322467D 		.long	2101748403
+ 879 01bc 8FFA6829 		.long	694745743
+ 880 01c0 B9BCA58C 		.long	-1935295303
+ 881 01c4 0510D6FC 		.long	-53080059
+ 882 01c8 965E8B22 		.long	579559062
+ 883 01cc 19CC9D2C 		.long	748538905
+ 884 01d0 3C24CF57 		.long	1473193020
+ 885 01d4 C1F9533C 		.long	1012136385
+ 886 01d8 2C95C70C 		.long	214406444
+ 887 01dc F0E46D68 		.long	1752032496
+ 888 01e0 B547A793 		.long	-1817753675
+ 889 01e4 10A5874E 		.long	1317512464
+ 890 01e8 AE915E97 		.long	-1755410002
+ 891 01ec 8EB9104C 		.long	1276164494
+ 892 01f0 8C067F8A 		.long	-1971386740
+ 893 01f4 AB196B34 		.long	879434155
+ 894 01f8 25A63C35 		.long	893167141
+ 895 01fc E0500AF2 		.long	-234204960
+ 896 0200 F62199CE 		.long	-828825098
+ 897 0204 14E066DF 		.long	-546906092
+ 898 0208 4BEF110A 		.long	168947531
+ 899 020c DF4DC88B 		.long	-1949807137
+ 900 0210 225DD284 		.long	-2066588382
+ 901 0214 6D9323C8 		.long	-937192595
+ 902 0218 C31E7494 		.long	-1804329277
+ 903 021c 608A2788 		.long	-2010674592
+ 904 0220 319364B8 		.long	-1201368271
+ 905 0224 107A707A 		.long	2054191632
+ 906 0228 D6CA9272 		.long	1922222806
+ 907 022c C244C6A7 		.long	-1480178494
+ 908 0230 FA6B15BD 		.long	-1122669574
+ 909 0234 78956C64 		.long	1684837752
+ 910 0238 D5DFF4B7 		.long	-1208688683
+ 911 023c A777829F 		.long	-1618839641
+ 912 0240 4E921370 		.long	1880330830
+ 913 0244 C34C67AD 		.long	-1385739069
+ 914 0248 059DAE2C 		.long	749640965
+ 915 024c 229A2A91 		.long	-1859479006
+ 916 0250 FA537CF6 		.long	-159624198
+ 917 0254 A9227E8D 		.long	-1921113431
+ 918 0258 2B37AE59 		.long	1504589611
+ 919 025c F3990185 		.long	-2063492621
+ 920 0260 2C10A263 		.long	1671565356
+ 921 0264 6112FFD6 		.long	-687926687
+ 922 0268 E18E7356 		.long	1450413793
+ 923 026c 5B1495AA 		.long	-1433070501
+ 924 0270 3228D1FD 		.long	-36624334
+ 925 0274 EB4D685B 		.long	1533562347
+ 926 0278 94DE8407 		.long	126148244
+ 927 027c 0E3962AA 		.long	-1436403442
+ 928 0280 19CF7CBB 		.long	-1149448423
+ 929 0284 72D5EF0F 		.long	267375986
+ 930 0288 CA415B56 		.long	1448821194
+ 931 028c 02D20622 		.long	570872322
+ 932 0290 7984602D 		.long	761300089
+ 933 0294 3DCD0F4C 		.long	1276103997
+ 934 0298 E33B6DD3 		.long	-747815965
+ 935 029c 659A5A15 		.long	358259301
+ 936 02a0 32E7F910 		.long	284813106
+ 937 02a4 1E0F9BAC 		.long	-1399124194
+ 938 02a8 3BA0721F 		.long	527605819
+ 939 02ac AE4094EA 		.long	-359382866
+ 940 02b0 4F4B675B 		.long	1533496143
+ 941 02b4 D127A831 		.long	833103825
+ 942 02b8 4F95CAEC 		.long	-322267825
+ 943 02bc 1ED62C3D 		.long	1026348574
+ 944 02c0 A43D8D76 		.long	1988967844
+ 945 02c4 C15A7493 		.long	-1821091135
+ 946 02c8 CB585D1D 		.long	492656843
+ 947 02cc B6F3864B 		.long	1267135414
+ 948 02d0 3A92BA2A 		.long	716870202
+ 949 02d4 4C81650E 		.long	241533260
+ 950 02d8 D963E08A 		.long	-1965005863
+ 951 02dc B06969CD 		.long	-848729680
+ 952 02e0 85156436 		.long	912528773
+ 953 02e4 9DF52A74 		.long	1948972445
+ 954 02e8 16133A61 		.long	1631195926
+ 955 02ec 71A48E33 		.long	864986225
+ 956 02f0 F31A8647 		.long	1199971059
+ 957 02f4 C39D4730 		.long	809999811
+ 958 02f8 81A47012 		.long	309372033
+ 959 02fc 69107708 		.long	142020713
+ 960 0300 D2F0C4E3 		.long	-473632558
+ 961 0304 4C872902 		.long	36276044
+ 962 0308 C13B8A5A 		.long	1519008705
+ 963 030c 33970DE3 		.long	-485648589
+ 964 0310 A2E55BD0 		.long	-799283806
+ 965 0314 BA31AFE2 		.long	-491834950
+ 966 0318 F9492022 		.long	572541433
+ 967 031c 6A3B929F 		.long	-1617806486
+ 968 0320 EC643F03 		.long	54486252
+ 969 0324 2BB628E5 		.long	-450316757
+ 970 0328 BDEF0182 		.long	-2113802307
+ 971 032c 77D80721 		.long	554162295
+ 972 0330 F12E31D8 		.long	-667865359
+ 973 0334 999F67A5 		.long	-1519935591
+ 974 0338 1BB53017 		.long	389068059
+ 975 033c D2162675 		.long	1965430482
+ 976 0340 09593005 		.long	87054601
+ 977 0344 0B44CA0D 		.long	231359499
+ 978 0348 D9CD9320 		.long	546557401
+ 979 034c 50AB0964 		.long	1678355280
+ 980 0350 CC8E5CBA 		.long	-1168339252
+ 981 0354 EA08478D 		.long	-1924724502
+ 982 0358 17099F42 		.long	1117718807
+ 983 035c B0FA62B7 		.long	-1218250064
+ 984 0360 75EA6151 		.long	1365371509
+ 985 0364 EBA0EB45 		.long	1173070059
+ 986 0368 414BF3B6 		.long	-1225569471
+ 987 036c 23710452 		.long	1376022819
+ 988 0370 231518E4 		.long	-468183773
+ 989 0374 0AE9748D 		.long	-1921718006
+ 990 0378 1C40FA54 		.long	1425686556
+ 991 037c C70CDADD 		.long	-572912441
+ 992 0380 2A18DF63 		.long	1675565098
+ 993 0384 F63E40C6 		.long	-968868106
+ 994 0388 E8C68E34 		.long	881772264
+ 995 038c F557FFB9 		.long	-1174448139
+ 996 0390 BDB852F6 		.long	-162350915
+ 997 0394 F3B0860F 		.long	260485363
+ 998 0398 8A083AFB 		.long	-80082806
+ 999 039c 3315C74D 		.long	1304892723
+ 1000 03a0 D217367B 		.long	2067142610
+ 1001 03a4 EB874EA3 		.long	-1555134485
+ 1002 03a8 DD9B2ABA 		.long	-1171612707
+ 1003 03ac 061338E3 		.long	-482864378
+ 1004 03b0 BBD6BA14 		.long	347788987
+ 1005 03b4 C2C76DC9 		.long	-915552318
+ 1006 03b8 B6543B33 		.long	859526326
+ 1007 03bc FA7CE49B 		.long	-1679524614
+ 1008 03c0 9992CF1D 		.long	500142745
+ 1009 03c4 995FEAE7 		.long	-404070503
+ 1010 03c8 CDEA8FB3 		.long	-1282413875
+ 1011 03cc F7E2CFC3 		.long	-1009786121
+ 1012 03d0 22E8875B 		.long	1535633442
+ 1013 03d4 56ABC539 		.long	969255766
+ 1014 03d8 8FA1F418 		.long	418685327
+ 1015 03dc 9C4D482D 		.long	759713180
+ 1016 03e0 19D56341 		.long	1097061657
+ 1017 03e4 989E7679 		.long	2037816984
+ 1018 03e8 F0678AF5 		.long	-175478800
+ 1019 03ec 020C5940 		.long	1079577602
+ 1020 03f0 C0719631 		.long	831943104
+ 1021 03f4 3A136B26 		.long	644551482
+ 1022 03f8 87B281AF 		.long	-1350454649
+ 1023 03fc 37F7316A 		.long	1781659447
+ 1024 0400 9701BCE3 		.long	-474218089
+ 1025 0404 13990755 		.long	1426561299
+ 1026 0408 96C6729F 		.long	-1619868010
+ 1027 040c C8003E36 		.long	910033096
+ 1028 0410 47391553 		.long	1393899847
+ 1029 0414 7F12FDEB 		.long	-335736193
+ 1030 0418 1905F600 		.long	16123161
+ 1031 041c 2AB6A646 		.long	1185330730
+ 1032 0420 8033B893 		.long	-1816644736
+ 1033 0424 2493E23F 		.long	1071813412
+ 1034 0428 9170C6DF 		.long	-540643183
+ 1035 042c 6D38620F 		.long	258095213
+ 1036 0430 795E37DC 		.long	-600351111
+ 1037 0434 3E3FEA8F 		.long	-1880473794
+ 1038 0438 D06384DF 		.long	-544971824
+ 1039 043c 7BFA0237 		.long	922942075
+ 1040 0440 5E435439 		.long	961823582
+ 1041 0444 48A6CA87 		.long	-2016762296
+ 1042 0448 EE8B15A9 		.long	-1458205714
+ 1043 044c 250CF308 		.long	150146085
+ 1044 0450 3629B866 		.long	1723345206
+ 1045 0454 EB3FFCE7 		.long	-402898965
+ 1046 0458 50543C18 		.long	406606928
+ 1047 045c 4543EFD7 		.long	-672185531
+ 1048 0460 63798C79 		.long	2039249251
+ 1049 0464 57F52CC0 		.long	-1070795433
+ 1050 0468 D1538509 		.long	159732689
+ 1051 046c AA1243FA 		.long	-96267606
+ 1052 0470 83F89EE2 		.long	-492898173
+ 1053 0474 8D12AF7C 		.long	2091848333
+ 1054 0478 7DA0B374 		.long	1957929085
+ 1055 047c 5BDFEFC8 		.long	-923803813
+ 1056 0480 8237B28D 		.long	-1917700222
+ 1057 0484 4A9F402C 		.long	742432586
+ 1058 0488 DA69E4DA 		.long	-622564902
+ 1059 048c 3F1B3E4D 		.long	1295915839
+ 1060 0490 589A7B2E 		.long	779852376
+ 1061 0494 53373EC8 		.long	-935446701
+ 1062 0498 A696FDCE 		.long	-822241626
+ 1063 049c 68B0DD44 		.long	1155379304
+ 1064 04a0 41D1AE5F 		.long	1605292353
+ 1065 04a4 F1D0E7DE 		.long	-555233039
+ 1066 04a8 B4DB23C2 		.long	-1037837388
+ 1067 04ac 04E1FB7B 		.long	2080104708
+ 1068 04b0 1D6E4D11 		.long	290287133
+ 1069 04b4 D59C0352 		.long	1375968469
+ 1070 04b8 9C0A7C30 		.long	813435548
+ 1071 04bc 129C28A6 		.long	-1507288046
+ 1072 04c0 3E8BEE20 		.long	552504126
+ 1073 04c4 0B4B7203 		.long	57821963
+ 1074 04c8 4AAE68BA 		.long	-1167544758
+ 1075 04cc A1F2C593 		.long	-1815743839
+ 1076 04d0 B27BF29A 		.long	-1695384654
+ 1077 04d4 BA0E0F48 		.long	1208946362
+ 1078 04d8 BE6B4CC1 		.long	-1051956290
+ 1079 04dc 871F33E7 		.long	-416079993
+ 1080 04e0 F44D10F0 		.long	-267366924
+ 1081 04e4 6353C022 		.long	583029603
+ 1082 04e8 8AD0E6B7 		.long	-1209610102
+ 1083 04ec 49C4156F 		.long	1863697481
+ 1084 04f0 CDE29E4B 		.long	1268703949
+ 1085 04f4 AE782C6B 		.long	1798076590
+ 1086 04f8 7326ED25 		.long	636298867
+ 1087 04fc 966525B6 		.long	-1239063146
+ 1088 0500 0348AD99 		.long	-1716697085
+ 1089 0504 108F4F65 		.long	1699712784
+ 1090 0508 64CA9EE8 		.long	-392246684
+ 1091 050c DF06A5D9 		.long	-643496225
+ 1092 0510 FAC50D53 		.long	1393411578
+ 1093 0514 5CBE75FE 		.long	-25837988
+ 1094 0518 3D8343A5 		.long	-1522302147
+ 1095 051c 45FD39F7 		.long	-147194555
+ 1096 0520 88B40516 		.long	369472648
+ 1097 0524 4A610FE5 		.long	-451976886
+ 1098 0528 83DF30E9 		.long	-382673021
+ 1099 052c 5D194045 		.long	1161828701
+ 1100 0530 320FDAF2 		.long	-220590286
+ 1101 0534 9CF7046B 		.long	1795487644
+ 1102 0538 993CC7E3 		.long	-473482087
+ 1103 053c 5C26A5B3 		.long	-1281022372
+ 1104 0540 7DE01B5A 		.long	1511776381
+ 1105 0544 2A3DA1BD 		.long	-1113506518
+ 1106 0548 1C28DCED 		.long	-304338916
+ 1107 054c 9AA3D9E9 		.long	-371612774
+ 1108 0550 F1EF9BDE 		.long	-560205839
+ 1109 0554 47173C57 		.long	1463555911
+ 1110 0558 3E5BBE40 		.long	1086217022
+ 1111 055c 68E95637 		.long	928442728
+ 1112 0560 B6778096 		.long	-1769965642
+ 1113 0564 8FA22565 		.long	1696965263
+ 1114 0568 35077D74 		.long	1954350901
+ 1115 056c 1DC10E8A 		.long	-1978744547
+ 1116 0570 F53AC049 		.long	1237334773
+ 1117 0574 5BF4DEF3 		.long	-203492261
+ 1118 0578 4D21C9C3 		.long	-1010228915
+ 1119 057c 6DE7A29E 		.long	-1633491091
+ 1120 0580 15A7D3FA 		.long	-86792427
+ 1121 0584 89ADA7CA 		.long	-894980727
+ 1122 0588 4C8E82DE 		.long	-561869236
+ 1123 058c D59B76A5 		.long	-1518953515
+ 1124 0590 5ADB7C46 		.long	1182587738
+ 1125 0594 CBCAF2D5 		.long	-705508661
+ 1126 0598 82D1EB68 		.long	1760285058
+ 1127 059c 1A34408D 		.long	-1925172198
+ 1128 05a0 87685521 		.long	559245447
+ 1129 05a4 6F5F0A00 		.long	679791
+ 1130 05a8 73A4D85A 		.long	1524147315
+ 1131 05ac 86E8E7AF 		.long	-1343756154
+ 1132 05b0 397D9998 		.long	-1734771399
+ 1133 05b4 18D25A94 		.long	-1805987304
+ 1134 05b8 930CBE46 		.long	1186860179
+ 1135 05bc 3ABDA593 		.long	-1817854662
+ 1136 05c0 8C4AFA3F 		.long	1073367692
+ 1137 05c4 36D934D8 		.long	-667625162
+ 1138 05c8 2A2A022F 		.long	788671018
+ 1139 05cc 6B1C7920 		.long	544808043
+ 1140 05d0 1615B55D 		.long	1572148502
+ 1141 05d4 D2EEEF8D 		.long	-1913655598
+ 1142 05d8 A528EE9D 		.long	-1645336411
+ 1143 05dc A7EB8851 		.long	1367927719
+ 1144 05e0 678C4FAB 		.long	-1420850073
+ 1145 05e4 96ACCE48 		.long	1221504150
+ 1146 05e8 6FE1112A 		.long	705814895
+ 1147 05ec 6D3B59C1 		.long	-1051116691
+ 1148              		.ident	"GCC: (i686-posix-sjlj-rev2, Built by MinGW-W64 project) 4.9.2"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 farsh.c
-  M:\Temp\ccmjQBT3.s:9      .text:0000000000000000 _farsh_keyed
-  M:\Temp\ccmjQBT3.s:398    .text:0000000000000460 _farsh_keyed_n
-  M:\Temp\ccmjQBT3.s:604    .text:0000000000000700 _farsh_n
-  M:\Temp\ccmjQBT3.s:828    .rdata:0000000000000000 _FARSH_KEYS
-  M:\Temp\ccmjQBT3.s:812    .text:00000000000009b0 _farsh
+  M:\Temp\ccjCuuP3.s:9      .text:0000000000000000 _farsh_keyed
+  M:\Temp\ccjCuuP3.s:430    .text:00000000000004d0 _farsh_keyed_n
+  M:\Temp\ccjCuuP3.s:584    .text:00000000000006d0 _farsh_n
+  M:\Temp\ccjCuuP3.s:767    .rdata:0000000000000000 _FARSH_KEYS
+  M:\Temp\ccjCuuP3.s:747    .text:00000000000008f0 _farsh
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+_abort
