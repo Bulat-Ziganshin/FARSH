@@ -1,12 +1,15 @@
 # FARSH
-Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). You can use the FARSH as keyed hash by calling `farsh_keyed()` with 1024-byte key or `farsh_keyed_n()` with key of `1008+n*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
+Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). Also you can use the FARSH as 32-bit keyed hash by calling `farsh_keyed()` with 1024-byte key or as `32*N -bit` keyed hash by calling `farsh_keyed_n()` with key of `1008+N*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
 
 # Features / to-do list
 - [x] hashes up to 1024 bits long (`farsh_n`)
 - [x] hashes with user-supplied key material (`farsh_keyed` and `farsh_keyed_n`)
+- [x] [successfully passed](SMHasher/reports/smhasher-farsh32-report.txt) the [SMHasher](https://code.google.com/p/smhasher) testsuite
+- [ ] even faster and better quality hash mixing
 - [x] SSE2/AVX2 manually-optimized main loop
+- [x] 16-byte aligned key material and (optionally) input data for maximum speed on older CPUs
 - [ ] manual unrolling of main loop (since msvc/icl can't do it themselves)
-- [x] fixed [issues](https://github.com/Bulat-Ziganshin/FARSH/blob/v0.1/SMHasher/reports/smhasher-farsh32-report.txt) found by [SMHasher](https://code.google.com/p/smhasher) testsuite
+- [ ] try PSLLQ instead of PSHUFD in SSE2 code
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 
 # Internals
