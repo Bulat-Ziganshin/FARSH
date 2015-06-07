@@ -115,9 +115,9 @@ static UINT final_hash (ULONG h64)
 }
 
 /* Hash the buffer with the user-supplied key material */
-UINT farsh_keyed (const void *data, size_t bytes, const void *key)
+UINT farsh_keyed (const void *data, size_t bytes, const void *key, ULONG seed)
 {
-    ULONG sum = 0;  size_t chunk = 0;
+    ULONG sum = seed;  size_t chunk = 0;
     const char *ptr     = (const char*) data;
     const UINT *key_ptr = (const UINT*) key;
     while (bytes)
@@ -133,23 +133,23 @@ UINT farsh_keyed (const void *data, size_t bytes, const void *key)
 }
 
 /* Hash the buffer with the user-supplied key material and return hash of 32*n bits long */
-void farsh_keyed_n (const void *data, size_t bytes, const void *key, int n, void *hash)
+void farsh_keyed_n (const void *data, size_t bytes, const void *key, int n, ULONG seed, void *hash)
 {
     int i;  UINT *hash_ptr = (UINT*)hash;  const UINT *key_ptr = (const UINT*) key;
     for (i=0; i < n; i++)
-        hash_ptr[i] = farsh_keyed (data, bytes, key_ptr+i);
+        hash_ptr[i] = farsh_keyed (data, bytes, key_ptr+i, seed);
 }
 
 /* Hash the buffer and return hash of 32*n bits long (n<=32), starting with hash number 'k' */
-void farsh_n (const void *data, size_t bytes, int k, int n, void *hash)
+void farsh_n (const void *data, size_t bytes, int k, int n, ULONG seed, void *hash)
 {
-    farsh_keyed_n (data, bytes, FARSH_KEYS+k, n, hash);
+    farsh_keyed_n (data, bytes, FARSH_KEYS+k, n, seed, hash);
 }
 
 /* Hash the buffer */
-UINT farsh (const void *data, size_t bytes)
+UINT farsh (const void *data, size_t bytes, ULONG seed)
 {
-    return farsh_keyed (data, bytes, FARSH_KEYS);
+    return farsh_keyed (data, bytes, FARSH_KEYS, seed);
 }
 
 #undef STRIPE

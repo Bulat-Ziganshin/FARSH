@@ -26,13 +26,13 @@ int main()
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
     for (int i=0; i<=32; i++)
     {
-        unsigned h = farsh (data+i, DATASIZE+1-i);
+        unsigned h = farsh (data+i, DATASIZE+1-i, 0);
         if (h==42)  break;   // anti-optimization trick
 
         static char out[32*4];
         for (int j=1; j<=32; j++)
         {
-            farsh_n (data+i, DATASIZE+1-i, 0, j, out);
+            farsh_n (data+i, DATASIZE+1-i, 0, j, 0, out);
             if (*out==42)  break;
         }
     }
@@ -46,7 +46,7 @@ int main()
     for (int i=0; i<DATASET/DATASIZE; i++)
     {
         data[0]=(char)i;
-        unsigned h = farsh (data, DATASIZE);
+        unsigned h = farsh (data, DATASIZE, 0);
         if (h==42)  break;
         if (i==42)  printf(" (%x)", h);
         //printf("\n %5d %08x ", i, h);
