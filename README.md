@@ -1,7 +1,8 @@
-FARSH - Fast and Reliable (but not Secure) 32-bit Hash.
+FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but not Secure) 32-bit Hash.
 
 # Features / to-do list
-- [x] hash values up to 1024 bits long and hashing with user-supplied key material
+- [x] compute hashes up to 1024 bits long
+- [x] hashing with user-supplied key material
 - [x] [successfully passed](SMHasher/reports/smhasher-farsh32-report.txt) the [SMHasher](https://code.google.com/p/smhasher) testsuite
 - [ ] even faster and better quality hash mixing
 - [x] SSE2/AVX2 manually-optimized main loop
