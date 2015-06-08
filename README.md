@@ -1,4 +1,4 @@
-FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but not Secure) 32-bit Hash. More info at [encode.ru](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!)
+FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but not Secure) 32-bit Hash. Discussion and additional benchmarks are at [encode.ru](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!)
 
 # Features / to-do list
 - [x] compute hashes up to 1024 bits long
