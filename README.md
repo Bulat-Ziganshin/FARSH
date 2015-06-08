@@ -22,9 +22,9 @@ FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but n
 # Internals
 The current FARSH version is built from two hashing algorithms. 
 
-Lower-level hash algorithm splits all input data into 1024-byte blocks and computes hash value for every block. It's the very simple cycle borrowed from UHASH that combines 1024 bytes of input data with 1024 bytes of key material. The hash value returned by this cycle is 64-bit long, and there is a math proof that it has 32 bits of entropy. So the lower-level algorithm compresses 1024-byte blocks of input data into 64-bit values each carrying 32 bits of entropy. 
+Low-level hash algorithm splits all input data into 1024-byte blocks and computes hash value for every block. It's the very simple cycle borrowed from UHASH that combines 1024 bytes of input data with 1024 bytes of key material. The hash value returned by this cycle is 64-bit long, and there is a math proof that it has 32 bits of entropy. So the low-level algorithm compresses 1024-byte blocks of input data into 64-bit values each carrying 32 bits of entropy.
 
-Higher-level hash algorithm is stripped-down version of xxHash64. It gets sequence of 64-bit values from the previous level and combines them into 32-bit hash value. Since the original xxHash64 algorithm successfully passes all SMHasher tests while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash from sequence of numbers with 32-bit entropy.
+High-level hash algorithm is stripped-down version of xxHash64. It gets sequence of 64-bit values from the previous level and combines them into 32-bit hash value. Since the original xxHash64 algorithm successfully passes all SMHasher tests while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash from the sequence of numbers each carrying 32 bits of entropy.
 
 
 
