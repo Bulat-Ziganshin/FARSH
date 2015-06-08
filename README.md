@@ -14,7 +14,7 @@ FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but n
  
 #API
 - `U32 farsh(void *data, size_t size, U64 seed)` returns 32-bit hash of the `data`
-- `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)` computes `n` 32-bit hashes starting with the hash number `k` and writes the results to the `hash`. Hash computed by `farsh` has number 0. The function aborts if `n+k>32`.
+- `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)` computes `n` 32-bit hashes starting with the hash number `k` and writes the results to the `hash`. It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` has number 0. The function aborts if `n+k>32`.
 - `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using 1024-byte long 16-byte aligned `key`.
 - `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)` computes `n` 32-bit hashes using `1008+n*16`-byte long 16-byte aligned `key` and writes the results to the `hash`.
 - Every hash function accepts 64-bit `seed` that can be used to "personalize" the hash value. Seeding may have lower quality than in the MurMurHash/xxHash since seed value is mixed with block hashes rather than raw data.
