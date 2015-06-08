@@ -1,4 +1,4 @@
-FARSH - Fast and Reliable (but not Secure) 32-bit Hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). Also you can use the FARSH as 32-bit keyed hash by calling `farsh_keyed()` with 1024-byte key or as `32*N -bit` keyed hash by calling `farsh_keyed_n()` with key of `1008+N*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
+FARSH - Fast and Reliable (but not Secure) 32-bit Hash.
 
 # Features / to-do list
 - [x] hashes up to 1024 bits long and hashing with user-supplied key material
@@ -30,7 +30,9 @@ Higher-level hash algorithm is stripped-down version of xxHash64. It gets sequen
 
 
 
-# Internals
+# Scratchpad
+Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). Also you can use the FARSH as 32-bit keyed hash by calling `farsh_keyed()` with 1024-byte key or as `32*N -bit` keyed hash by calling `farsh_keyed_n()` with key of `1008+N*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
+
 FARSH is essentially [UHASH](https://tools.ietf.org/html/rfc4418#section-5) with higher-level hashing algorithms replaced by simpler non-cryptographic ones. [Universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) kernel derived from UHASH returns 64-bit hash having 32-bit entropy for each successive 1024-byte block of input data, and higher-level hash combining code derived from xxHash64 mix block hashes. 
 
 We can try to further improve the hash combining by employing tabulated hashing, CRC and formulas from XXHash and MurMurHash.
