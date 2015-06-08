@@ -26,7 +26,7 @@ Low-level hashing algorithm splits all input data into 1024-byte blocks and comp
 
 High-level hashing algorithm is stripped-down version of xxHash64. It gets sequence of 64-bit values from the previous level and combines them into final 32-bit hash result. Since the original xxHash64 algorithm successfully passes all SMHasher tests while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash from the sequence of numbers each carrying 32 bits of entropy.
 
-The power of the FARSH algorithm comes from its inner cycle, that is very short (read: fast) and allows highly-parallel implementations, so it can fully utilize power of multi-core, SIMD, VLIW and SIMT (GPGPU) architectures. At the same time, we have math proof that it can deliver 32 bits of entropy so we can use it without any further thoughts.
+The power of the FARSH algorithm comes from its inner cycle, that is very short (read: fast) and allows highly-parallel implementations, so it can fully utilize power of multi-core, SIMD, VLIW and SIMT (GPGPU) architectures. At the same time, we have math proof that it can deliver 32 bits of entropy so we can use it without any doubts.
 
 
 
