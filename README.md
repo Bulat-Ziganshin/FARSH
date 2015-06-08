@@ -22,11 +22,11 @@ FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but n
 # Internals
 The current FARSH version combines two hashing algorithms. 
 
-Low-level hashing algorithm splits all input data into 1024-byte blocks and computes hash value for every block. It's the very simple cycle borrowed from UHASH that combines 1024 bytes of input data with 1024 bytes of key material. The hash value returned by this cycle is 64-bit long, and [UMAC thesis](http://fastcrypto.org/umac/umac_thesis.pdf) includes math proof that it has 32 bits of entropy. So the low-level algorithm compresses each 1024-byte block of input data into 64-bit value carrying 32 bits of entropy.
+Low-level hashing algorithm splits all input data into 1024-byte blocks and computes hash value for every block. It's the very short cycle borrowed from UHASH that combines 1024 bytes of input data with 1024 bytes of key material. The hash value returned by this cycle is 64-bit long, and [UMAC thesis](http://fastcrypto.org/umac/umac_thesis.pdf) proved that it has 32 bits of entropy. So the low-level algorithm compresses each 1024-byte block of input data into 64-bit value carrying 32 bits of entropy.
 
 High-level hashing algorithm is stripped-down version of xxHash64. It gets sequence of 64-bit values from the previous level and combines them into final 32-bit hash result. Since the original xxHash64 algorithm successfully passes all SMHasher tests while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash from the sequence of numbers each carrying 32 bits of entropy.
 
-
+The power of the FARSH algorithm comes from its inner cycle, that is very short (read: fast) and allows highly-parallel implementations, so it can fully utilize power of multi-core, SIMD, VLIW and SIMT (GPGPU) architectures. At the same time, we have math proof that it can deliver 32 bits of entropy so we can use it without any further thoughts.
 
 
 
@@ -47,9 +47,9 @@ Hence, I propose you to clone the repository and try to develop your own version
 # Universal hashing
 The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula used here (and derived from UMAC) is as simple as
 ```C
-    uint64 sum = 0;  uint32 *data, *key;
+    U64 sum = 0;  U32 *data, *key;
     for (i=0; i < elements; i+=2)
-        sum += (uint64)(data[i] + key[i]) * (uint64)(data[i+1] + key[i+1]);
+        sum += (U64)(data[i] + key[i]) * (U64)(data[i+1] + key[i+1]);
 ```
 
 ## The main loop
