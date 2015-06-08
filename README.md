@@ -1,5 +1,4 @@
-# FARSH
-Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). Also you can use the FARSH as 32-bit keyed hash by calling `farsh_keyed()` with 1024-byte key or as `32*N -bit` keyed hash by calling `farsh_keyed_n()` with key of `1008+N*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
+FARSH - Fast and Reliable (but not Secure) 32-bit Hash. Longer hashes (of `32*N` bits, up to 1024 bits) can be calculated by `farsh_n()` with N-fold speed loss. Main loop uses [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula from [UMAC](http://en.wikipedia.org/wiki/UMAC) with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes). Also you can use the FARSH as 32-bit keyed hash by calling `farsh_keyed()` with 1024-byte key or as `32*N -bit` keyed hash by calling `farsh_keyed_n()` with key of `1008+N*16` bytes. All FARSH hashing functions also accept 64-bit `seed` value.
 
 # Features / to-do list
 - [x] hashes up to 1024 bits long (`farsh_n`)
@@ -12,6 +11,12 @@ Fast and reliable (but not secure) 32-bit hash. Longer hashes (of `32*N` bits, u
 - [ ] try PSLLQ instead of PSHUFD in SSE2 code to improve speed on older CPUs
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 - [ ] `farsh64*/farsh128*` APIs for faster computation of multi-word hashes
+ 
+#API
+- `U32 farsh(void *data, size_t size, U64 seed)` returns 32-bit hash of the `data`
+- `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)` computes `n` 32-bit hashes starting with the hash number `k` and writes the results to the `hash`. Hash computed by `farsh` has number 0. The function aborts if `n+k>32`.
+- `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using 1024-byte long 16-byte aligned `key`.
+- `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)` computes `n` 32-bit hashes using `1008+n*16`-byte long 16-byte aligned `key` and writes the results to the `hash`.
 
 # Internals
 The current FARSH version is built from two hashing algorithms. 
