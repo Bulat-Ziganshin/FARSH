@@ -39,13 +39,13 @@ The [universal hashing](http://en.wikipedia.org/wiki/Universal_hashing) formula 
 ```
 
 ## The main loop
-- [Source code](farsh.c#L22)
+- [Source code](farsh.c#L28)
 - Asm code (can be found by searching for adcl+mull/pmuludq instructions)
-  - [gcc -O3 -funroll-loops -m32](asm-listings/gcc-x86.lst#L300)
-  - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](asm-listings/gcc-x86-sse2.lst#L323)
-  - [gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2](asm-listings/gcc-x86-avx2.lst#L320)
-  - [gcc -O3 -funroll-loops -m64 -DSSE2](asm-listings/gcc-x64.lst#L260)
-  - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm-listings/gcc-x64-avx2.lst#L262)
+  - [gcc -O3 -funroll-loops -m32](asm-listings/gcc-x86.lst#L340)
+  - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](asm-listings/gcc-x86-sse2.lst#L349)
+  - [gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2](asm-listings/gcc-x86-avx2.lst#L350)
+  - [gcc -O3 -funroll-loops -m64 -DSSE2](asm-listings/gcc-x64.lst#L252)
+  - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm-listings/gcc-x64-avx2.lst#L259)
 
 ## Benchmark on Haswell i7-4770
 Executable      | Speed                       | Compiler
