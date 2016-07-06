@@ -26,12 +26,18 @@ int main()
     GetCpuidFeatures(&features);
 //    printf("%12.12s\n", str.IDString);
 
-//    printf("Extended brand string: \"");
     for (unsigned i=0x80000002;i<=0x80000004;i++){
       unsigned long eax,ebx,ecx,edx;
 
       cpuid(i,eax,ebx,ecx,edx); 
       printregs(eax,ebx,ecx,edx);
     }
-    printf("\n");
+    printf(": %s\n", features.AVX? "AVX" : 
+                     features.AESInput? "AES-NI" : 
+                     features.SSE42? "SSE 4.2" : 
+                     features.SSE41? "SSE 4.1" : 
+                     features.SupplSSE3? "Supplemental SSE3" : 
+                     features.SSE3? "SSE3" : 
+                     features.SSE2? "SSE2" : 
+                     features.SSE?   "SSE" : "no SSE");
 }

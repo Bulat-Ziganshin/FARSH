@@ -67,7 +67,7 @@ struct CpuidFeatures
             unsigned AESInput       :1;//26     25
             unsigned XSAVE          :1;//27     26
             unsigned OSXSAVE        :1;//28     27
-            unsigned AVX256         :1;//29     28
+            unsigned AVX            :1;//29     28
             unsigned Reserved34     :3;//31     29-31
             // Fourth ID String
             unsigned FPU            :1;//1      0   
