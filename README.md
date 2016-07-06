@@ -79,7 +79,7 @@ Fast non-cryptographic hashes:
 
 Cryprographically secure keyed hashes:
 - [UMAC] and [VMAC]
-- The [Poly1305-AES](http://cr.yp.to/papers.html#poly1305) message-authentication code
+- The [Poly1305-AES](https://en.wikipedia.org/wiki/Poly1305) message-authentication code
 - [SipHash](https://131002.net/siphash/)
 - [HighwayHash](https://github.com/google/highwayhash)
 - [Cryptoanalysis](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash) of existing hash functions
