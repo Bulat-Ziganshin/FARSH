@@ -1,31 +1,24 @@
 #pragma once
 
-
+#include <stdint.h>
+#if defined(_MSC_VER)
+# include <intrin.h>
+#endif
 
 enum CPUIDInfoType
 {
-    String = 0, FeatureSupport = 1,
+    FeatureSupport = 1,  BrandNameFirst = 0x80000002,  BrandNameLast = 0x80000004
 
 };
-struct CpuidString
-{
-    union
-    {
-        int CPUInfo[4];
-        struct
-        {
-            int maxiType;
-            char IDString[12];
-        };
-    };
-};
+
 struct CpuidFeatures
 {
     union
     {
-        int CPUInfo[4];
+        uint32_t CPUInfo[4*4];
         struct
         {
+            char IDString[3*4*4];
             // First ID string
             unsigned SteppingID     :4;//4      0-3
             unsigned Model          :4;//8      4-7
@@ -107,25 +100,27 @@ struct CpuidFeatures
 };
 
 
-#ifdef __WIN32
-#include<intrin.h>
-#endif
-#ifdef __linux__
-#define __cpuid(out, infoType)\
-    asm("cpuid": "=a" (out[0]), "=b" (out[1]), "=c" (out[2]), "=d" (out[3]): "a" (infoType));
-#endif
-
-inline void GetCpuidString (CpuidString *stringStruct)
+void run_cpuid(uint32_t eax, uint32_t ecx, uint32_t* abcd)
 {
-    int info[4];
-    __cpuid(info, String);
-    stringStruct->CPUInfo[0] = info[0];
-    stringStruct->CPUInfo[1] = info[1];
-    stringStruct->CPUInfo[2] = info[3];
-    stringStruct->CPUInfo[3] = info[2];
-}
+#if defined(_MSC_VER)
+    __cpuidex(abcd, eax, ecx);
+#else
+    uint32_t ebx, edx;
+# if defined( __i386__ ) && defined ( __PIC__ )
+     /* in case of PIC under 32-bit EBX cannot be clobbered */
+    __asm__ ( "movl %%ebx, %%edi \n\t cpuid \n\t xchgl %%ebx, %%edi" : "=D" (ebx),
+# else
+    __asm__ ( "cpuid" : "+b" (ebx),
+# endif
+              "+a" (eax), "+c" (ecx), "=d" (edx) );
+    abcd[0] = eax; abcd[1] = ebx; abcd[2] = ecx; abcd[3] = edx;
+#endif
+}     
 
 inline void GetCpuidFeatures (CpuidFeatures *featureStruct)
 {
-    __cpuid(featureStruct->CPUInfo, FeatureSupport);
+    for (unsigned i=BrandNameFirst; i<=BrandNameLast; i++)
+        run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i-BrandNameFirst));
+
+    run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo+3*4);
 }
