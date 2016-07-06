@@ -71,23 +71,24 @@ farsh-x64-avx2  | 46.198 GB/s = 43.025 GiB/s  | 57.904 GB/s = 53.927 GiB/s  |gcc
 
 ## Competition
 Fast non-cryptographic hashes:
-- [xxHash] (2012) and [xxHash64] (2014)
+- [xxHash] and [xxHash64]
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)
 - [MurmurHash3](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) (2011)
 - [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
-- Interesting historical [review](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
+- Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
 
 Cryprographically secure keyed hashes:
 - [UMAC] and [VMAC]
 - The [Poly1305-AES](http://cr.yp.to/papers.html#poly1305) message-authentication code
 - [SipHash](https://131002.net/siphash/)
 - [HighwayHash](https://github.com/google/highwayhash)
+- [Cryptoanalysis](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash) of existing hash functions
 
 
 
 [VMAC]: http://en.wikipedia.org/wiki/VMAC
 [UMAC]: http://en.wikipedia.org/wiki/UMAC
-[UMAC thesis](http://fastcrypto.org/umac/umac_thesis.pdf)
+[UMAC thesis]: http://fastcrypto.org/umac/umac_thesis.pdf
 [UHASH]: https://tools.ietf.org/html/rfc4418#section-5
 [universal hashing]: http://en.wikipedia.org/wiki/Universal_hashing
 [xxHash]: https://github.com/Cyan4973/xxHash
