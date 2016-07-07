@@ -61,15 +61,15 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
 
 ## Benchmark
 
-Benchmark done on Haswell i7-4770 (3.9 GHz) with -DALIGNED_DATA (i.e. input data are aligned on 64-byte boundary)
+Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with -DALIGNED_DATA (i.e. input data are aligned on 64-byte boundary).
 
 Executable      | FARSH 0.2 speed             | Internal loop speed         | Compiler
 ----------------|-----------------------------|-----------------------------|---------
-farsh-x86       |  5.424 GB/s =  5.051 GiB/s  |  6.457 GB/s =  6.014 GiB/s  |gcc -O3 -funroll-loops -m32
-farsh-x86-sse2  | 24.023 GB/s = 22.374 GiB/s  | 30.436 GB/s = 28.346 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DSSE2
-farsh-x86-avx2  | 32.554 GB/s = 30.318 GiB/s  | 58.783 GB/s = 54.746 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2
-farsh-x64       | 28.629 GB/s = 26.663 GiB/s  | 26.296 GB/s = 24.490 GiB/s  |gcc -O3 -funroll-loops -m64 -DSSE2
-farsh-x64-avx2  | 46.198 GB/s = 43.025 GiB/s  | 57.904 GB/s = 53.927 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2
+farsh-x86       |  5.394 GB/s =  5.023 GiB/s  |  7.746 GB/s =  7.214 GiB/s  |gcc -O3 -funroll-loops -m32
+farsh-x86-sse2  | 24.389 GB/s = 22.714 GiB/s  | 34.021 GB/s = 31.685 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DSSE2
+farsh-x86-avx2  | 33.042 GB/s = 30.773 GiB/s  | 62.453 GB/s = 58.164 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2
+farsh-x64       | 28.165 GB/s = 26.230 GiB/s  | 34.788 GB/s = 32.399 GiB/s  |gcc -O3 -funroll-loops -m64 -DSSE2
+farsh-x64-avx2  | 47.595 GB/s = 44.327 GiB/s  | 54.828 GB/s = 51.062 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2
 
 
 ## Competition

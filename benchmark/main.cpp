@@ -3,6 +3,9 @@
 #include "timer.h"
 #include "../farsh.c"
 
+// Should be the same as in farsh.c to ensure maximum speed
+#define STRIPE          1024
+
 #if __GNUC__
 #include <x86intrin.h>
 #define ALIGN(n)      __attribute__ ((aligned(n)))
@@ -58,20 +61,33 @@ int main()
     const int EXTRA_LOOPS = (100<<20) / DATASIZE;   // These extra loops are required to enable the SIMD engine and switch CPU core to the maximum frequency
     Timer t;
 
+
     for (int i=0; i < EXTRA_LOOPS+DATASET/DATASIZE; i++)
     {
+        if (i == EXTRA_LOOPS)
+            t.Start();
+
         unsigned h = farsh (data, DATASIZE, 0);
 
         if (h != 0xd300ddd8) {   // check hash correctness
             printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
             return 1;
         }
-
-        if (i == EXTRA_LOOPS)
-            t.Start();
     }
-
     t.Stop();  double speed = DATASET / t.Elapsed();
     printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+
+
+    t.Start();
+    for (int i=0; i < DATASET/STRIPE; i++)
+    {
+        data[STRIPE-1] = i;
+        unsigned long long h = farsh_fast ((unsigned*)data, FARSH_KEYS);
+        if (h==42) break;
+    }
+    t.Stop();  speed = DATASET / t.Elapsed();
+    printf("Internal loop:   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+
+
     return 0;
 }
