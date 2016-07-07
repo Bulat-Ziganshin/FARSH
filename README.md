@@ -53,23 +53,23 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
 - [Source code](farsh.c#L28)
 - Asm code (can be found by searching for adcl+mull/pmuludq instructions)
   - [gcc -O3 -funroll-loops -m32](asm-listings/gcc-x86.lst#L340)
-  - [gcc -O3 -funroll-loops -m32 -msse2 -DSSE2](asm-listings/gcc-x86-sse2.lst#L349)
-  - [gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2](asm-listings/gcc-x86-avx2.lst#L350)
-  - [gcc -O3 -funroll-loops -m64 -DSSE2](asm-listings/gcc-x64.lst#L252)
-  - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm-listings/gcc-x64-avx2.lst#L259)
+  - [gcc -O3 -funroll-loops -m32 -msse2 -DFARSH_SSE2](asm-listings/gcc-x86-sse2.lst#L349)
+  - [gcc -O3 -funroll-loops -m32 -mavx2 -DFARSH_AVX2](asm-listings/gcc-x86-avx2.lst#L350)
+  - [gcc -O3 -funroll-loops -m64        -DFARSH_SSE2](asm-listings/gcc-x64.lst#L252)
+  - [gcc -O3 -funroll-loops -m64 -mavx2 -DFARSH_AVX2](asm-listings/gcc-x64-avx2.lst#L259)
 
 
 ## Benchmark
 
-Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with -DALIGNED_DATA (i.e. input data are aligned on 64-byte boundary).
+Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with -DFARSH_ALIGNED_DATA (i.e. input data are aligned on 64-byte boundary).
 
 Executable      | FARSH 0.2 speed             | Internal loop speed         | Compiler
 ----------------|-----------------------------|-----------------------------|---------
 farsh-x86       |  5.394 GB/s =  5.023 GiB/s  |  7.746 GB/s =  7.214 GiB/s  |gcc -O3 -funroll-loops -m32
-farsh-x86-sse2  | 24.389 GB/s = 22.714 GiB/s  | 34.021 GB/s = 31.685 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DSSE2
-farsh-x86-avx2  | 33.042 GB/s = 30.773 GiB/s  | 62.453 GB/s = 58.164 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DAVX2
-farsh-x64       | 28.165 GB/s = 26.230 GiB/s  | 34.788 GB/s = 32.399 GiB/s  |gcc -O3 -funroll-loops -m64 -DSSE2
-farsh-x64-avx2  | 47.595 GB/s = 44.327 GiB/s  | 54.828 GB/s = 51.062 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2
+farsh-x86-sse2  | 24.389 GB/s = 22.714 GiB/s  | 34.021 GB/s = 31.685 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DFARSH_SSE2
+farsh-x86-avx2  | 33.042 GB/s = 30.773 GiB/s  | 62.453 GB/s = 58.164 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DFARSH_AVX2
+farsh-x64       | 28.165 GB/s = 26.230 GiB/s  | 34.788 GB/s = 32.399 GiB/s  |gcc -O3 -funroll-loops -m64        -DFARSH_SSE2
+farsh-x64-avx2  | 47.595 GB/s = 44.327 GiB/s  | 54.828 GB/s = 51.062 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DFARSH_AVX2
 
 
 ## Competition

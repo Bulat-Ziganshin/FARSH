@@ -28,7 +28,7 @@ ALIGN(64) static const UINT FARSH_KEYS [STRIPE_ELEMENTS + EXTRA_ELEMENTS] = {  /
 /* Internal: hash exactly STRIPE bytes */
 static ULONG farsh_fast (const UINT *data, const UINT *key)
 {
-#ifdef AVX2
+#ifdef FARSH_AVX2
     __m256i sum = _mm256_setzero_si256();  __m128i sum128;  int i;
     const __m256i *xdata = (const __m256i *) data;
     const __m256i *xkey  = (const __m256i *) key;
@@ -44,14 +44,14 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
     sum = _mm256_add_epi64 (sum, _mm256_shuffle_epi32(sum,3*4+2));              // return sum of four 64-bit values in the sum
     sum128 = _mm_add_epi64 (_mm256_castsi256_si128(sum), _mm256_extracti128_si256(sum,1));
     return *(ULONG*) &sum128;
-#elif defined(SSE2)
+#elif defined(FARSH_SSE2)
     __m128i sum = _mm_setzero_si128();  int i;
     const __m128i *xdata = (const __m128i *) data;
     const __m128i *xkey  = (const __m128i *) key;
 
     for (i=0; i < STRIPE/sizeof(__m128i); i++)
     {
-#ifdef ALIGNED_DATA
+#ifdef FARSH_ALIGNED_DATA
         __m128i d = _mm_load_si128 (xdata+i);
 #else
         __m128i d = _mm_loadu_si128 (xdata+i);

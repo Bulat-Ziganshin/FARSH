@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "timer.h"
-#include "../farsh.c"
 
-// Should be the same as in farsh.c to ensure maximum speed
+#include "../farsh.c"
+// Should be the same as in farsh.c to ensure correct execution and speed measurement!
 #define STRIPE          1024
+
+#if defined(FARSH_AVX2) || defined(FARSH_SSE2)
+#include "CpuID/CpuID.h"
+#endif
 
 #if __GNUC__
 #include <x86intrin.h>
@@ -18,6 +22,15 @@
 
 int main()
 {
+#ifdef FARSH_AVX2
+    struct CpuidFeatures features;  GetCpuidFeatures(&features);
+    if (! features.AVX2)  {printf("AVX2 not found!\n"); return 1;}
+#elif defined(FARSH_SSE2)
+    struct CpuidFeatures features;  GetCpuidFeatures(&features);
+    if (! features.SSE2)  {printf("SSE2 not found!\n"); return 1;}
+#endif
+
+
     // CHECK THE ZEROES HASHING
     const size_t ZEROES = 64*1024;
     ALIGN(64) static char zero[ZEROES] = {0};
@@ -32,7 +45,7 @@ int main()
     // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 12*1024;
     ALIGN(64) static char data_array[DATASIZE+1];
-#ifdef ALIGNED_DATA
+#ifdef FARSH_ALIGNED_DATA
         char *data = data_array;
 #else
         char *data = data_array + 1;
@@ -41,7 +54,7 @@ int main()
         data[i] = char((123456791u*i) >> ((i%16)+8));
 
 
-#ifndef ALIGNED_DATA
+#ifndef FARSH_ALIGNED_DATA
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
     for (int i=0; i<=64; i++)
     {
@@ -78,6 +91,7 @@ int main()
     printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
+    printf("Internal loop:");
     t.Start();
     for (int i=0; i < DATASET/STRIPE; i++)
     {
@@ -86,7 +100,7 @@ int main()
         if (h==42) break;
     }
     t.Stop();  speed = DATASET / t.Elapsed();
-    printf("Internal loop:   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    printf("   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
     return 0;
