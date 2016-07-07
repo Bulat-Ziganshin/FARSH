@@ -1,25 +1,24 @@
 #pragma once
 
 #include <stdint.h>
+#include <memory.h>
 #if defined(_MSC_VER)
 # include <intrin.h>
 #endif
 
 enum CPUIDInfoType
 {
-    FeatureSupport = 1,  BrandNameFirst = 0x80000002,  BrandNameLast = 0x80000004
-
+    FeatureSupport = 1,  NewestFeatureSupport = 7,  BrandNameFirst = 0x80000002,  BrandNameLast = 0x80000004
 };
 
 struct CpuidFeatures
 {
     union
     {
-        uint32_t CPUInfo[4*4];
+        uint32_t CPUInfo[6*4];
         struct
         {
-            char IDString[3*4*4];
-            // First ID string
+            // FeatureSupport: EAX
             unsigned SteppingID     :4;//4      0-3
             unsigned Model          :4;//8      4-7
             unsigned Family         :4;//12     8-11
@@ -28,12 +27,12 @@ struct CpuidFeatures
             unsigned ExtendedModel  :4;//20     16-19
             unsigned ExtendedFamily :8;//28     20-27
             unsigned Reserved12     :3;//32     28-31
-            // Second ID string
+            // FeatureSupport: EBX
             unsigned BrandIndex     :8;//8      0-7
             unsigned QwordCFLUSH    :8;//16     8-15
             unsigned LogicProcCount :8;//24     16-23
             unsigned ApicID         :8;//32     24-31
-            // Third ID string
+            // FeatureSupport: ECX
             unsigned SSE3           :1;//1      0   
             unsigned Reserved31     :2;//3      1-2
             unsigned MWAIT          :1;//4      3
@@ -62,7 +61,7 @@ struct CpuidFeatures
             unsigned OSXSAVE        :1;//28     27
             unsigned AVX            :1;//29     28
             unsigned Reserved34     :3;//31     29-31
-            // Fourth ID String
+            // FeatureSupport: EDX
             unsigned FPU            :1;//1      0   
             unsigned VME            :1;//2      1
             unsigned DE             :1;//3      2
@@ -95,12 +94,27 @@ struct CpuidFeatures
             unsigned TM             :1;//30     29
             unsigned Reserved43     :1;//31     30
             unsigned PBE            :1;//32     31
+            
+            // NewestFeatureSupport: EAX
+            unsigned Reserved_7_EAX :32;//32    0-31
+            // NewestFeatureSupport: EBX
+            unsigned Reserved_7_EBXa:5; //5     0-4
+            unsigned AVX2           :1; //6     5
+            unsigned Reserved_7_EBXb:10;//16    6-15
+            unsigned AVX512F        :1; //17    16
+            unsigned Reserved_7_EBXc:15;//32    17-31
+            // NewestFeatureSupport: ECX
+            unsigned Reserved_7_ECX :32;//32    0-31
+            // NewestFeatureSupport: EDX
+            unsigned Reserved_7_EDX :32;//32    0-31
+
+            char IDString[3*4*4+1];
         };
     };
 };
 
 
-void run_cpuid(uint32_t eax, uint32_t ecx, uint32_t* abcd)
+inline void run_cpuid (uint32_t eax, uint32_t ecx, uint32_t* abcd)
 {
 #if defined(_MSC_VER)
     __cpuidex(abcd, eax, ecx);
@@ -119,8 +133,10 @@ void run_cpuid(uint32_t eax, uint32_t ecx, uint32_t* abcd)
 
 inline void GetCpuidFeatures (CpuidFeatures *featureStruct)
 {
-    for (unsigned i=BrandNameFirst; i<=BrandNameLast; i++)
-        run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i-BrandNameFirst));
+    memset (featureStruct->CPUInfo, 0, sizeof(featureStruct->CPUInfo));
+    run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo);
+    run_cpuid (NewestFeatureSupport, 0, featureStruct->CPUInfo + 4);
 
-    run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo+3*4);
+    for (uint32_t i=BrandNameFirst; i<=BrandNameLast; i++)
+        run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i+2-BrandNameFirst));
 }

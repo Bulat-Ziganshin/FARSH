@@ -6,6 +6,8 @@ int main()
     struct CpuidFeatures features;
     GetCpuidFeatures(&features);
     printf("%s: %s\n", features.IDString,
+                       features.AVX512F? "AVX512F" : 
+                       features.AVX2? "AVX2" : 
                        features.AVX? "AVX" : 
                        features.AESInput? "AES-NI" : 
                        features.SSE42? "SSE 4.2" : 

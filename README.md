@@ -76,13 +76,14 @@ Fast non-cryptographic hashes:
 - [MurmurHash3](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) (2011)
 - [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
+- [More info about SMHasher](https://github.com/aappleby/smhasher/wiki/SMHasher)
 
 Cryprographically secure keyed hashes:
 - [UMAC] and [VMAC]
 - The [Poly1305-AES](https://en.wikipedia.org/wiki/Poly1305) message-authentication code
 - [SipHash](https://131002.net/siphash/)
 - [HighwayHash](https://github.com/google/highwayhash)
-- [Cryptoanalysis](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash) of existing hash functions
+- [Cryptoanalysis](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash) of existing hash functions on the example of [xxHash]
 
 
 
