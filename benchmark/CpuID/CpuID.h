@@ -2,13 +2,15 @@
 
 #include <stdint.h>
 #include <memory.h>
+#include <string.h>
 #if defined(_MSC_VER)
 # include <intrin.h>
 #endif
 
 enum CPUIDInfoType
 {
-    FeatureSupport = 1,  NewestFeatureSupport = 7,  BrandNameFirst = 0x80000002,  BrandNameLast = 0x80000004
+    RequestLastID = 0,  FeatureSupport = 1,  NewestFeatureSupport = 7,
+    RequestLastExtendedID = 0x80000000,  BrandNameFirst = 0x80000002,  BrandNameLast = 0x80000004
 };
 
 struct CpuidFeatures
@@ -33,7 +35,7 @@ struct CpuidFeatures
             unsigned LogicProcCount :8;//24     16-23
             unsigned ApicID         :8;//32     24-31
             // FeatureSupport: ECX
-            unsigned SSE3           :1;//1      0   
+            unsigned SSE3           :1;//1      0
             unsigned Reserved31     :2;//3      1-2
             unsigned MWAIT          :1;//4      3
             unsigned CPLDebug       :1;//5      4
@@ -62,7 +64,7 @@ struct CpuidFeatures
             unsigned AVX            :1;//29     28
             unsigned Reserved34     :3;//31     29-31
             // FeatureSupport: EDX
-            unsigned FPU            :1;//1      0   
+            unsigned FPU            :1;//1      0
             unsigned VME            :1;//2      1
             unsigned DE             :1;//3      2
             unsigned PSE            :1;//4      3
@@ -94,7 +96,7 @@ struct CpuidFeatures
             unsigned TM             :1;//30     29
             unsigned Reserved43     :1;//31     30
             unsigned PBE            :1;//32     31
-            
+
             // NewestFeatureSupport: EAX
             unsigned Reserved_7_EAX :32;//32    0-31
             // NewestFeatureSupport: EBX
@@ -129,14 +131,32 @@ inline void run_cpuid (uint32_t eax, uint32_t ecx, uint32_t* abcd)
               "+a" (eax), "+c" (ecx), "=d" (edx) );
     abcd[0] = eax; abcd[1] = ebx; abcd[2] = ecx; abcd[3] = edx;
 #endif
-}     
+}
 
 inline void GetCpuidFeatures (CpuidFeatures *featureStruct)
 {
     memset (featureStruct->CPUInfo, 0, sizeof(featureStruct->CPUInfo));
-    run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo);
-    run_cpuid (NewestFeatureSupport, 0, featureStruct->CPUInfo + 4);
 
-    for (uint32_t i=BrandNameFirst; i<=BrandNameLast; i++)
-        run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i+2-BrandNameFirst));
+    // Calling run_cpuid with 0 as the function_id argument
+    // gets the number of the highest valid function ID.
+    uint32_t cpuInfo[4] = {0};
+    run_cpuid (RequestLastID, 0, cpuInfo);
+
+    if (cpuInfo[0] >= FeatureSupport)
+        run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo);
+
+    if (cpuInfo[0] >= NewestFeatureSupport)
+        run_cpuid (NewestFeatureSupport, 0, featureStruct->CPUInfo + 4);
+
+    // Calling __cpuid with 0x80000000 as the function_id argument
+    // gets the number of the highest valid extended ID.
+    run_cpuid (RequestLastExtendedID, 0, cpuInfo);
+
+    // Interpret CPU brand string if reported
+    if (cpuInfo[0] >= BrandNameLast) {
+        for (uint32_t i=BrandNameFirst; i<=BrandNameLast; i++)
+            run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i+2-BrandNameFirst));
+    } else {
+        strcpy (featureStruct->IDString, "Ancient CPU");
+    }
 }
