@@ -40,7 +40,7 @@ int main()
     // BENCHMARK
     const uint64_t DATASET = uint64_t(100)<<30;
     printf("Hashing %d GiB", int(DATASET>>30));
-    double t = seconds();
+    Timer t;  t.Start();
 
     for (int i=0; i<DATASET/DATASIZE; i++)
     {
@@ -55,7 +55,7 @@ int main()
         //printf("\n %5d %08x ", i, h);
     }
 
-    t = seconds() - t;  double speed = DATASET/t;
-    printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t*1000, speed/1e9, speed/(1<<30));
+    t.Stop();  double speed = DATASET / t.Elapsed();
+    printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
     return 0;
 }
