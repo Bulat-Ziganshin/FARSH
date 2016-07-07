@@ -59,7 +59,10 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
   - [gcc -O3 -funroll-loops -m64 -mavx2 -DAVX2](asm-listings/gcc-x64-avx2.lst#L259)
 
 
-## Benchmark on Haswell i7-4770 (3.9 GHz)
+## Benchmark
+
+Benchmark done on Haswell i7-4770 (3.9 GHz) with -DALIGNED_DATA (i.e. input data are aligned on 64-byte boundary)
+
 Executable      | FARSH 0.2 speed             | Internal loop speed         | Compiler
 ----------------|-----------------------------|-----------------------------|---------
 farsh-x86       |  5.424 GB/s =  5.051 GiB/s  |  6.457 GB/s =  6.014 GiB/s  |gcc -O3 -funroll-loops -m32
