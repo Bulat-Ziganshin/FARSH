@@ -3,11 +3,21 @@
 #include "timer.h"
 #include "../farsh.c"
 
+#if __GNUC__
+#include <x86intrin.h>
+#define ALIGN(n)      __attribute__ ((aligned(n)))
+#elif _MSC_VER
+#include <intrin.h>
+#define ALIGN(n)      __declspec(align(n))
+#else
+#define ALIGN(n)
+#endif
+
 int main()
 {
     // CHECK THE ZEROES HASHING
     const size_t ZEROES = 64*1024;
-    static char zero[ZEROES] = {0};
+    ALIGN(64) static char zero[ZEROES] = {0};
     for (int i=0; i<=ZEROES; i++)
     {
         //unsigned h = farsh (zero, i);
@@ -17,15 +27,20 @@ int main()
 
 
     // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
-    const size_t DATASIZE = 28*1024;
-    static char data[DATASIZE+1];
-    for (int i=0; i<DATASIZE+1; i++)
+    const size_t DATASIZE = 12*1024;
+    ALIGN(64) static char data_array[DATASIZE+1];
+#ifdef ALIGNED_DATA
+        char *data = data_array;
+#else
+        char *data = data_array + 1;
+#endif
+    for (int i=0; i<DATASIZE; i++)
         data[i] = char((123456791u*i) >> ((i%16)+8));
 
 
 #ifndef ALIGNED_DATA
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
-    for (int i=0; i<=32; i++)
+    for (int i=0; i<=64; i++)
     {
         unsigned h = farsh (data+i, DATASIZE+1-i, 0);
         if (h==42)  break;   // anti-optimization trick
@@ -40,19 +55,20 @@ int main()
     // BENCHMARK
     const uint64_t DATASET = uint64_t(100)<<30;
     printf("Hashing %d GiB", int(DATASET>>30));
-    Timer t;  t.Start();
+    const int EXTRA_LOOPS = (100<<20) / DATASIZE;   // These extra loops are required to enable the SIMD engine and switch CPU core to the maximum frequency
+    Timer t;
 
-    for (int i=0; i<DATASET/DATASIZE; i++)
+    for (int i=0; i < EXTRA_LOOPS+DATASET/DATASIZE; i++)
     {
-        data[1]=(char)i;
-#ifdef ALIGNED_DATA
         unsigned h = farsh (data, DATASIZE, 0);
-#else
-        unsigned h = farsh (data+1, DATASIZE, 0);
-#endif
-        if (h==42)  break;
-        if (i==42)  printf(" (%x)", h);
-        //printf("\n %5d %08x ", i, h);
+
+        if (h != 0xd300ddd8) {   // check hash correctness
+            printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
+            return 1;
+        }
+
+        if (i == EXTRA_LOOPS)
+            t.Start();
     }
 
     t.Stop();  double speed = DATASET / t.Elapsed();
