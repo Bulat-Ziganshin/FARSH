@@ -17,7 +17,7 @@ struct CpuidFeatures
 {
     union
     {
-        uint32_t CPUInfo[6*4];
+        uint32_t CPUInfo[5*4];
         struct
         {
             // FeatureSupport: EAX
@@ -111,6 +111,7 @@ struct CpuidFeatures
             unsigned Reserved_7_EDX :32;//32    0-31
 
             char IDString[3*4*4+1];
+            char HighestSuportedSimdString[49];  // round up the entire structure size to 128 bytes
         };
     };
 };
@@ -133,20 +134,36 @@ inline void run_cpuid (uint32_t eax, uint32_t ecx, uint32_t* abcd)
 #endif
 }
 
-inline void GetCpuidFeatures (CpuidFeatures *featureStruct)
+inline void GetCpuidFeatures (struct CpuidFeatures *featureStruct)
 {
-    memset (featureStruct->CPUInfo, 0, sizeof(featureStruct->CPUInfo));
+    uint32_t cpuInfo[4] = {0};  unsigned i;
+    memset (featureStruct, 0, sizeof(struct CpuidFeatures));
 
     // Calling run_cpuid with 0 as the function_id argument
     // gets the number of the highest valid function ID.
-    uint32_t cpuInfo[4] = {0};
     run_cpuid (RequestLastID, 0, cpuInfo);
 
+    // Request bit fieds describing features supported by the CPU
     if (cpuInfo[0] >= FeatureSupport)
         run_cpuid (FeatureSupport, 0, featureStruct->CPUInfo);
 
     if (cpuInfo[0] >= NewestFeatureSupport)
         run_cpuid (NewestFeatureSupport, 0, featureStruct->CPUInfo + 4);
+
+    // Compute HighestSuportedSimdString from bit fields
+    strcpy (featureStruct->HighestSuportedSimdString,
+                featureStruct->AVX512F?   "AVX512F" :
+                featureStruct->AVX2?      "AVX2" :
+                featureStruct->AVX?       "AVX" :
+                featureStruct->AESInput?  "AES-NI" :
+                featureStruct->SSE42?     "SSE 4.2" :
+                featureStruct->SSE41?     "SSE 4.1" :
+                featureStruct->SupplSSE3? "Supplemental SSE3" :
+                featureStruct->SSE3?      "SSE3" :
+                featureStruct->SSE2?      "SSE2" :
+                featureStruct->SSE?       "SSE"  :
+                featureStruct->MMX?       "MMX"  : "no MMX");
+
 
     // Calling __cpuid with 0x80000000 as the function_id argument
     // gets the number of the highest valid extended ID.
@@ -154,7 +171,7 @@ inline void GetCpuidFeatures (CpuidFeatures *featureStruct)
 
     // Interpret CPU brand string if reported
     if (cpuInfo[0] >= BrandNameLast) {
-        for (uint32_t i=BrandNameFirst; i<=BrandNameLast; i++)
+        for (i=BrandNameFirst; i<=BrandNameLast; i++)
             run_cpuid (i, 0, featureStruct->CPUInfo + 4*(i+2-BrandNameFirst));
     } else {
         strcpy (featureStruct->IDString, "Ancient CPU");
