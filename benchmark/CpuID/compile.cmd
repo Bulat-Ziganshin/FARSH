@@ -1,1 +1,1 @@
-g++ CPUID.cpp -s -static -oCpuID
+gcc -x c CPUID.h -DCPUID_MAIN -s -static -oCpuID

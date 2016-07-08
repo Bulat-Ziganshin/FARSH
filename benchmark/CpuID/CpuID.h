@@ -1,3 +1,9 @@
+// Single-file micro-library implementing CPUID-based CPU feature test
+// as well as providing CPU name and highest SIMD version strings.
+// You can find usage examples at the end of file.
+// (c) Bulat Ziganshin & Unknown author
+// Placed into public domain
+
 #pragma once
 
 #include <stdint.h>
@@ -98,26 +104,26 @@ struct CpuidFeatures
             unsigned PBE            :1;//32     31
 
             // NewestFeatureSupport: EAX
-            unsigned Reserved_7_EAX :32;//32    0-31
+            unsigned Reserved51     :32;//32    0-31
             // NewestFeatureSupport: EBX
-            unsigned Reserved_7_EBXa:5; //5     0-4
+            unsigned Reserved61     :5; //5     0-4
             unsigned AVX2           :1; //6     5
-            unsigned Reserved_7_EBXb:10;//16    6-15
+            unsigned Reserved62     :10;//16    6-15
             unsigned AVX512F        :1; //17    16
-            unsigned Reserved_7_EBXc:15;//32    17-31
+            unsigned Reserved63     :15;//32    17-31
             // NewestFeatureSupport: ECX
-            unsigned Reserved_7_ECX :32;//32    0-31
+            unsigned Reserved71     :32;//32    0-31
             // NewestFeatureSupport: EDX
-            unsigned Reserved_7_EDX :32;//32    0-31
+            unsigned Reserved81     :32;//32    0-31
 
             char IDString[3*4*4+1];
-            char HighestSuportedSimdString[49];  // round up the entire structure size to 128 bytes
+            char HighestSupportedSimdString[49];  // round up the entire structure size to 128 bytes
         };
     };
 };
 
 
-inline void run_cpuid (uint32_t eax, uint32_t ecx, uint32_t* abcd)
+inline void run_cpuid (uint32_t eax /*function_id*/, uint32_t ecx /*subfunction_id*/, uint32_t* abcd /*results*/)
 {
 #if defined(_MSC_VER)
     __cpuidex(abcd, eax, ecx);
@@ -134,9 +140,10 @@ inline void run_cpuid (uint32_t eax, uint32_t ecx, uint32_t* abcd)
 #endif
 }
 
+
 inline void GetCpuidFeatures (struct CpuidFeatures *featureStruct)
 {
-    uint32_t cpuInfo[4] = {0};  unsigned i;
+    uint32_t cpuInfo[4] = {0};  uint32_t i;
     memset (featureStruct, 0, sizeof(struct CpuidFeatures));
 
     // Calling run_cpuid with 0 as the function_id argument
@@ -150,8 +157,8 @@ inline void GetCpuidFeatures (struct CpuidFeatures *featureStruct)
     if (cpuInfo[0] >= NewestFeatureSupport)
         run_cpuid (NewestFeatureSupport, 0, featureStruct->CPUInfo + 4);
 
-    // Compute HighestSuportedSimdString from bit fields
-    strcpy (featureStruct->HighestSuportedSimdString,
+    // Compute HighestSupportedSimdString from bit fields
+    strcpy (featureStruct->HighestSupportedSimdString,
                 featureStruct->AVX512F?   "AVX512F" :
                 featureStruct->AVX2?      "AVX2" :
                 featureStruct->AVX?       "AVX" :
@@ -177,3 +184,20 @@ inline void GetCpuidFeatures (struct CpuidFeatures *featureStruct)
         strcpy (featureStruct->IDString, "Ancient CPU");
     }
 }
+
+
+#ifdef CPUID_MAIN
+// Compile with "gcc -x c CPUID.h -DCPUID_MAIN -s -static -oCpuID"
+#include <stdio.h>
+int main()
+{
+    struct CpuidFeatures features;
+    GetCpuidFeatures(&features);
+
+    // Display CPU name and highest supported SIMD level
+    printf("%s: %s\n", features.IDString, features.HighestSupportedSimdString);
+
+    // Another possible usage:
+    // if (features.AVX2)  run_AVX2_specific_code();
+}
+#endif
