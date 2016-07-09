@@ -1,4 +1,7 @@
-FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but not Secure) 32-bit Hash.
+FARSH stands for Fast and Reliable (but not Secure) 32-bit Hash.
+While established [new speed records](#benchmark)
+and [successfully passed](SMHasher/reports/smhasher-farsh32-report.txt) the [SMHasher] testsuite,
+it's not as reliable as the [competition](#competition).
 [Discussion and additional benchmarks](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!).
 
 # Features / to-do list
@@ -19,12 +22,13 @@ FARSH - Fast and [Reliable](SMHasher/reports/smhasher-farsh32-report.txt) (but n
 - `U32 farsh(void *data, size_t size, U64 seed)` returns 32-bit hash of the `data`
 - `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)`
 computes `n` 32-bit hashes starting with the hash number `k`, storing results to the `hash`.
-It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` has number 0. The function aborts if `n+k>32`.
-- `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using 1024-byte long 16-byte aligned `key`.
-- `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)`
-computes `n` 32-bit hashes using `1008+n*16`-byte long 16-byte aligned `key` and writes the results to the `hash`.
+It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` has number 0. The function aborts if `k+n > FARSH_MAX_HASHES (==32)`.
+- `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using `key`,
+that should be `FARSH_BASE_KEY_SIZE (==1024)` bytes long and aligned to `FARSH_BASE_KEY_ALIGNMENT (==16)`-byte boundary.
+- `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)` computes `n` 32-bit hashes using `key`, storing results to the `hash`.
+`key` should be `FARSH_BASE_KEY_SIZE + FARSH_EXTRA_KEY_SIZE*(n-1) (==1024+16*(n-1))` bytes long and aligned to `FARSH_BASE_KEY_ALIGNMENT (==16)`-byte boundary.
 - Every hash function accepts 64-bit `seed` that can be used to "personalize" the hash value.
-Seeding may have lower quality than in the MurMurHash/xxHash since the seed value is mixed with block hashes rather than raw data.
+Seeding may have lower quality than in the [competition](#competition) since the seed value is mixed with block hashes rather than raw data.
 
 
 # Internals
@@ -78,7 +82,7 @@ aligned-farsh-x86-sse2    |  25.221 GB/s = 23.489 GiB/s  |  33.584 GB/s = 31.277
 aligned-farsh-x86         |   6.255 GB/s =  5.825 GiB/s  |   6.336 GB/s =  5.901 GiB/s
 
 Internal loop speed is a hard limit for the speed of any future FARSH version,
-while version 0.2 speed includes time for pretty slow high-level hashing.
+while version 0.2 speed includes time required for pretty slow high-level hashing.
 Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
 making overall hash speed within 10% of the internal loop speed.
 

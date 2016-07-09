@@ -1,9 +1,9 @@
 
-/* ? */
+/* Constants describing FARSH requirements to calling code */
+#define FARSH_MAX_HASHES             32  /* number of 32-bit hashes supported by the built-in key */
 #define FARSH_BASE_KEY_SIZE        1024  /* size of user-supplied key required to compute 32-bit hash with index 0 */
 #define FARSH_EXTRA_KEY_SIZE         16  /* extra bytes required to compute 32-bit hash with every next index */
-#define FARSH_BASE_KEY_ALIGNMENT     64  /* user-supplied key should be aligned to this size, otherwise SSE2 code may fail, and other code paths may work slower */
-#define FARSH_MAX_HASHES           (1024 / (8*sizeof(UINT)))  /* number of 32-bit hashes supported by the built-in key */
+#define FARSH_BASE_KEY_ALIGNMENT     16  /* user-supplied key should be aligned to this size, otherwise SSE2 code may fail. For maximum speed, it's recommended to align key to 64 bytes. */
 
 
 /* Hash the buffer. The 'seed' value in any function below may be used to "personalize" the hash function. Use seed==0 if you don't need that. */

@@ -17,7 +17,7 @@
 
 int main (int argc, char **argv)
 {
-    bool x64 = (sizeof(void*)==8);
+    bool x64 = (sizeof(void*)==8);  // check for 64-bit platform
 
 #ifdef FARSH_AVX2
     char simdext[] = "-avx2";
