@@ -45,7 +45,7 @@ int main()
     // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 12*1024;
     ALIGN(64) static char data_array[DATASIZE+1];
-#ifdef FARSH_ALIGNED_DATA
+#ifdef FARSH_ALIGNED_INPUT
         char *data = data_array;
 #else
         char *data = data_array + 1;
@@ -54,7 +54,7 @@ int main()
         data[i] = char((123456791u*i) >> ((i%16)+8));
 
 
-#ifndef FARSH_ALIGNED_DATA
+#ifndef FARSH_ALIGNED_INPUT
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
     for (int i=0; i<=64; i++)
     {

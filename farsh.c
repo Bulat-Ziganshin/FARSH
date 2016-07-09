@@ -51,7 +51,7 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
 
     for (i=0; i < STRIPE/sizeof(__m128i); i++)
     {
-#ifdef FARSH_ALIGNED_DATA
+#ifdef FARSH_ALIGNED_INPUT
         __m128i d = _mm_load_si128 (xdata+i);
 #else
         __m128i d = _mm_loadu_si128 (xdata+i);
