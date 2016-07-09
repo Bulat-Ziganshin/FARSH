@@ -42,7 +42,8 @@ struct CpuidFeatures
             unsigned ApicID         :8;//32     24-31
             // FeatureSupport: ECX
             unsigned SSE3           :1;//1      0
-            unsigned Reserved31     :2;//3      1-2
+            unsigned PCLMULQDQ      :1;//2      1
+            unsigned DTES64         :1;//3      2
             unsigned MWAIT          :1;//4      3
             unsigned CPLDebug       :1;//5      4
             unsigned VMExt          :1;//6      5
@@ -51,24 +52,27 @@ struct CpuidFeatures
             unsigned ThermalMonitor :1;//9      8
             unsigned SupplSSE3      :1;//10     9
             unsigned L1CtxID        :1;//11     10
-            unsigned Reserved32     :1;//12     11
-            unsigned FMA256         :1;//13     12
+            unsigned SDBG           :1;//12     11
+            unsigned FMA3           :1;//13     12
             unsigned CMPXCHG16B     :1;//14     13
             unsigned xTPR           :1;//15     14
             unsigned MSRDebug       :1;//16     15
-            unsigned Reserver32     :2;//18     16-17
+            unsigned Reserved32     :1;//17     16
+            unsigned ProcContextID  :1;//18     17
             unsigned DirectCacheAcc :1;//19     18
             unsigned SSE41          :1;//20     19
             unsigned SSE42          :1;//21     20
             unsigned x2APIC         :1;//22     21
             unsigned MOVBE          :1;//23     22
             unsigned POPCNT         :1;//24     23
-            unsigned Reserved33     :1;//25     24
-            unsigned AESInput       :1;//26     25
+            unsigned TSC_DEADLINE   :1;//25     24
+            unsigned AES_NI         :1;//26     25
             unsigned XSAVE          :1;//27     26
             unsigned OSXSAVE        :1;//28     27
             unsigned AVX            :1;//29     28
-            unsigned Reserved34     :3;//31     29-31
+            unsigned F16C           :1;//30     29
+            unsigned RDRND          :1;//31     30
+            unsigned HYPERVISOR     :1;//32     31
             // FeatureSupport: EDX
             unsigned FPU            :1;//1      0
             unsigned VME            :1;//2      1
@@ -100,24 +104,53 @@ struct CpuidFeatures
             unsigned SS             :1;//28     27
             unsigned HTT            :1;//29     28
             unsigned TM             :1;//30     29
-            unsigned Reserved43     :1;//31     30
+            unsigned IA64           :1;//31     30
             unsigned PBE            :1;//32     31
 
             // NewestFeatureSupport: EAX
             unsigned Reserved51     :32;//32    0-31
             // NewestFeatureSupport: EBX
-            unsigned Reserved61     :5; //5     0-4
-            unsigned AVX2           :1; //6     5
-            unsigned Reserved62     :10;//16    6-15
-            unsigned AVX512F        :1; //17    16
-            unsigned Reserved63     :15;//32    17-31
+            unsigned FSGSBASE       :1;//1      0
+            unsigned TSC_ADJUST     :1;//2      1
+            unsigned SGX            :1;//3      2
+            unsigned BMI1           :1;//4      3
+            unsigned HLE            :1;//5      4
+            unsigned AVX2           :1;//6      5
+            unsigned Reserved61     :1;//7      6
+            unsigned SMEP           :1;//8      7
+            unsigned BMI2           :1;//9      8
+            unsigned ERMS           :1;//10     9
+            unsigned INVPCID        :1;//11     10
+            unsigned RTM            :1;//12     11
+            unsigned PQM            :1;//13     12
+            unsigned FPU_CS_DS_depr :1;//14     13
+            unsigned MPX            :1;//15     14
+            unsigned PQE            :1;//16     15
+            unsigned AVX512F        :1;//17     16
+            unsigned AVX512DQ       :1;//18     17
+            unsigned RDSEED         :1;//19     18
+            unsigned ADX            :1;//20     19
+            unsigned SMAP           :1;//21     20
+            unsigned AVX512IFMA     :1;//22     21
+            unsigned PCOMMIT        :1;//23     22
+            unsigned CLFLUSHOPT     :1;//24     23
+            unsigned CLWB           :1;//25     24
+            unsigned ProcessorTrace :1;//26     25
+            unsigned AVX512PF       :1;//27     26
+            unsigned AVX512ER       :1;//28     27
+            unsigned AVX512CD       :1;//29     28
+            unsigned SHA            :1;//30     29
+            unsigned AVX512BW       :1;//31     30
+            unsigned AVX512VL       :1;//32     31
             // NewestFeatureSupport: ECX
-            unsigned Reserved71     :32;//32    0-31
+            unsigned PREFETCHWT1    :1;//1      0
+            unsigned AVX512VBMI     :1;//2      1
+            unsigned Reserved71     :30;//3     2-31
             // NewestFeatureSupport: EDX
             unsigned Reserved81     :32;//32    0-31
 
-            char IDString[3*4*4+1];
-            char HighestSupportedSimdString[49];  // round up the entire structure size to 128 bytes
+            char IDString[3*4*4];
+            char HighestSupportedSimdString[48];  // round up the entire structure size to 128 bytes
         };
     };
 };
@@ -159,10 +192,13 @@ inline void GetCpuidFeatures (struct CpuidFeatures *featureStruct)
 
     // Compute HighestSupportedSimdString from bit fields
     strcpy (featureStruct->HighestSupportedSimdString,
-                featureStruct->AVX512F?   "AVX512F" :
+                featureStruct->AVX512VBMI?"AVX-512 VBMI" :
+                featureStruct->AVX512BW?  "AVX-512 BW" :
+                featureStruct->AVX512DQ?  "AVX-512 DQ" :
+                featureStruct->AVX512F?   "AVX-512F" :
                 featureStruct->AVX2?      "AVX2" :
                 featureStruct->AVX?       "AVX" :
-                featureStruct->AESInput?  "AES-NI" :
+                featureStruct->AES_NI?    "AES-NI" :
                 featureStruct->SSE42?     "SSE 4.2" :
                 featureStruct->SSE41?     "SSE 4.1" :
                 featureStruct->SupplSSE3? "Supplemental SSE3" :
