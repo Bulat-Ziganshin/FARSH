@@ -21,8 +21,8 @@ it's not as reliable as the [competition](#competition).
 # API
 - `U32 farsh(void *data, size_t size, U64 seed)` returns 32-bit hash of the `data`
 - `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)`
-computes `n` 32-bit hashes starting with the hash number `k`, storing results to the `hash`.
-It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` has number 0. The function aborts if `k+n > FARSH_MAX_HASHES (==32)`.
+computes `n` 32-bit hashes starting with the hash number `k`, storing results to the `hash` buffer.
+It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` function has number 0. The function aborts if `k+n > FARSH_MAX_HASHES (==32)`.
 - `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using `key`,
 that should be `FARSH_BASE_KEY_SIZE (==1024)` bytes long and aligned to `FARSH_BASE_KEY_ALIGNMENT (==16)`-byte boundary.
 - `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)` computes `n` 32-bit hashes using `key`, storing results to the `hash`.
@@ -69,12 +69,12 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
   - [gcc -O3 -funroll-loops -m64 -mavx2 -DFARSH_AVX2](asm-listings/gcc-x64-avx2.lst#L259)
 
 
-## Benchmark
+# Benchmark
 Benchmark done on Haswell i7-4770 (3.9 GHz), [compiled](benchmark/compile.cmd) by GCC 4.9.2.
 Only versions with 64-byte aligned input buffers were benchmarked.
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
---------------------------|------------------------------|----------------------------
+--------------------------|-----------------------------:|----------------------------:
 aligned-farsh-x64-avx2    |  54.536 GB/s = 50.790 GiB/s  |  65.645 GB/s = 61.137 GiB/s
 aligned-farsh-x64         |  31.162 GB/s = 29.022 GiB/s  |  35.722 GB/s = 33.269 GiB/s
 aligned-farsh-x86-avx2    |  40.279 GB/s = 37.513 GiB/s  |  61.682 GB/s = 57.446 GiB/s
@@ -87,7 +87,7 @@ Future versions should replace it with faster algorithm still satisfying the [SM
 making overall hash speed within 10% of the internal loop speed.
 
 
-## Competition
+# Competition
 Fast non-cryptographic hashes:
 - [xxHash] and [xxHash64]
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)

@@ -1,3 +1,4 @@
+#include <stddef.h>   /* for size_t */
 
 /* Constants describing FARSH requirements to calling code */
 #define FARSH_MAX_HASHES             32  /* number of 32-bit hashes supported by the built-in key */
