@@ -1,6 +1,6 @@
-#include <stdlib.h>
-#include <memory.h>
+#include "farsh.h"
 
+#include <memory.h>
 #if __GNUC__
 #include <x86intrin.h>
 #define ALIGN(n)      __attribute__ ((aligned(n)))
@@ -71,25 +71,21 @@ static ULONG farsh_fast (const UINT *data, const UINT *key)
 #endif
 }
 
-/* Internal: hash up to STRIPE bytes, consisting of whole UINT pairs, including optional UINT pair in the extra[] */
-static ULONG farsh_pairs (const UINT *data, size_t elements, const UINT* extra, const UINT *key)
-{
-    ULONG sum = 0;  int i;
-    for (i=0; i < elements; i+=2)
-        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
-    if (extra)
-        sum += (extra[0] + key[i]) * (ULONG)(extra[1] + key[i+1]);
-    return sum;
-}
-
 /* Internal: hash less than STRIPE bytes, with careful handling of partial UINT pair at the end of buffer */
 static ULONG farsh_partial_block (const UINT *data, size_t bytes, const UINT *key)
 {
+    ULONG sum = 0;  int i;
     size_t elements = (bytes/sizeof(UINT)) & (~1);
+
     UINT extra_data[2] = {0};
     size_t extra_bytes = bytes - elements*sizeof(UINT);
     memcpy (extra_data, data+elements, extra_bytes);
-    return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
+
+    for (i=0; i < elements; i+=2)
+        sum += (data[i] + key[i]) * (ULONG)(data[i+1] + key[i+1]);
+    if (extra_bytes)
+        sum += (extra_data[0] + key[i]) * (ULONG)(extra_data[1] + key[i+1]);
+    return sum;
 }
 
 /* ////////////////////////////////////////////////////////////////////////// */

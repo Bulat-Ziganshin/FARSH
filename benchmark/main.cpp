@@ -1,20 +1,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "timer.h"
-
-#include "../farsh.c"
-// Should be the same as in farsh.c to ensure correct execution and speed measurement!
-#define STRIPE          1024
-
 #if defined(FARSH_AVX2) || defined(FARSH_SSE2)
 #include "CpuID.h"
 #endif
 
+#include "../farsh.c"
+
 #if __GNUC__
-#include <x86intrin.h>
 #define ALIGN(n)      __attribute__ ((aligned(n)))
 #elif _MSC_VER
-#include <intrin.h>
 #define ALIGN(n)      __declspec(align(n))
 #else
 #define ALIGN(n)
@@ -22,16 +17,18 @@
 
 int main (int argc, char **argv)
 {
+    bool x64 = (sizeof(void*)==8);
+
 #ifdef FARSH_AVX2
     char simdext[] = "-avx2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
     if (! features.AVX2)  {printf("AVX2 not found!\n"); return 1;}
 #elif defined(FARSH_SSE2)
-    char simdext[] = "-sse2";
+    const char *simdext = x64? "":"-sse2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
     if (! features.SSE2)  {printf("SSE2 not found!\n"); return 1;}
 #else
-    char simdext[] = "";
+    const char *simdext = x64? "-nosimd":"";
 #endif
 
 #ifdef FARSH_ALIGNED_INPUT
@@ -43,7 +40,7 @@ int main (int argc, char **argv)
     bool print_table = argc>1;  // if any cmdline parameter was given
     char progname[100];
     sprintf (progname, "%sfarsh-%s%s", ALIGNED_INPUT? "aligned-":"",
-                                       sizeof(void*)==8? "x64":"x86",
+                                       x64? "x64":"x86",
                                        simdext);
 
     // CHECK THE ZEROES HASHING
@@ -57,7 +54,7 @@ int main (int argc, char **argv)
     }
 
 
-    // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
+    // PREPARE TEST DATA. DATASIZE+FARSH_BASE_KEY_SIZE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 12*1024;
     ALIGN(64) static char data_array[DATASIZE+1];
     char *data  =  ALIGNED_INPUT? data_array : data_array + 1;
@@ -110,7 +107,7 @@ int main (int argc, char **argv)
     if (print_table)  printf("| ");
     else              printf("Internal loop:");
     t.Start();
-    for (int i=0; i < DATASET/STRIPE; i++)
+    for (int i=0; i < DATASET/FARSH_BASE_KEY_SIZE; i++)
     {
         unsigned long long h = farsh_fast ((unsigned*)data, keys);
         if (h==42)  data[0] = i;    // anti-optimization trick
