@@ -41,7 +41,7 @@ while computing 64-bit hash from raw data, it's no surprise that modified algori
 from the sequence of numbers each carrying 32 bits of entropy.
 
 The power of the FARSH algorithm comes from its inner cycle, that is very short (read: fast) and allows highly-parallel implementations,
-so it can fully exploit power of multi-core, SIMD, VLIW and SIMT (GPGPU) architectures.
+so it can fully exploit power of multi-core, SIMD, VLIW and SIMT (GPU) architectures.
 At the same time, there is math proof that it can deliver 32 bits of entropy so we can use it without any doubts.
 
 
@@ -71,13 +71,13 @@ Only versions with 64-byte aligned input buffers were benchmarked.
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|------------------------------|----------------------------
-aligned-farsh-x86         |   5.486 GB/s =  5.109 GiB/s  |   6.624 GB/s =  6.169 GiB/s
-aligned-farsh-x86-sse2    |  23.783 GB/s = 22.150 GiB/s  |  33.338 GB/s = 31.049 GiB/s
-aligned-farsh-x86-avx2    |  32.437 GB/s = 30.209 GiB/s  |  59.902 GB/s = 55.788 GiB/s
-aligned-farsh-x64         |  32.779 GB/s = 30.528 GiB/s  |  32.069 GB/s = 29.866 GiB/s
-aligned-farsh-x64-avx2    |  52.755 GB/s = 49.132 GiB/s  |  63.117 GB/s = 58.782 GiB/s
+aligned-farsh-x64-avx2    |  54.536 GB/s = 50.790 GiB/s  |  65.645 GB/s = 61.137 GiB/s
+aligned-farsh-x64         |  31.162 GB/s = 29.022 GiB/s  |  35.722 GB/s = 33.269 GiB/s
+aligned-farsh-x86-avx2    |  40.279 GB/s = 37.513 GiB/s  |  61.682 GB/s = 57.446 GiB/s
+aligned-farsh-x86-sse2    |  25.221 GB/s = 23.489 GiB/s  |  33.584 GB/s = 31.277 GiB/s
+aligned-farsh-x86         |   6.255 GB/s =  5.825 GiB/s  |   6.336 GB/s =  5.901 GiB/s
 
-Internal loop speed is a hard limit for speed of any future FARSH version,
+Internal loop speed is a hard limit for the speed of any future FARSH version,
 while version 0.2 speed includes time for pretty slow high-level hashing.
 Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
 making overall hash speed within 10% of the internal loop speed.

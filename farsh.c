@@ -82,10 +82,9 @@ static ULONG farsh_pairs (const UINT *data, size_t elements, const UINT* extra, 
     return sum;
 }
 
-/* Internal: hash up to STRIPE bytes, with special optimization for exactly STRIPE input bytes and careful handling of partial UINT pair at the end of buffer */
-static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
+/* Internal: hash less than STRIPE bytes, with careful handling of partial UINT pair at the end of buffer */
+static ULONG farsh_partial_block (const UINT *data, size_t bytes, const UINT *key)
 {
-    if (bytes == STRIPE)  return farsh_fast (data, key);
     size_t elements = (bytes/sizeof(UINT)) & (~1);
     UINT extra_data[2] = {0};
     size_t extra_bytes = bytes - elements*sizeof(UINT);
@@ -93,14 +92,14 @@ static ULONG farsh_block (const UINT *data, size_t bytes, const UINT *key)
     return farsh_pairs (data, elements, extra_bytes?extra_data:NULL, key);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Hash mixing code, including all constants, was kidnapped from the xxHash64
+/* ////////////////////////////////////////////////////////////////////////// */
+/* Hash mixing code, including all constants, was kidnapped from the xxHash64 */
 #define PRIME64_1 11400714785074694791ULL
 #define PRIME64_2 14029467366897019727ULL
 #define PRIME64_3  1609587929392839161ULL
 #define PRIME64_4  9650029242287828579ULL
 
-// Combine hash of the current block with overall hashsum
+/* Internal: combine hash of the current block with overall hashsum */
 static ULONG farsh_combine (ULONG sum, ULONG h)
 {
     h *= PRIME64_2;
@@ -111,7 +110,7 @@ static ULONG farsh_combine (ULONG sum, ULONG h)
     return sum;
 }
 
-// Compute the final hashsum value
+/* Internal: compute the final hashsum value */
 static UINT farsh_final (ULONG sum)
 {
     sum ^= sum >> 33;
@@ -120,23 +119,30 @@ static UINT farsh_final (ULONG sum)
     sum *= PRIME64_3;
     return (UINT)sum ^ (UINT)(sum >> 32);
 }
-// End of hash mixing code kidnapped from the xxHash64
-///////////////////////////////////////////////////////////////////////////////
+/* End of hash mixing code kidnapped from the xxHash64 */
+/* ////////////////////////////////////////////////////////////////////////// */
 
 /* Hash the buffer with the user-supplied 16byte-aligned 1024-byte key material */
 UINT farsh_keyed (const void *data, size_t bytes, const void *key, ULONG seed)
 {
-    ULONG sum = seed;  size_t chunk = 0;
+    ULONG sum = seed;
     const char *ptr     = (const char*) data;
     const UINT *key_ptr = (const UINT*) key;
-    while (bytes)
+    while (bytes >= STRIPE)
     {
-        chunk = (bytes<STRIPE? bytes : STRIPE);
-        ULONG h = farsh_block ((const UINT*)ptr, chunk, key_ptr);
+        size_t chunk = STRIPE;
+        ULONG h = farsh_fast ((const UINT*)ptr, key_ptr);
         sum = farsh_combine (sum, h);
         ptr += chunk;  bytes -= chunk;
     }
-    return farsh_final(sum) ^ key_ptr[chunk%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
+    if (bytes)
+    {
+        size_t chunk = bytes;
+        ULONG h = farsh_partial_block ((const UINT*)ptr, chunk, key_ptr);
+        sum = farsh_combine (sum, h);
+        ptr += chunk;  bytes -= chunk;
+    }
+    return farsh_final(sum) ^ key_ptr[bytes%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
 }
 
 /* Hash the buffer with the user-supplied 16byte-aligned, 1008+n*16 bytes long key material and return hash of 32*n bits long */
