@@ -1,1 +1,1 @@
-gcc -x c CPUID.h -DCPUID_MAIN -s -static -oCpuID
+gcc -x c CpuID.h -DCPUID_MAIN -s -static -oCpuID

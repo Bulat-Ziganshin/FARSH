@@ -7,7 +7,7 @@
 #define STRIPE          1024
 
 #if defined(FARSH_AVX2) || defined(FARSH_SSE2)
-#include "CpuID/CpuID.h"
+#include "CpuID.h"
 #endif
 
 #if __GNUC__
@@ -91,13 +91,16 @@ int main()
     printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
+    const unsigned *keys = FARSH_KEYS;
+    if (t.Elapsed() == 1e42)
+        data++, keys++;   // anti-optimization trick
+
     printf("Internal loop:");
     t.Start();
     for (int i=0; i < DATASET/STRIPE; i++)
     {
-        data[STRIPE-1] = i;
-        unsigned long long h = farsh_fast ((unsigned*)data, FARSH_KEYS);
-        if (h==42) break;
+        unsigned long long h = farsh_fast ((unsigned*)data, keys);
+        if (h==42)  data[0] = i;    // anti-optimization trick
     }
     t.Stop();  speed = DATASET / t.Elapsed();
     printf("   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));

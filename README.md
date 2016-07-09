@@ -61,15 +61,20 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
 
 ## Benchmark
 
-Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with -DFARSH_ALIGNED_DATA (i.e. input data are aligned on 64-byte boundary).
+Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with [compile-aligned.cmd](benchmark/compile-aligned.cmd) (i.e. input data are aligned on 64-byte boundary).
 
-Executable      | FARSH 0.2 speed             | Internal loop speed         | Compiler
-----------------|-----------------------------|-----------------------------|---------
-farsh-x86       |  5.394 GB/s =  5.023 GiB/s  |  7.746 GB/s =  7.214 GiB/s  |gcc -O3 -funroll-loops -m32
-farsh-x86-sse2  | 24.389 GB/s = 22.714 GiB/s  | 34.021 GB/s = 31.685 GiB/s  |gcc -O3 -funroll-loops -m32 -msse2 -DFARSH_SSE2
-farsh-x86-avx2  | 33.042 GB/s = 30.773 GiB/s  | 62.453 GB/s = 58.164 GiB/s  |gcc -O3 -funroll-loops -m32 -mavx2 -DFARSH_AVX2
-farsh-x64       | 28.165 GB/s = 26.230 GiB/s  | 34.788 GB/s = 32.399 GiB/s  |gcc -O3 -funroll-loops -m64        -DFARSH_SSE2
-farsh-x64-avx2  | 47.595 GB/s = 44.327 GiB/s  | 54.828 GB/s = 51.062 GiB/s  |gcc -O3 -funroll-loops -m64 -mavx2 -DFARSH_AVX2
+Executable      | FARSH 0.2 speed             | Internal loop speed
+----------------|-----------------------------|---------------------------
+farsh-x86       |  5.479 GB/s =  5.103 GiB/s  |  6.592 GB/s =  6.140 GiB/s
+farsh-x86-sse2  | 24.417 GB/s = 22.740 GiB/s  | 33.981 GB/s = 31.647 GiB/s
+farsh-x86-avx2  | 33.016 GB/s = 30.749 GiB/s  | 60.713 GB/s = 56.543 GiB/s
+farsh-x64       | 29.048 GB/s = 27.053 GiB/s  | 32.017 GB/s = 29.818 GiB/s
+farsh-x64-avx2  | 47.885 GB/s = 44.596 GiB/s  | 66.379 GB/s = 61.820 GiB/s
+
+Internal loop speed is a hard limit for speed of any future FARSH version,
+while version 0.2 speed includes time for pretty slow high-level xxHash64 hashing.
+In future versions it should be replaced with faster algorithm that yet satisfies the [SMHasher] requirements,
+making overall hash speed lose less than 10% compared to the internal loop speed.
 
 
 ## Competition
@@ -86,7 +91,7 @@ Cryprographically secure keyed hashes:
 - The [Poly1305-AES](https://en.wikipedia.org/wiki/Poly1305) message-authentication code
 - [SipHash](https://131002.net/siphash/)
 - [HighwayHash](https://github.com/google/highwayhash)
-- [Cryptoanalysis](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash) of existing hash functions on the example of [xxHash]
+- Cryptoanalysis of [CityHash64, MurmurHash](https://131002.net/siphash/#at) and [xxHash](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash)
 
 
 
