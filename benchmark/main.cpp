@@ -20,16 +20,31 @@
 #define ALIGN(n)
 #endif
 
-int main()
+int main (int argc, char **argv)
 {
 #ifdef FARSH_AVX2
+    char simdext[] = "-avx2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
     if (! features.AVX2)  {printf("AVX2 not found!\n"); return 1;}
 #elif defined(FARSH_SSE2)
+    char simdext[] = "-sse2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
     if (! features.SSE2)  {printf("SSE2 not found!\n"); return 1;}
+#else
+    char simdext[] = "";
 #endif
 
+#ifdef FARSH_ALIGNED_INPUT
+    bool ALIGNED_INPUT = true;
+#else
+    bool ALIGNED_INPUT = false;
+#endif
+
+    bool print_table = argc>1;  // if any cmdline parameter was given
+    char progname[100];
+    sprintf (progname, "%sfarsh-%s%s", ALIGNED_INPUT? "aligned-":"",
+                                       sizeof(void*)==8? "x64":"x86",
+                                       simdext);
 
     // CHECK THE ZEROES HASHING
     const size_t ZEROES = 64*1024;
@@ -45,11 +60,7 @@ int main()
     // PREPARE TEST DATA. DATASIZE+STRIPE should be less than the L1 cache size, otherwise speed may be limited by memory reads
     const size_t DATASIZE = 12*1024;
     ALIGN(64) static char data_array[DATASIZE+1];
-#ifdef FARSH_ALIGNED_INPUT
-        char *data = data_array;
-#else
-        char *data = data_array + 1;
-#endif
+    char *data  =  ALIGNED_INPUT? data_array : data_array + 1;
     for (int i=0; i<DATASIZE; i++)
         data[i] = char((123456791u*i) >> ((i%16)+8));
 
@@ -70,7 +81,8 @@ int main()
 
     // BENCHMARK
     const uint64_t DATASET = uint64_t(100)<<30;
-    printf("Hashing %d GiB", int(DATASET>>30));
+    if (print_table)  printf("%-24s  | ", progname);
+    else              printf("Hashing %d GiB:", int(DATASET>>30));
     const int EXTRA_LOOPS = (100<<20) / DATASIZE;   // These extra loops are required to enable the SIMD engine and switch CPU core to the maximum frequency
     Timer t;
 
@@ -88,14 +100,15 @@ int main()
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
-    printf(": %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    if (print_table)  printf(                     " %6.3lf GB/s = %6.3lf GiB/s  ",                   speed/1e9, speed/(1<<30));
+    else              printf(" %.3lf milliseconds = %6.3lf GB/s = %6.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
     const unsigned *keys = FARSH_KEYS;
-    if (t.Elapsed() == 1e42)
-        data++, keys++;   // anti-optimization trick
+    if (t.Elapsed() == 1e42)   data++, keys++;   // anti-optimization trick
 
-    printf("Internal loop:");
+    if (print_table)  printf("| ");
+    else              printf("Internal loop:");
     t.Start();
     for (int i=0; i < DATASET/STRIPE; i++)
     {
@@ -103,7 +116,8 @@ int main()
         if (h==42)  data[0] = i;    // anti-optimization trick
     }
     t.Stop();  speed = DATASET / t.Elapsed();
-    printf("   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    if (print_table)  printf(                       " %6.3lf GB/s = %6.3lf GiB/s\n",                   speed/1e9, speed/(1<<30));
+    else              printf("   %.3lf milliseconds = %6.3lf GB/s = %6.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
     return 0;

@@ -61,15 +61,16 @@ The [universal hashing] formula used here (and copied intact from UMAC) is as si
 
 ## Benchmark
 
-Benchmark done on Haswell i7-4770 (3.9 GHz), compiled by GCC 4.9.2 with [compile-aligned.cmd](benchmark/compile-aligned.cmd) (i.e. input data are aligned on 64-byte boundary).
+Benchmark done on Haswell i7-4770 (3.9 GHz), [compiled](benchmark/compile.cmd) by GCC 4.9.2.
+Only versions with 64-byte aligned input buffers were benchmarked.
 
-Executable      | FARSH 0.2 speed             | Internal loop speed
-----------------|-----------------------------|---------------------------
-farsh-x86       |  5.479 GB/s =  5.103 GiB/s  |  6.592 GB/s =  6.140 GiB/s
-farsh-x86-sse2  | 24.417 GB/s = 22.740 GiB/s  | 33.981 GB/s = 31.647 GiB/s
-farsh-x86-avx2  | 33.016 GB/s = 30.749 GiB/s  | 60.713 GB/s = 56.543 GiB/s
-farsh-x64       | 29.048 GB/s = 27.053 GiB/s  | 32.017 GB/s = 29.818 GiB/s
-farsh-x64-avx2  | 47.885 GB/s = 44.596 GiB/s  | 66.379 GB/s = 61.820 GiB/s
+Executable                |  FARSH 0.2 speed             |  Internal loop speed
+--------------------------|------------------------------|----------------------------
+aligned-farsh-x86         |   5.486 GB/s =  5.109 GiB/s  |   6.624 GB/s =  6.169 GiB/s
+aligned-farsh-x86-sse2    |  23.783 GB/s = 22.150 GiB/s  |  33.338 GB/s = 31.049 GiB/s
+aligned-farsh-x86-avx2    |  32.437 GB/s = 30.209 GiB/s  |  59.902 GB/s = 55.788 GiB/s
+aligned-farsh-x64         |  32.779 GB/s = 30.528 GiB/s  |  32.069 GB/s = 29.866 GiB/s
+aligned-farsh-x64-avx2    |  52.755 GB/s = 49.132 GiB/s  |  63.117 GB/s = 58.782 GiB/s
 
 Internal loop speed is a hard limit for speed of any future FARSH version,
 while version 0.2 speed includes time for pretty slow high-level xxHash64 hashing.
