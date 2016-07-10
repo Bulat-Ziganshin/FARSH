@@ -48,6 +48,7 @@ HashInfo g_hashes[] =
 
   { XXH32_test,           32, 0xBA88B743, "XXH32",       "xxHash, 32-bit result" },
   { MyXXH32_test,         32, 0xF41AE63E, "MyXXH32",     "My xxHash, 32-bit result" },
+  { MyXXH64_test,         64, 0x6329F00F, "MyXXH64",     "My xxHash, 64-bit result" },
 
   { farsh32_test,         32, 0x866BC8B2, "Farsh32",     "FARSH, 32-bit result" },
   { farsh64_test,         64, 0xDF463566, "Farsh64",     "FARSH, 64-bit result" },
