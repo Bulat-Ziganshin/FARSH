@@ -96,9 +96,9 @@ making overall hash speed within 10% of the internal loop speed.
 Fast non-cryptographic hashes:
 - [HighwayHash](https://github.com/google/highwayhash) (2016)
 - [xxHash][xxHash] (2012) and [xxHash64][xxHash64] (2014)
+- [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)
 - [MurmurHash3](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) (2011)
-- [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
 - [More info](https://github.com/aappleby/smhasher/wiki/SMHasher) about the [SMHasher] testsuite
 
