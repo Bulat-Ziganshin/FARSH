@@ -15,7 +15,7 @@ it's not as reliable as the [competition](#competition).
 - [ ] try PSLLQ instead of PSHUFD in SSE2 code to improve speed on older CPUs
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 - [ ] `farsh64*/farsh128*` APIs for faster computation of multi-word hashes
-- [ ] `SSE2/AVX2/ALIGNED_INPUT` options in the APIs for selection of the code path instead of current FARSH_* macroses
+- [ ] `SSE2/AVX2/NEON?` options in the API (+alignment check for SSE2) for selection of the code path instead of compile-time choice
 
 
 # [API](farsh.h)
@@ -32,8 +32,8 @@ computes `n` 32-bit hashes using `key`, storing results to the `hash` buffer.
 `key` should be `1024+16*(n-1)` bytes long and aligned to 16-byte boundary.
 - Hash functions accept 64-bit `seed` that can be used to "personalize" the hash value. Use seed==0 if you don't need that feature.
 Seeding may have lower quality than in the [competition](#competition) since the seed value mixed with block hashes rather than raw data.
-- Header file provides symbolic names for the above-mentioned constants: `FARSH_MAX_HASHES == 32`,
-`FARSH_BASE_KEY_SIZE == 1024`, `FARSH_BASE_KEY_ALIGNMENT == 16`, `FARSH_EXTRA_KEY_SIZE == 16`
+- Header file provides symbolic names for the above-mentioned constants:
+`FARSH_MAX_HASHES == 32,  FARSH_BASE_KEY_SIZE == 1024,  FARSH_BASE_KEY_ALIGNMENT == 16,  FARSH_EXTRA_KEY_SIZE == 16`
 
 
 # Internals
