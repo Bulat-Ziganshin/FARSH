@@ -48,7 +48,7 @@ int main (int argc, char **argv)
     ALIGN(64) static char zero[ZEROES] = {0};
     for (int i=0; i<=ZEROES; i++)
     {
-        //unsigned h = farsh (zero, i);
+        //uint32_t h = farsh (zero, i);
         //printf("%5d %08x\n", i, h);
         //printf("%4d %08x %08x %08x %08x :: ", minbytes, (UINT)(h), (UINT)(h>>32), sum1, sum2);
     }
@@ -66,7 +66,7 @@ int main (int argc, char **argv)
     // CHECK FOR POSSIBLE DATA ALIGNMENT PROBLEMS
     for (int i=0; i<=64; i++)
     {
-        unsigned h = farsh (data+i, DATASIZE+1-i, 0);
+        uint32_t h = farsh (data+i, DATASIZE+1-i, 0);
         if (h==42)  break;   // anti-optimization trick
 
         char out[32*4];
@@ -89,7 +89,7 @@ int main (int argc, char **argv)
         if (i == EXTRA_LOOPS)
             t.Start();
 
-        unsigned h = farsh (data, DATASIZE, 0);
+        uint32_t h = farsh (data, DATASIZE, 0);
 
         if (h != 0xd300ddd8) {   // check hash correctness
             printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
@@ -101,7 +101,7 @@ int main (int argc, char **argv)
     else              printf(" %.3lf milliseconds = %6.3lf GB/s = %6.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
 
-    const unsigned *keys = FARSH_KEYS;
+    const uint32_t *keys = FARSH_KEYS;
     if (t.Elapsed() == 1e42)   data++, keys++;   // anti-optimization trick
 
     if (print_table)  printf("| ");
@@ -109,7 +109,7 @@ int main (int argc, char **argv)
     t.Start();
     for (int i=0; i < DATASET/FARSH_BASE_KEY_SIZE; i++)
     {
-        unsigned long long h = farsh_fast ((unsigned*)data, keys);
+        uint64_t h = farsh_full_block ((uint32_t*)data, keys);
         if (h==42)  data[0] = i;    // anti-optimization trick
     }
     t.Stop();  speed = DATASET / t.Elapsed();

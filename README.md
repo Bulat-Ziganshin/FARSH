@@ -18,17 +18,22 @@ it's not as reliable as the [competition](#competition).
 - [ ] `SSE2/AVX2/ALIGNED_INPUT` options in the APIs for selection of the code path instead of current FARSH_* macroses
 
 
-# API
-- `U32 farsh(void *data, size_t size, U64 seed)` returns 32-bit hash of the `data`
-- `void farsh_n(void *data, size_t size, int k, int n, U64 seed, void *hash)`
+# [API](farsh.h)
+- `uint32_t farsh(void *data, size_t size, uint64_t seed)`
+returns 32-bit hash of the buffer
+- `void farsh_n(void *data, size_t size, int k, int n, uint64_t seed, void *hash)`
 computes `n` 32-bit hashes starting with the hash number `k`, storing results to the `hash` buffer.
-It's `n` times slower than computing single 32-bit hash. Hash computed by `farsh` function has number 0. The function aborts if `k+n > FARSH_MAX_HASHES (==32)`.
-- `U32 farsh_keyed(void *data, size_t size, void *key, U64 seed)` computes 32-bit hash using `key`,
-that should be `FARSH_BASE_KEY_SIZE (==1024)` bytes long and aligned to `FARSH_BASE_KEY_ALIGNMENT (==16)`-byte boundary.
-- `void farsh_keyed_n(void *data, size_t size, void *key, int n, U64 seed, void *hash)` computes `n` 32-bit hashes using `key`, storing results to the `hash`.
-`key` should be `FARSH_BASE_KEY_SIZE + FARSH_EXTRA_KEY_SIZE*(n-1) (==1024+16*(n-1))` bytes long and aligned to `FARSH_BASE_KEY_ALIGNMENT (==16)`-byte boundary.
-- Every hash function accepts 64-bit `seed` that can be used to "personalize" the hash value.
-Seeding may have lower quality than in the [competition](#competition) since the seed value is mixed with block hashes rather than raw data.
+It's `n` times slower than computation of single 32-bit hash.
+Hash computed by the `farsh` function has number 0. The function aborts if `k+n > 32`.
+- `uint32_t farsh_keyed(void *data, size_t size, void *key, uint64_t seed)`
+computes 32-bit hash using `key`, that should be 1024-byte long and aligned to 16-byte boundary.
+- `void farsh_keyed_n(void *data, size_t size, void *key, int n, uint64_t seed, void *hash)`
+computes `n` 32-bit hashes using `key`, storing results to the `hash` buffer.
+`key` should be `1024+16*(n-1)` bytes long and aligned to 16-byte boundary.
+- Hash functions accept 64-bit `seed` that can be used to "personalize" the hash value. Use seed==0 if you don't need that feature.
+Seeding may have lower quality than in the [competition](#competition) since the seed value mixed with block hashes rather than raw data.
+- Header file provides symbolic names for the above-mentioned constants: `FARSH_MAX_HASHES == 32`,
+`FARSH_BASE_KEY_SIZE == 1024`, `FARSH_BASE_KEY_ALIGNMENT == 16`, `FARSH_EXTRA_KEY_SIZE == 16`
 
 
 # Internals
@@ -39,7 +44,7 @@ It's the very short cycle borrowed from [UHASH] that combines 1024 bytes of inpu
 The hash value returned by this cycle is 64-bit long, and [UMAC thesis] proved that it has 32 bits of entropy.
 So the low-level algorithm compresses each 1024-byte block of input data into 64-bit value carrying 32 bits of entropy.
 
-High-level hashing algorithm is stripped-down version of [xxHash64]. It receives sequence of 64-bit values from the previous level
+High-level hashing algorithm is a stripped-down version of [xxHash64]. It receives sequence of 64-bit values from the previous level
 and combines them into final 32-bit hash result. Since the original [xxHash64] algorithm successfully passes all [SMHasher] tests
 while computing 64-bit hash from raw data, it's no surprise that modified algorithm is able to compute high-quality 32-bit hash
 from the sequence of numbers each carrying 32 bits of entropy.
@@ -49,14 +54,14 @@ so it can fully exploit power of multi-core, SIMD, VLIW and SIMT (GPU) architect
 At the same time, there is math proof that it can deliver 32 bits of entropy so we can use it without any doubts.
 
 
-# Universal hashing
+## Universal hashing
 Main loop uses [universal hashing] formula from [UMAC] with a precomputed key material of 1024 bytes (plus 512 bytes for longer hashes).
 FARSH is essentially [UHASH] with higher-level hashing algorithms replaced with simpler non-cryptographic one.
-The [universal hashing] formula used here (and copied intact from UMAC) is as simple as
+The universal hashing formula used here (and copied intact from UMAC) is as simple as
 ```C
-    U64 sum = 0;  U32 *data, *key;
+    uint64_t sum = 0;  uint32_t *data, *key;
     for (i=0; i < elements; i+=2)
-        sum += (U64)(data[i] + key[i]) * (U64)(data[i+1] + key[i+1]);
+        sum  +=  uint64_t(data[i] + key[i]) * (data[i+1] + key[i+1]);
 ```
 
 ## The main loop
@@ -89,18 +94,18 @@ making overall hash speed within 10% of the internal loop speed.
 
 # Competition
 Fast non-cryptographic hashes:
-- [xxHash] and [xxHash64]
+- [HighwayHash](https://github.com/google/highwayhash) (2016)
+- [xxHash][xxHash] (2012) and [xxHash64][xxHash64] (2014)
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)
 - [MurmurHash3](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) (2011)
 - [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
-- [More info about SMHasher](https://github.com/aappleby/smhasher/wiki/SMHasher)
+- [More info](https://github.com/aappleby/smhasher/wiki/SMHasher) about the [SMHasher] testsuite
 
-Cryprographically secure keyed hashes:
+MAC/PRF, i.e. cryprographically secure keyed hashes:
 - [UMAC] and [VMAC]
 - The [Poly1305-AES](https://en.wikipedia.org/wiki/Poly1305) message-authentication code
 - [SipHash](https://131002.net/siphash/)
-- [HighwayHash](https://github.com/google/highwayhash)
 - Cryptoanalysis of [CityHash64, MurmurHash](https://131002.net/siphash/#at) and [xxHash](http://crypto.stackexchange.com/questions/6408/from-hash-to-cryptographic-hash)
 
 

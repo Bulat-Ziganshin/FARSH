@@ -1,5 +1,7 @@
 #include "farsh.h"
 
+#include <stddef.h>   /* for size_t */
+#include <stdint.h>   /* for uint32_t & uint64_t */
 #include <stdlib.h>   /* for abort() */
 #include <memory.h>   /* for memcpy() */
 
@@ -23,7 +25,7 @@ ALIGN(64) static const uint32_t FARSH_KEYS [STRIPE_ELEMENTS + EXTRA_ELEMENTS] = 
     };
 
 /* Internal: hash exactly STRIPE bytes */
-static uint64_t farsh_fast (const uint32_t *data, const uint32_t *key)
+static uint64_t farsh_full_block (const uint32_t *data, const uint32_t *key)
 {
 #ifdef FARSH_AVX2
     __m256i sum = _mm256_setzero_si256();  __m128i sum128;  int i;
@@ -116,7 +118,9 @@ static uint32_t farsh_final (uint64_t sum)
 /* End of hash mixing code kidnapped from the xxHash64 */
 /* ////////////////////////////////////////////////////////////////////////// */
 
-/* Hash the buffer with the user-supplied 16byte-aligned 1024-byte key material */
+
+/* Public API functions documented in farsh.h */
+
 uint32_t farsh_keyed (const void *data, size_t bytes, const void *key, uint64_t seed)
 {
     uint64_t sum = seed;
@@ -125,7 +129,7 @@ uint32_t farsh_keyed (const void *data, size_t bytes, const void *key, uint64_t 
     while (bytes >= STRIPE)
     {
         size_t chunk = STRIPE;
-        uint64_t h = farsh_fast ((const uint32_t*)ptr, key_ptr);
+        uint64_t h = farsh_full_block ((const uint32_t*)ptr, key_ptr);
         sum = farsh_combine (sum, h);
         ptr += chunk;  bytes -= chunk;
     }
@@ -139,7 +143,6 @@ uint32_t farsh_keyed (const void *data, size_t bytes, const void *key, uint64_t 
     return farsh_final(sum) ^ key_ptr[bytes%STRIPE_ELEMENTS];   /* ensure that zeroes at the end of data will affect the hash value */
 }
 
-/* Hash the buffer with the user-supplied 16byte-aligned, 1008+n*16 bytes long key material and return hash of 32*n bits long */
 void farsh_keyed_n (const void *data, size_t bytes, const void *key, int n, uint64_t seed, void *hash)
 {
     int i;  uint32_t *hash_ptr = (uint32_t*)hash;
@@ -147,14 +150,12 @@ void farsh_keyed_n (const void *data, size_t bytes, const void *key, int n, uint
         hash_ptr[i] = farsh_keyed (data, bytes, (const char*)key + i*FARSH_EXTRA_KEY_SIZE, seed);
 }
 
-/* Hash the buffer and return hash 32*n bits long (n<=32), starting with hash number 'k' */
 void farsh_n (const void *data, size_t bytes, int k, int n, uint64_t seed, void *hash)
 {
     if (k+n > FARSH_MAX_HASHES)  abort();  /* FARSH_KEYS contains only material for the hashes 0..FARSH_MAX_HASHES-1 */
     farsh_keyed_n (data, bytes, (const char*)FARSH_KEYS + k*FARSH_EXTRA_KEY_SIZE, n, seed, hash);
 }
 
-/* Hash the buffer */
 uint32_t farsh (const void *data, size_t bytes, uint64_t seed)
 {
     return farsh_keyed (data, bytes, FARSH_KEYS, seed);
