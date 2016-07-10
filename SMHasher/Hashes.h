@@ -13,9 +13,10 @@ void DoNothingHash         ( const void * key, int len, uint32_t seed, void * ou
 uint32_t MurmurOAAT ( const void * key, int len, uint32_t seed );
 
 //-----------------------------------------------------------------------------
-// Test harnesses for xxHash
+// Test harnesses for xxHash & experimental functions based on xxHash
 
-void xxHash32_test ( const void * key, int len, unsigned seed, void * out );
+void   XXH32_test ( const void * key, int len, unsigned seed, void * out );
+void MyXXH32_test ( const void * key, int len, unsigned seed, void * out );
 
 //-----------------------------------------------------------------------------
 // Test harnesses for FARSH
