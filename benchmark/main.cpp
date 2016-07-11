@@ -17,16 +17,17 @@
 
 int main (int argc, char **argv)
 {
+    bool print_table = argc>1;      // if any cmdline parameter was given
     bool x64 = (sizeof(void*)==8);  // check for 64-bit platform
 
 #ifdef FARSH_AVX2
     char simdext[] = "-avx2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
-    if (! features.AVX2)  {printf("AVX2 not found!\n"); return 1;}
+    if (! features.AVX2)  {if (!print_table) printf("AVX2 not found!\n"); return 1;}
 #elif defined(FARSH_SSE2)
     const char *simdext = x64? "":"-sse2";
     struct CpuidFeatures features;  GetCpuidFeatures(&features);
-    if (! features.SSE2)  {printf("SSE2 not found!\n"); return 1;}
+    if (! features.SSE2)  {if (!print_table) printf("SSE2 not found!\n"); return 1;}
 #else
     const char *simdext = x64? "-nosimd":"";
 #endif
@@ -37,7 +38,6 @@ int main (int argc, char **argv)
     bool ALIGNED_INPUT = false;
 #endif
 
-    bool print_table = argc>1;  // if any cmdline parameter was given
     char progname[100];
     sprintf (progname, "%sfarsh-%s%s", ALIGNED_INPUT? "aligned-":"",
                                        x64? "x64":"x86",
@@ -93,7 +93,7 @@ int main (int argc, char **argv)
 
         if (h != 0xd300ddd8) {   // check hash correctness
             printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
-            return 1;
+            return 2;
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
