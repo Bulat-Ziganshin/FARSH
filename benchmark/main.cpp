@@ -17,8 +17,8 @@
 
 int main (int argc, char **argv)
 {
-    bool print_table = argc>1;      // if any cmdline parameter was given
-    bool x64 = (sizeof(void*)==8);  // check for 64-bit platform
+    bool print_table  =  (argc > 1);    // if any cmdline parameter was given
+    bool x64  =  (sizeof(void*) == 8);  // check for 64-bit platform
 
 #ifdef FARSH_AVX2
     char simdext[] = "-avx2";
@@ -97,8 +97,9 @@ int main (int argc, char **argv)
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
-    if (print_table)  printf(                     " %6.3lf GB/s = %6.3lf GiB/s  ",                   speed/1e9, speed/(1<<30));
-    else              printf(" %.3lf milliseconds = %6.3lf GB/s = %6.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    if (print_table)  printf(                     "%7.3lf GB/s  ", speed/1e9);
+    else              printf(" %.3lf milliseconds =%7.3lf GB/s =%7.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    double t1 = t.Elapsed();
 
 
     const uint32_t *keys = FARSH_KEYS;
@@ -113,9 +114,13 @@ int main (int argc, char **argv)
         if (h==42)  data[0] = i;    // anti-optimization trick
     }
     t.Stop();  speed = DATASET / t.Elapsed();
-    if (print_table)  printf(                       " %6.3lf GB/s = %6.3lf GiB/s\n",                   speed/1e9, speed/(1<<30));
-    else              printf("   %.3lf milliseconds = %6.3lf GB/s = %6.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    if (print_table)  printf(                       "%7.3lf GB/s", speed/1e9);
+    else              printf("   %.3lf milliseconds =%7.3lf GB/s =%7.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
+    t1 -= t.Elapsed();
+    speed = DATASET / t1;
+    if (print_table)  printf(                                 "  |%8.3lf GB/s\n", speed/1e9);
+    else              printf("External loop:   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t1*1000, speed/1e9, speed/(1<<30));
 
     return 0;
 }
