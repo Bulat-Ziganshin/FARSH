@@ -46,10 +46,6 @@ HashInfo g_hashes[] =
   { DoNothingHash,        64, 0x00000000, "donothing64", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,       128, 0x00000000, "donothing128", "Do-Nothing function (only valid for measuring call overhead)" },
 
-  { XXH32_test,           32, 0xBA88B743, "XXH32",       "xxHash, 32-bit result" },
-  { MyXXH32_test,         32, 0xF41AE63E, "MyXXH32",     "My xxHash, 32-bit result" },
-  { MyXXH64_test,         64, 0x6329F00F, "MyXXH64",     "My xxHash, 64-bit result" },
-
   { farsh32_test,         32, 0x866BC8B2, "Farsh32",     "FARSH, 32-bit result" },
   { farsh64_test,         64, 0xDF463566, "Farsh64",     "FARSH, 64-bit result" },
   { farsh128_test,       128, 0xFDF1A5AE, "Farsh128",    "FARSH, 128-bit result"},
@@ -62,6 +58,14 @@ HashInfo g_hashes[] =
   { vhash64_test,         64, 0x852EACB6, "VHash64",     "VHASH, 64-bit result" },
 
   { poly1305_test,       128, 0x852EACB6, "poly1305",    "poly-1305, 128-bit result" },
+
+  { XXH32_test,           32, 0xBA88B743, "XXH32",       "xxHash, 32-bit result" },
+  { MyXXH32_test,         32, 0xF41AE63E, "MyXXH32",     "My xxHash, 32-bit result" },
+  { MyXXH64_test,         64, 0x6329F00F, "MyXXH64",     "My xxHash, 64-bit result" },
+
+  { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
+  { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
+  { SpookyHash128_test,  128, 0xB7C8659C, "Spooky128",   "SpookyHash V2, 128-bit result" },
 };
 
 HashInfo * findHash ( const char * name )

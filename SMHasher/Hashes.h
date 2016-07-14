@@ -13,13 +13,6 @@ void DoNothingHash         ( const void * key, int len, uint32_t seed, void * ou
 uint32_t MurmurOAAT ( const void * key, int len, uint32_t seed );
 
 //-----------------------------------------------------------------------------
-// Test harnesses for xxHash & experimental functions based on xxHash
-
-void   XXH32_test ( const void * key, int len, unsigned seed, void * out );
-void MyXXH32_test ( const void * key, int len, unsigned seed, void * out );
-void MyXXH64_test ( const void * key, int len, unsigned seed, void * out );
-
-//-----------------------------------------------------------------------------
 // Test harnesses for FARSH
 
 void farsh32_test  ( const void * key, int len, unsigned seed, void * out );
@@ -41,3 +34,17 @@ void vhash64_test ( const void * key, int len, unsigned seed, void * out );
 // Test harnesses for poly-1305
 
 void poly1305_test ( const void * key, int len, unsigned seed, void * out );
+
+//-----------------------------------------------------------------------------
+// Test harnesses for xxHash & my experimental functions based on xxHash
+
+void   XXH32_test ( const void * key, int len, unsigned seed, void * out );
+void MyXXH32_test ( const void * key, int len, unsigned seed, void * out );
+void MyXXH64_test ( const void * key, int len, unsigned seed, void * out );
+
+//-----------------------------------------------------------------------------
+// Test harnesses for SpookyHash
+
+void SpookyHash32_test ( const void * key, int len, unsigned seed, void * out );
+void SpookyHash64_test ( const void * key, int len, unsigned seed, void * out );
+void SpookyHash128_test( const void * key, int len, unsigned seed, void * out );
