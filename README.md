@@ -12,7 +12,7 @@ it's not as reliable as the [competition](#competition).
 - [x] SSE2/AVX2 manually-optimized main loop
 - [x] 16-byte aligned key material and (optionally) input data for maximum speed on older CPUs
 - [ ] manual unrolling of main loop (since msvc/icl can't do it themselves) or asm code
-- [ ] try PSLLQ instead of PSHUFD in SSE2 code to improve speed on older CPUs
+- [ ] try PSLLQ instead of PSHUFD in SSE2 code to [improve speed on older CPUs](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!?p=43983&viewfull=1#post43983)
 - [ ] `farsh_init/farsh_update/farsh_result` streaming API
 - [ ] `farsh64*/farsh128*` APIs for faster computation of multi-word hashes
 - [ ] `SSE2/AVX2/NEON?` options in the API (+alignment check for SSE2) for selection of the code path instead of compile-time choice
@@ -95,12 +95,20 @@ making overall hash speed within 10% of the internal loop speed.
 # Competition
 Fast non-cryptographic hashes:
 - [HighwayHash](https://github.com/google/highwayhash) (2016)
+- [CLHash](http://lemire.me/blog/2015/10/26/crazily-fast-hashing-with-carry-less-multiplications),
+even [faster with Broadwell](http://lemire.me/blog/2015/12/24/your-software-should-follow-your-hardware-the-clhash-example) (2015)
+- [MetroHash](https://github.com/jandrewrogers/MetroHash) (2015)
 - [xxHash][xxHash] (2012) and [xxHash64][xxHash64] (2014)
 - [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)
 - [MurmurHash3](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) (2011)
-- Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
+- [Hasshe2](http://cessu.blogspot.ru/2008/11/hashing-with-sse2-revisited-or-my-hash.html) by Cessu (2008)
+
+Further reading:
 - [More info](https://github.com/aappleby/smhasher/wiki/SMHasher) about the [SMHasher] testsuite
+- Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
+- [SuperFastHash](http://www.azillionmonkeys.com/qed/hash.html)
+- Bob Jenkins [1997 Dr Dobbs article](http://www.burtleburtle.net/bob/hash/doobs.html) and its [extended version](http://burtleburtle.net/bob/hash/evahash.html)
 
 MAC/PRF, i.e. cryprographically secure keyed hashes:
 - [UMAC] and [VMAC]
