@@ -75,7 +75,8 @@ The universal hashing formula used here (and copied intact from UMAC) is as simp
 
 
 # Benchmark
-Benchmark done on Haswell i7-4770 (3.9 GHz), [compiled](benchmark/compile.cmd) by GCC 4.9.2.
+[Benchmark](benchmark) done on [Haswell i7-4770 (3.9 GHz)](http://ark.intel.com/products/75122/Intel-Core-i7-4770-Processor-8M-Cache-up-to-3_90-GHz),
+with code [compiled](benchmark/compile.cmd) by GCC 4.9.2.
 Only versions with 64-byte aligned input buffers were benchmarked.
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
