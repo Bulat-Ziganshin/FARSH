@@ -92,6 +92,40 @@ while version 0.2 speed includes time required for pretty slow high-level hashin
 Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
 making overall hash speed within 10% of the internal loop speed.
 
+Intel Pentium M processor 1.5 GHz (SSE2):
+
+Executable                |  FARSH 0.2 speed             |  Internal loop speed
+--------------------------|-----------------------------:|----------------------------:
+aligned-farsh-x86-sse2    |   2.625 GB/s = 2.444 GiB/s   |   2.791 GB/s = 2.5 GiB/s
+aligned-farsh-x86         |   1.664 GB/s = 1.550 GiB/s   |   1.946 GB/s = 1.8 GiB/s
+farsh-x86-sse2            |   2.025 GB/s = 1.886 GiB/s   |   2.302 GB/s = 2.1 GiB/s
+farsh-x86                 |   1.471 GB/s = 1.370 GiB/s   |   1.715 GB/s = 1.5 GiB/s
+
+K10: [AMD Athlon II X2 220 Processor 2.8 GHz](http://www.cpu-world.com/CPUs/K10/AMD-Athlon%20II%20X2%20220%20-%20ADX220OCK22GM.html) (SSE3):
+
+Executable                |  FARSH 0.2 speed             |  Internal loop speed
+--------------------------|-----------------------------:|----------------------------:
+aligned-farsh-x64         |  11.300 GB/s = 10.524 GiB/s  |  14.446 GB/s = 13.454 GiB/s
+aligned-farsh-x86-sse2    |  10.899 GB/s = 10.151 GiB/s  |  13.280 GB/s = 12.368 GiB/s
+aligned-farsh-x86         |   3.805 GB/s =  3.544 GiB/s  |   5.089 GB/s =  4.740 GiB/s
+||
+farsh-x64                 |  12.823 GB/s = 11.943 GiB/s  |  14.187 GB/s = 13.212 GiB/s
+farsh-x86-sse2            |  10.933 GB/s = 10.182 GiB/s  |  12.389 GB/s = 11.538 GiB/s
+farsh-x86                 |   3.786 GB/s =  3.526 GiB/s  |   5.825 GB/s =  5.425 GiB/s
+
+
+Piledriver: [AMD A8-5500 APU 3.7 GHz](http://www.cpu-world.com/CPUs/Bulldozer/AMD-A8-Series%20A8-5500.html) (AVX):
+
+Executable                |  FARSH 0.2 speed             |  Internal loop speed
+--------------------------|-----------------------------:|----------------------------:
+aligned-farsh-x64         |  17.130 GB/s = 15.953 GiB/s  |  21.394 GB/s = 19.924 GiB/s
+aligned-farsh-x86-sse2    |  13.790 GB/s = 12.843 GiB/s  |  20.830 GB/s = 19.400 GiB/s
+aligned-farsh-x86         |   3.872 GB/s =  3.606 GiB/s  |   5.457 GB/s =  5.082 GiB/s
+||
+farsh-x64                 |  15.313 GB/s = 14.262 GiB/s  |  19.659 GB/s = 18.309 GiB/s
+farsh-x86-sse2            |  13.812 GB/s = 12.863 GiB/s  |  18.977 GB/s = 17.674 GiB/s
+farsh-x86                 |   3.959 GB/s =  3.687 GiB/s  |   5.056 GB/s =  4.709 GiB/s
+
 
 # Competition
 Fast non-cryptographic hashes:
