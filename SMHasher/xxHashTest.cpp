@@ -25,7 +25,7 @@ static U32 MyXXH32_round(U32 h1, U32 h2, U32 input)
     h1 = XXH_rotl32(h1, 13);
     h1 += h2;
     h1 *= PRIME32_2;
-    h1 = XXH_rotl32(h1, 13);
+//    h1 = XXH_rotl32(h1, 13);
     return h1;
 }
 
