@@ -25,8 +25,8 @@ void AppendedZeroesTest ( pfHash hash, const int hashbits );
 // Keyset 'Combination' - all possible combinations of input blocks
 
 template< typename hashtype >
-void CombinationKeygenRecurse ( uint32_t * key, int len, int maxlen, 
-                  uint32_t * blocks, int blockcount, 
+void CombinationKeygenRecurse ( uint32_t * key, int len, int maxlen,
+                  uint32_t * blocks, int blockcount,
                 pfHash hash, std::vector<hashtype> & hashes )
 {
   if(len == maxlen) return;
@@ -34,7 +34,7 @@ void CombinationKeygenRecurse ( uint32_t * key, int len, int maxlen,
   for(int i = 0; i < blockcount; i++)
   {
     key[len] = blocks[i];
-  
+
     //if(len == maxlen-1)
     {
       hashtype h;
@@ -71,7 +71,7 @@ bool CombinationKeyTest ( hashfunc<hashtype> hash, int maxlen, uint32_t * blocks
   bool result = true;
 
   result &= TestHashList<hashtype>(hashes,testColl,testDist,drawDiagram);
-  
+
   printf("\n");
 
   return result;
@@ -123,7 +123,7 @@ bool PermutationKeyTest ( hashfunc<hashtype> hash, uint32_t * blocks, int blockc
   bool result = true;
 
   result &= TestHashList<hashtype>(hashes,testColl,testDist,drawDiagram);
-  
+
   printf("\n");
 
   return result;
@@ -187,7 +187,7 @@ bool SparseKeyTest ( hashfunc<hashtype> hash, const int setbits, bool inclusive,
   printf("%d keys\n",(int)hashes.size());
 
   bool result = true;
-  
+
   result &= TestHashList<hashtype>(hashes,testColl,testDist,drawDiagram);
 
   printf("\n");
@@ -278,7 +278,7 @@ bool CyclicKeyTest ( pfHash hash, int cycleLen, int cycleReps, const int keycoun
   }
 
   //----------
-  
+
   bool result = true;
 
   result &= TestHashList(hashes,true,true,drawDiagram);
@@ -328,7 +328,7 @@ bool TextKeyTest ( hashfunc<hashtype> hash, const char * prefix, const char * co
   const int keycount = (int)pow(double(corecount),double(corelen));
 
   printf("Keyset 'Text' - keys of form \"%s[",prefix);
-  for(int i = 0; i < corelen; i++) printf("X");		
+  for(int i = 0; i < corelen; i++) printf("X");
   printf("]%s\" - %d keys\n",suffix,keycount);
 
   uint8_t * key = new uint8_t[keybytes+1];

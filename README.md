@@ -82,9 +82,8 @@ Future versions should replace it with faster algorithm still satisfying the [SM
 making overall hash speed within 10% of the internal loop speed.
 
 Executables were [compiled](benchmark/compile.cmd) with GCC 4.9.2.
-
-Aligned versions make sure that input buffers are 64-byte aligned,
-unaligned versions make sure that data aren't aligned.
+Aligned versions make sure that data being hashed are 64-byte aligned,
+unaligned versions make sure that data are unaligned.
 This makes big difference on Core2 and older Intel CPUs.
 
 [Intel Haswell i7-4770 3.9 GHz (AVX2)](http://ark.intel.com/products/75122/Intel-Core-i7-4770-Processor-8M-Cache-up-to-3_90-GHz),
