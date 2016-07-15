@@ -38,6 +38,16 @@ int main (int argc, char **argv)
     bool ALIGNED_INPUT = false;
 #endif
 
+    // Choose the display format for results
+    int format = argc==1? 0 :
+                 strcmp(argv[1],"1")==0? 1 :
+                 strcmp(argv[1],"2")==0? 2 : -1;
+    if (format <= 0) {
+        printf("FARSH 0.2 Benchmark. See https://github.com/Bulat-Ziganshin/FARSH\n"
+               "  Usage: farsh [1|2] - choose display format\n");
+        if (format < 0)  return 3;
+    }
+
     char progname[100];
     sprintf (progname, "%sfarsh-%s%s", ALIGNED_INPUT? "aligned-":"",
                                        x64? "x64":"x86",
@@ -78,7 +88,7 @@ int main (int argc, char **argv)
 
     // BENCHMARK
     const uint64_t DATASET = uint64_t(100)<<30;
-    if (print_table)  printf("%-24s  | ", progname);
+    if (format > 0)   printf("%-24s  |", progname);
     else              printf("Hashing %d GiB:", int(DATASET>>30));
     const int EXTRA_LOOPS = (100<<20) / DATASIZE;   // These extra loops are required to enable the SIMD engine and switch CPU core to the maximum frequency
     Timer t;
@@ -97,7 +107,7 @@ int main (int argc, char **argv)
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
-    if (print_table)  printf(                     "%7.3lf GB/s  ", speed/1e9);
+    if (print_table)  printf("%8.3lf GB/s =%7.3lf GiB/s", speed/1e9, speed/(1<<30));
     else              printf(" %.3lf milliseconds =%7.3lf GB/s =%7.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
     double t1 = t.Elapsed();
 
@@ -105,8 +115,7 @@ int main (int argc, char **argv)
     const uint32_t *keys = FARSH_KEYS;
     if (t.Elapsed() == 1e42)   data++, keys++;   // anti-optimization trick
 
-    if (print_table)  printf("| ");
-    else              printf("Internal loop:");
+    if (format==0)  printf("Internal loop:  ");
     t.Start();
     for (int i=0; i < DATASET/FARSH_BASE_KEY_SIZE; i++)
     {
@@ -114,13 +123,14 @@ int main (int argc, char **argv)
         if (h==42)  data[0] = i;    // anti-optimization trick
     }
     t.Stop();  speed = DATASET / t.Elapsed();
-    if (print_table)  printf(                       "%7.3lf GB/s", speed/1e9);
-    else              printf("   %.3lf milliseconds =%7.3lf GB/s =%7.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
+    if (print_table)  printf("  |%8.3lf GB/s =%7.3lf GiB/s", speed/1e9, speed/(1<<30));
+    else              printf(" %.3lf milliseconds =%7.3lf GB/s =%7.3lf GiB/s\n", t.Elapsed()*1000, speed/1e9, speed/(1<<30));
 
     t1 -= t.Elapsed();
     speed = DATASET / t1;
-    if (print_table)  printf(                                 "  |%8.3lf GB/s\n", speed/1e9);
-    else              printf("External loop:   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s\n", t1*1000, speed/1e9, speed/(1<<30));
+    if      (format==2)  printf("  |%9.3lf GB/s =%8.3lf GiB/s", speed/1e9, speed/(1<<30));
+    else if (format==0)  printf("External loop:   %.3lf milliseconds = %.3lf GB/s = %.3lf GiB/s", t1*1000, speed/1e9, speed/(1<<30));
+    printf("\n");
 
     return 0;
 }

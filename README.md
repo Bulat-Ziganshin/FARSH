@@ -92,7 +92,8 @@ while version 0.2 speed includes time required for pretty slow high-level hashin
 Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
 making overall hash speed within 10% of the internal loop speed.
 
-Intel Pentium M processor 1.5 GHz (SSE2):
+
+[Intel Pentium M processor 1.5 GHz (SSE2)](http://ark.intel.com/products/27576/Intel-Pentium-M-Processor-1_50-GHz-1M-Cache-400-MHz-FSB):
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
@@ -101,7 +102,8 @@ aligned-farsh-x86         |   1.664 GB/s = 1.550 GiB/s   |   1.946 GB/s = 1.8 Gi
 farsh-x86-sse2            |   2.025 GB/s = 1.886 GiB/s   |   2.302 GB/s = 2.1 GiB/s
 farsh-x86                 |   1.471 GB/s = 1.370 GiB/s   |   1.715 GB/s = 1.5 GiB/s
 
-K10: [AMD Athlon II X2 220 Processor 2.8 GHz](http://www.cpu-world.com/CPUs/K10/AMD-Athlon%20II%20X2%20220%20-%20ADX220OCK22GM.html) (SSE3):
+
+K10: [AMD Athlon II X2 220 Processor 2.8 GHz (SSE3)](http://www.cpu-world.com/CPUs/K10/AMD-Athlon%20II%20X2%20220%20-%20ADX220OCK22GM.html):
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
@@ -114,7 +116,7 @@ farsh-x86-sse2            |  10.933 GB/s = 10.182 GiB/s  |  12.389 GB/s = 11.538
 farsh-x86                 |   3.786 GB/s =  3.526 GiB/s  |   5.825 GB/s =  5.425 GiB/s
 
 
-Piledriver: [AMD A8-5500 APU 3.7 GHz](http://www.cpu-world.com/CPUs/Bulldozer/AMD-A8-Series%20A8-5500.html) (AVX):
+Piledriver: [AMD A8-5500 APU 3.7 GHz (AVX)](http://www.cpu-world.com/CPUs/Bulldozer/AMD-A8-Series%20A8-5500.html):
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
