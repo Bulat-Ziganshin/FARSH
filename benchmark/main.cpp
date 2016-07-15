@@ -92,6 +92,7 @@ int main (int argc, char **argv)
     else              printf("Hashing %d GiB:", int(DATASET>>30));
     const int EXTRA_LOOPS = (100<<20) / DATASIZE;   // These extra loops are required to enable the SIMD engine and switch CPU core to the maximum frequency
     Timer t;
+    uint32_t h = 0;
 
 
     for (int i=0; i < EXTRA_LOOPS+DATASET/DATASIZE; i++)
@@ -99,12 +100,11 @@ int main (int argc, char **argv)
         if (i == EXTRA_LOOPS)
             t.Start();
 
-        uint32_t h = farsh (data, DATASIZE, 0);
+        h = farsh (data, DATASIZE, h);
 
-        if (h != 0xd300ddd8) {   // check hash correctness
-            printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
-            if (h==42)  data[0] = i;    // anti-optimization trick
-            else return 2;
+        if (i == 0  &&  h != 0xd300ddd8) {   // check hash correctness
+            printf("\nWrong hash value: 0x%08X !!!\n", h);
+            return 2;
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
