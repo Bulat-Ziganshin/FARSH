@@ -16,27 +16,7 @@ void XXH64_test ( const void * key, int len, unsigned seed, void * out )
 *  New hash functions developed by Bulat Ziganshin
 *************************************************/
 
-typedef U32 update_f(U32 h1, U32 h2, U32 input);
-
-static U32 MyXXH32_round(U32 h1, U32 h2, U32 input)
-{
-    h1 += input;
-    h1 *= PRIME32_1;
-    h1 = XXH_rotl32(h1, 13);
-    h1 += h2;
-    h1 *= PRIME32_2;
-//    h1 = XXH_rotl32(h1, 13);
-    return h1;
-}
-
-static U32 ZZH32_round(U32 h1, U32 h2, U32 input)
-{
-    h1 ^= input;
-    h1 *= PRIME32_1;
-    h1 += h2;
-    h1 = XXH_rotl32(h1, 13);
-    return h1;
-}
+typedef U32 update_f (U32 h1, U32 h2, U32 input);
 
 #define ROUND()                                  \
 {                                                \
@@ -89,14 +69,17 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
 }
 
 
-void MyXXH32_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint32_t*)out = GenericHash (MyXXH32_round,key,len,seed);
-}
+/* ***********************************************
+*  Fast ZZ-hashes
+*************************************************/
 
-void MyXXH64_test ( const void * key, int len, unsigned seed, void * out )
+static U32 ZZH32_round (U32 h1, U32 h2, U32 input)
 {
-  *(uint64_t*)out = GenericHash (MyXXH32_round,key,len,seed);
+    h1 ^= input;
+    h1 *= PRIME32_1;
+    h1 += h2;
+    h1 = XXH_rotl32(h1, 13);
+    return h1;
 }
 
 void ZZH32_test ( const void * key, int len, unsigned seed, void * out )
@@ -107,4 +90,29 @@ void ZZH32_test ( const void * key, int len, unsigned seed, void * out )
 void ZZH64_test ( const void * key, int len, unsigned seed, void * out )
 {
   *(uint64_t*)out = GenericHash (ZZH32_round,key,len,seed);
+}
+
+
+/* ***********************************************
+*  Slow ZZ-hashes
+*************************************************/
+
+static U32 SlowZZH32_round (U32 h1, U32 h2, U32 input)
+{
+    h1 += input;
+    h1 *= PRIME32_1;
+    h1 = XXH_rotl32(h1, 13);
+    h1 += h2;
+    h1 *= PRIME32_2;
+    return h1;
+}
+
+void SlowZZH32_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint32_t*)out = GenericHash (SlowZZH32_round,key,len,seed);
+}
+
+void SlowZZH64_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint64_t*)out = GenericHash (SlowZZH32_round,key,len,seed);
 }
