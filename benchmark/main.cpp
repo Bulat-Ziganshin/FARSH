@@ -103,7 +103,8 @@ int main (int argc, char **argv)
 
         if (h != 0xd300ddd8) {   // check hash correctness
             printf("\nWrong hash value at iteration %d: %08x !!!\n", i, h);
-            return 2;
+            if (h==42)  data[0] = i;    // anti-optimization trick
+            else return 2;
         }
     }
     t.Stop();  double speed = DATASET / t.Elapsed();
