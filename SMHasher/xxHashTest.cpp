@@ -75,10 +75,10 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
 
 static U32 ZZH32_round (U32 h1, U32 h2, U32 input)
 {
-    h1 ^= input;
+    h1 += input;
     h1 *= PRIME32_1;
     h1 += h2;
-    h1 = XXH_swap32(h1);
+    h1 = XXH_rotl32(h1, 13);
     return h1;
 }
 
@@ -109,7 +109,7 @@ static U32 SlowZZH32_round (U32 h1, U32 h2, U32 input)
     h1 = XXH_swap32(h1);
     h1 += h2;
     h1 *= PRIME32_2;
-//    h1 = XXH_rotl32(h1, 13);
+    h1 = XXH_rotl32(h1, 13);
     return h1;
 }
 
