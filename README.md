@@ -75,9 +75,9 @@ The universal hashing formula used here (and copied intact from UMAC) is as simp
 
 
 # Benchmark
-[Benchmark](benchmark) measures overall hash speed plus internal loop speed.
-Internal loop speed is a hard limit for the speed of any future FARSH version,
-while overall speed includes time required for pretty slow high-level hashing.
+[Benchmark](benchmark) measures overall hash speed as well as internal loop speed.
+The internal loop speed is a hard limit for the speed of any future FARSH version,
+while the overall speed includes time required for pretty slow high-level hashing.
 Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
 making overall hash speed within 10% of the internal loop speed.
 
@@ -88,7 +88,7 @@ unaligned versions make sure that data aren't aligned.
 This makes big difference on Core2 and older Intel CPUs.
 
 [Intel Haswell i7-4770 3.9 GHz (AVX2)](http://ark.intel.com/products/75122/Intel-Core-i7-4770-Processor-8M-Cache-up-to-3_90-GHz),
-other IvyBridge..Skylake CPUs has pretty close performance/GHz:
+other IvyBridge to Skylake CPUs has pretty close performance/GHz:
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
@@ -97,6 +97,12 @@ aligned-farsh-x64         |  31.162 GB/s = 29.022 GiB/s  |  35.722 GB/s = 33.269
 aligned-farsh-x86-avx2    |  40.279 GB/s = 37.513 GiB/s  |  61.682 GB/s = 57.446 GiB/s
 aligned-farsh-x86-sse2    |  25.221 GB/s = 23.489 GiB/s  |  33.584 GB/s = 31.277 GiB/s
 aligned-farsh-x86         |   6.255 GB/s =  5.825 GiB/s  |   6.336 GB/s =  5.901 GiB/s
+||
+farsh-x64-avx2            |  46.024 GB/s = 42.863 GiB/s  |  64.967 GB/s = 60.505 GiB/s
+farsh-x64                 |  30.335 GB/s = 28.252 GiB/s  |  34.891 GB/s = 32.495 GiB/s
+farsh-x86-avx2            |  35.273 GB/s = 32.851 GiB/s  |  57.252 GB/s = 53.320 GiB/s
+farsh-x86-sse2            |  24.502 GB/s = 22.820 GiB/s  |  33.325 GB/s = 31.037 GiB/s
+farsh-x86                 |   6.283 GB/s =  5.852 GiB/s  |   6.763 GB/s =  6.299 GiB/s
 
 
 [Intel Pentium M processor 1.5 GHz (SSE2)](http://ark.intel.com/products/27576/Intel-Pentium-M-Processor-1_50-GHz-1M-Cache-400-MHz-FSB):
@@ -105,6 +111,7 @@ Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
 aligned-farsh-x86-sse2    |   2.625 GB/s = 2.444 GiB/s   |   2.791 GB/s = 2.5 GiB/s
 aligned-farsh-x86         |   1.664 GB/s = 1.550 GiB/s   |   1.946 GB/s = 1.8 GiB/s
+||
 farsh-x86-sse2            |   2.025 GB/s = 1.886 GiB/s   |   2.302 GB/s = 2.1 GiB/s
 farsh-x86                 |   1.471 GB/s = 1.370 GiB/s   |   1.715 GB/s = 1.5 GiB/s
 
@@ -134,7 +141,7 @@ farsh-x64                 |  15.313 GB/s = 14.262 GiB/s  |  19.659 GB/s = 18.309
 farsh-x86-sse2            |  13.812 GB/s = 12.863 GiB/s  |  18.977 GB/s = 17.674 GiB/s
 farsh-x86                 |   3.959 GB/s =  3.687 GiB/s  |   5.056 GB/s =  4.709 GiB/s
 
-More results and benchmarking executables may be found in those [forum posts](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!?p=48907&viewfull=1#post48907).
+More results and benchmarking executables are available in those [forum posts](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!?p=48907&viewfull=1#post48907).
 
 
 
