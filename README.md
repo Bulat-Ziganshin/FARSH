@@ -75,9 +75,20 @@ The universal hashing formula used here (and copied intact from UMAC) is as simp
 
 
 # Benchmark
-[Benchmark](benchmark) done on [Haswell i7-4770 (3.9 GHz)](http://ark.intel.com/products/75122/Intel-Core-i7-4770-Processor-8M-Cache-up-to-3_90-GHz),
-with code [compiled](benchmark/compile.cmd) by GCC 4.9.2.
-Only versions with 64-byte aligned input buffers were benchmarked.
+[Benchmark](benchmark) measures overall hash speed plus internal loop speed.
+Internal loop speed is a hard limit for the speed of any future FARSH version,
+while overall speed includes time required for pretty slow high-level hashing.
+Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
+making overall hash speed within 10% of the internal loop speed.
+
+Executables were [compiled](benchmark/compile.cmd) with GCC 4.9.2.
+
+Aligned versions make sure that input buffers are 64-byte aligned,
+unaligned versions make sure that data aren't aligned.
+This makes big difference on Core2 and older Intel CPUs.
+
+[Intel Haswell i7-4770 3.9 GHz (AVX2)](http://ark.intel.com/products/75122/Intel-Core-i7-4770-Processor-8M-Cache-up-to-3_90-GHz),
+other IvyBridge..Skylake CPUs has pretty close performance/GHz:
 
 Executable                |  FARSH 0.2 speed             |  Internal loop speed
 --------------------------|-----------------------------:|----------------------------:
@@ -86,11 +97,6 @@ aligned-farsh-x64         |  31.162 GB/s = 29.022 GiB/s  |  35.722 GB/s = 33.269
 aligned-farsh-x86-avx2    |  40.279 GB/s = 37.513 GiB/s  |  61.682 GB/s = 57.446 GiB/s
 aligned-farsh-x86-sse2    |  25.221 GB/s = 23.489 GiB/s  |  33.584 GB/s = 31.277 GiB/s
 aligned-farsh-x86         |   6.255 GB/s =  5.825 GiB/s  |   6.336 GB/s =  5.901 GiB/s
-
-Internal loop speed is a hard limit for the speed of any future FARSH version,
-while version 0.2 speed includes time required for pretty slow high-level hashing.
-Future versions should replace it with faster algorithm still satisfying the [SMHasher] requirements,
-making overall hash speed within 10% of the internal loop speed.
 
 
 [Intel Pentium M processor 1.5 GHz (SSE2)](http://ark.intel.com/products/27576/Intel-Pentium-M-Processor-1_50-GHz-1M-Cache-400-MHz-FSB):
@@ -128,6 +134,9 @@ farsh-x64                 |  15.313 GB/s = 14.262 GiB/s  |  19.659 GB/s = 18.309
 farsh-x86-sse2            |  13.812 GB/s = 12.863 GiB/s  |  18.977 GB/s = 17.674 GiB/s
 farsh-x86                 |   3.959 GB/s =  3.687 GiB/s  |   5.056 GB/s =  4.709 GiB/s
 
+More results and benchmarking executables may be found in those [forum posts](http://encode.ru/threads/2213-FARSH-hashing-30-GB-s!?p=48907&viewfull=1#post48907).
+
+
 
 # Competition
 Fast non-cryptographic hashes:
@@ -143,6 +152,7 @@ even [faster with Broadwell](http://lemire.me/blog/2015/12/24/your-software-shou
 
 Further reading:
 - [More info](https://github.com/aappleby/smhasher/wiki/SMHasher) about the [SMHasher] testsuite
+- [A lot of hashes](https://github.com/rurban/smhasher) tested by SMHasher (see doc subdir)
 - Interesting historical [overview](http://blog.reverberate.org/2012/01/state-of-hash-functions-2012.html)
 - [SuperFastHash](http://www.azillionmonkeys.com/qed/hash.html)
 - Bob Jenkins [1997 Dr Dobbs article](http://www.burtleburtle.net/bob/hash/doobs.html) and its [extended version](http://burtleburtle.net/bob/hash/evahash.html)
