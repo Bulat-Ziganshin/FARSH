@@ -63,9 +63,11 @@ HashInfo g_hashes[] =
   { XXH64_test,           64, 0xBA88B743, "XXH64",       "xxHash, 64-bit result" },
 
   { ZZH32_test,           32, 0x2C3F1584, "ZZH32",       "zzHash, 32-bit result" },
+  { ZZH32a_test,          32, 0x2C3F1584, "ZZH32a",      "zzHash, upper 32 bits of result" },
   { ZZH64_test,           64, 0xF47A99B5, "ZZH64",       "zzHash, 64-bit result" },
-  { SlowZZH32_test,       32, 0xDE62C6D6, "SZZH32",      "Slow zzHash, 32-bit result" },
-  { SlowZZH64_test,       64, 0xBC4D68C8, "SZZH64",      "Slow zzHash, 64-bit result" },
+  { SlowZZH32_test,       32, 0xDE62C6D6, "SlowZ32",     "Slow zzHash, 32-bit result" },
+  { SlowZZH32a_test,      32, 0xDE62C6D6, "SlowZ32a",    "Slow zzHash, upper 32 bits of result" },
+  { SlowZZH64_test,       64, 0xBC4D68C8, "SlowZ64",     "Slow zzHash, 64-bit result" },
 
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
