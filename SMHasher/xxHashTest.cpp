@@ -138,3 +138,60 @@ void MyXXH64_test ( const void * key, int len, unsigned seed, void * out )
 {
   *(uint64_t*)out = MyXXH64(key,len,seed);
 }
+
+
+/* ***********************************************
+*  Newest hash functions developed by Bulat Ziganshin
+*************************************************/
+
+static U32 ZZH32_round(U32 h1, U32 h2, U32 input)
+{
+    h1 ^= input;
+    h1 += h2;
+    h1 *= PRIME32_1;
+    h1 = XXH_rotl32(h1, 13);
+    return h1;
+}
+
+FORCE_INLINE U32 ZZH32(const void* input, size_t len, U32 seed)
+{
+    const BYTE* p = (const BYTE*)input;
+    const BYTE* bEnd = p + len;
+#undef XXH_get32bits
+#define XXH_get32bits(p) (*(uint32_t*)(p))
+#define ROUND(input)                                            \
+{                                                               \
+            v1 = MyXXH32_round(v1, v2, input); p+=4; \
+            v2 = MyXXH32_round(v2, v3, input); p+=4; \
+            v3 = MyXXH32_round(v3, v4, input); p+=4; \
+            v4 = MyXXH32_round(v4, v1, input); p+=4; \
+}
+
+    U32 v1 = seed + PRIME32_1 + PRIME32_2;
+    U32 v2 = seed + PRIME32_2;
+    U32 v3 = seed + 0;
+    U32 v4 = seed - PRIME32_1;
+
+    if (len>=16) {
+        const BYTE* const limit = bEnd - 16;
+        do {
+            ROUND(XXH_get32bits(p));
+        } while (p<=limit);
+    }
+
+    v4 += (U32) len;
+    U32 remainder[4] = {0};
+    memcpy(remainder, p, bEnd-p);
+    p = (const BYTE*)remainder;
+    ROUND(XXH_get32bits(p));
+
+    for (int i=0; i<100; i++)
+        ROUND(0);
+
+    return v1; //XXH_rotl32(v1, 1) + XXH_rotl32(v2, 7) + XXH_rotl32(v3, 12) + XXH_rotl32(v4, 18);
+}
+
+void ZZH32_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint32_t*)out = ZZH32(key,len,seed);
+}
