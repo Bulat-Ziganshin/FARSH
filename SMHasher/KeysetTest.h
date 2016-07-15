@@ -376,23 +376,28 @@ bool TextKeyTest ( hashfunc<hashtype> hash, const char * prefix, const char * co
 template < typename hashtype >
 bool ZeroKeyTest ( pfHash hash, bool drawDiagram )
 {
-  int keycount = 64*1024;
+  int keycount = 256*1024;
 
-  printf("Keyset 'Zeroes' - %d keys\n",keycount);
+  printf("Keyset 'Zeroes' - %d keys",keycount);
 
   unsigned char * nullblock = new unsigned char[keycount];
   memset(nullblock,0,keycount);
 
-  //----------
-
   std::vector<hashtype> hashes;
-
   hashes.resize(keycount);
+
+  //----------
 
   for(int i = 0; i < keycount; i++)
   {
+    if(i % (keycount/10) == 0) printf(".");
+
     hash(nullblock,i,0,&hashes[i]);
   }
+
+  printf("\n");
+
+  //----------
 
   bool result = true;
 
