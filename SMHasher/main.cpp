@@ -63,6 +63,7 @@ HashInfo g_hashes[] =
   { MyXXH32_test,         32, 0xF41AE63E, "MyXXH32",     "My xxHash, 32-bit result" },
   { MyXXH64_test,         64, 0x6329F00F, "MyXXH64",     "My xxHash, 64-bit result" },
   { ZZH32_test,           32, 0x7608EC10, "ZZH32",       "zzHash, 32-bit result" },
+  { ZZH64_test,           64, 0x7608EC10, "ZZH64",       "zzHash, 64-bit result" },
 
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },

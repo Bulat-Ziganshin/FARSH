@@ -42,6 +42,7 @@ void   XXH32_test ( const void * key, int len, unsigned seed, void * out );
 void MyXXH32_test ( const void * key, int len, unsigned seed, void * out );
 void MyXXH64_test ( const void * key, int len, unsigned seed, void * out );
 void   ZZH32_test ( const void * key, int len, unsigned seed, void * out );
+void   ZZH64_test ( const void * key, int len, unsigned seed, void * out );
 
 //-----------------------------------------------------------------------------
 // Test harnesses for SpookyHash
