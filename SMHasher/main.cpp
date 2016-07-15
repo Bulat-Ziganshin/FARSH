@@ -121,19 +121,6 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
   printf("--- Testing %s (%s)\n\n",info->name,info->desc);
 
   //-----------------------------------------------------------------------------
-  // Sanity tests
-
-  if(g_testSanity || g_testAll)
-  {
-    printf("[[[ Sanity Tests ]]]\n\n");
-
-    VerificationTest(hash,hashbits,info->verification,true);
-    SanityTest(hash,hashbits);
-    AppendedZeroesTest(hash,hashbits);
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
   // Speed tests
 
   if(g_testSpeed || g_testAll)
@@ -150,6 +137,19 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
       TinySpeedTest(hashfunc<hashtype>(info->hash),sizeof(hashtype),i,info->verification,true,cycles);
     }
 
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
+  // Sanity tests
+
+  if(g_testSanity || g_testAll)
+  {
+    printf("[[[ Sanity Tests ]]]\n\n");
+
+    VerificationTest(hash,hashbits,info->verification,true);
+    SanityTest(hash,hashbits);
+    AppendedZeroesTest(hash,hashbits);
     printf("\n");
   }
 
