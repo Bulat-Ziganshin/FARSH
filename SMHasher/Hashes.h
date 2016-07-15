@@ -39,6 +39,7 @@ void poly1305_test ( const void * key, int len, unsigned seed, void * out );
 // Test harnesses for xxHash & my experimental functions based on xxHash
 
 void   XXH32_test ( const void * key, int len, unsigned seed, void * out );
+void   XXH64_test ( const void * key, int len, unsigned seed, void * out );
 void MyXXH32_test ( const void * key, int len, unsigned seed, void * out );
 void MyXXH64_test ( const void * key, int len, unsigned seed, void * out );
 void   ZZH32_test ( const void * key, int len, unsigned seed, void * out );

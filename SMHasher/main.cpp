@@ -60,6 +60,7 @@ HashInfo g_hashes[] =
   { poly1305_test,       128, 0x852EACB6, "poly1305",    "poly-1305, 128-bit result" },
 
   { XXH32_test,           32, 0xBA88B743, "XXH32",       "xxHash, 32-bit result" },
+  { XXH64_test,           64, 0xBA88B743, "XXH64",       "xxHash, 64-bit result" },
   { MyXXH32_test,         32, 0xF41AE63E, "MyXXH32",     "My xxHash, 32-bit result" },
   { MyXXH64_test,         64, 0x6329F00F, "MyXXH64",     "My xxHash, 64-bit result" },
   { ZZH32_test,           32, 0x7608EC10, "ZZH32",       "zzHash, 32-bit result" },

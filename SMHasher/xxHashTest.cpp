@@ -6,6 +6,11 @@ void XXH32_test ( const void * key, int len, unsigned seed, void * out )
   *(uint32_t*)out = XXH32(key,len,seed);
 }
 
+void XXH64_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint64_t*)out = XXH64(key,len,seed);
+}
+
 
 /* ***********************************************
 *  New hash functions developed by Bulat Ziganshin
