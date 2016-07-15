@@ -158,7 +158,8 @@ static U32 ZZH32_round(U32 h1, U32 h2, U32 input)
     v1 = ZZH32_round(v1, v2, XXH_get32bits(p)); p+=4; \
     v2 = ZZH32_round(v2, v3, XXH_get32bits(p)); p+=4; \
     v3 = ZZH32_round(v3, v4, XXH_get32bits(p)); p+=4; \
-    v4 = ZZH32_round(v4, v1, XXH_get32bits(p)); p+=4; \
+    v4 = ZZH32_round(v4, v5, XXH_get32bits(p)); p+=4; \
+    v5 = ZZH32_round(v5, v1, XXH_get32bits(p)); p+=4; \
 }
 
 FORCE_INLINE U64 ZZH64(const void* input, size_t len, U32 seed)
@@ -172,24 +173,26 @@ FORCE_INLINE U64 ZZH64(const void* input, size_t len, U32 seed)
     U32 v2 = seed + PRIME32_2;
     U32 v3 = seed + 0;
     U32 v4 = seed - PRIME32_1;
+    U32 v5 = seed + PRIME32_3;
 
-    if (len>=16) {
-        const BYTE* const limit = bEnd - 16;
+    if (len>=20) {
+        const BYTE* const limit = bEnd - 20;
         do {
             ROUND();
         } while (p<=limit);
     }
 
-    U32 remainder[4] = {0};
+    U32 remainder[5] = {0};
     memcpy(remainder, p, bEnd-p);
     p = (const BYTE*)remainder;
     ROUND();
 
-    U64 h64 = U64(v1) + (U64(v2) << 11) + (U64(v3) << 21) + (U64(v4) << 32);
+    U64 h64 = U64(v1) + (U64(v2) << 8) + (U64(v3) << 16) + (U64(v4) << 24) + (U64(v5) << 32);
     h64 = XXH64_mergeRound(h64, v1 + (U32) len);
     h64 = XXH64_mergeRound(h64, v2);
     h64 = XXH64_mergeRound(h64, v3);
     h64 = XXH64_mergeRound(h64, v4);
+    h64 = XXH64_mergeRound(h64, v5);
 
     h64 ^= h64 >> 33;
     h64 *= PRIME64_2;
