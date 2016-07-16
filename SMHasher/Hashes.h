@@ -41,9 +41,14 @@ void poly1305_test ( const void * key, int len, unsigned seed, void * out );
 void XXH32_test      ( const void * key, int len, unsigned seed, void * out );
 void XXH64_test      ( const void * key, int len, unsigned seed, void * out );
 
+void ModXXH32_test   ( const void * key, int len, unsigned seed, void * out );
+void ModXXH32a_test  ( const void * key, int len, unsigned seed, void * out );
+void ModXXH64_test   ( const void * key, int len, unsigned seed, void * out );
+
 void ZZH32_test      ( const void * key, int len, unsigned seed, void * out );
 void ZZH32a_test     ( const void * key, int len, unsigned seed, void * out );
 void ZZH64_test      ( const void * key, int len, unsigned seed, void * out );
+
 void SlowZZH32_test  ( const void * key, int len, unsigned seed, void * out );
 void SlowZZH32a_test ( const void * key, int len, unsigned seed, void * out );
 void SlowZZH64_test  ( const void * key, int len, unsigned seed, void * out );
