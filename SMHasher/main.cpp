@@ -66,13 +66,13 @@ HashInfo g_hashes[] =
   { ModXXH32a_test,       32, 0xD68852E6, "Mod32a",      "xxHash with XXH64 finalization, upper 32 bits of result" },
   { ModXXH64_test,        64, 0xF5DA1DC5, "Mod64",       "xxHash with XXH64 finalization, 64-bit result" },
 
-  { ZZH32_test,           32, 0x2C3F1584, "ZZH32",       "zzHash, 32-bit result" },
-  { ZZH32a_test,          32, 0x2C3F1584, "ZZH32a",      "zzHash, upper 32 bits of result" },
-  { ZZH64_test,           64, 0xF47A99B5, "ZZH64",       "zzHash, 64-bit result" },
+  { ZZH32_test,           32, 0x38078AB0, "ZZH32",       "zzHash, 32-bit result" },
+  { ZZH32a_test,          32, 0x44A367B4, "ZZH32a",      "zzHash, upper 32 bits of result" },
+  { ZZH64_test,           64, 0xFA028F55, "ZZH64",       "zzHash, 64-bit result" },
 
-  { SlowZZH32_test,       32, 0xDE62C6D6, "SlowZ32",     "Slow zzHash, 32-bit result" },
-  { SlowZZH32a_test,      32, 0xDE62C6D6, "SlowZ32a",    "Slow zzHash, upper 32 bits of result" },
-  { SlowZZH64_test,       64, 0xBC4D68C8, "SlowZ64",     "Slow zzHash, 64-bit result" },
+  { SlowZZH32_test,       32, 0xD43713A6, "SlowZ32",     "Slow zzHash, 32-bit result" },
+  { SlowZZH32a_test,      32, 0x87B16D5E, "SlowZ32a",    "Slow zzHash, upper 32 bits of result" },
+  { SlowZZH64_test,       64, 0x3C706544, "SlowZ64",     "Slow zzHash, 64-bit result" },
 
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
