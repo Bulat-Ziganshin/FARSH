@@ -74,6 +74,14 @@ HashInfo g_hashes[] =
   { SlowZZH32a_test,      32, 0x87B16D5E, "SlowZ32a",    "Slow zzHash, upper 32 bits of result" },
   { SlowZZH64_test,       64, 0x3C706544, "SlowZ64",     "Slow zzHash, 64-bit result" },
 
+  { WideZZH32_test,       32, 0x7D354E34, "WideZ32",     "x64-optimized zzHash, 32-bit result" },
+  { WideZZH32a_test,      32, 0x8350E1EB, "WideZ32a",    "x64-optimized zzHash, upper 32 bits of result" },
+  { WideZZH64_test,       64, 0xAEC33A87, "WideZ64",     "x64-optimized zzHash, 64-bit result" },
+
+  { SlowWideZZH32_test,   32, 0xE62B820C, "SlowWideZ32", "x64-optimized slow zzHash, 32-bit result" },
+  { SlowWideZZH32a_test,  32, 0xE51F1FD5, "SlowWideZ32a","x64-optimized slow zzHash, upper 32 bits of result" },
+  { SlowWideZZH64_test,   64, 0x854F0860, "SlowWideZ64", "x64-optimized slow zzHash, 64-bit result" },
+
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
   { SpookyHash128_test,  128, 0xB7C8659C, "Spooky128",   "SpookyHash V2, 128-bit result" },
