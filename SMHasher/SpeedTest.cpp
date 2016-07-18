@@ -148,7 +148,7 @@ void FilterOutliers2 ( std::vector<double> & v )
 // possible by marking the function as NEVER_INLINE (to keep the optimizer from
 // moving it) and marking the timing variables as "volatile register".
 
-NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed )
+NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed, const int repeats )
 {
   volatile register int64_t begin,end;
 
@@ -156,7 +156,11 @@ NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed
 
   begin = rdtsc();
 
-  hash(key,len,seed,temp);
+  for(int i = 0; i < repeats; i++)
+  {
+      hash(key,len,seed,temp);
+      seed = temp[0];
+  }
 
   end = rdtsc();
 
@@ -165,7 +169,7 @@ NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed
 
 //-----------------------------------------------------------------------------
 
-double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int blocksize, const int align )
+double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repeats, const int blocksize, const int align )
 {
   Rand r(seed);
 
@@ -189,7 +193,7 @@ double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int block
   {
     r.rand_p(block,blocksize);
 
-    double t = (double)timehash(hash,block,blocksize,itrial);
+    double t = (double)timehash(hash,block,blocksize,itrial,repeats);
 
     if(t > 0) times.push_back(t);
   }
@@ -202,7 +206,7 @@ double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int block
 
   delete [] buf;
 
-  return CalcMean(times);
+  return CalcMean(times)/repeats;
 }
 
 //-----------------------------------------------------------------------------
@@ -211,13 +215,14 @@ double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int block
 void BulkSpeedTest ( pfHash hash, uint32_t seed )
 {
   const int trials = 2999;
+  const int repeats = 1;
   const int blocksize = 256 * 1024;
 
   printf("Bulk speed test - %d-byte keys\n",blocksize);
 
   for(int align = 0; align < 8; align++)
   {
-    double cycles = SpeedTest(hash,seed,trials,blocksize,align);
+    double cycles = SpeedTest(hash,seed,trials,repeats,blocksize,align);
 
     double bestbpc = double(blocksize)/cycles;
 
@@ -230,11 +235,12 @@ void BulkSpeedTest ( pfHash hash, uint32_t seed )
 
 void TinySpeedTest ( pfHash hash, int hashsize, int keysize, uint32_t seed, bool verbose, double & /*outCycles*/ )
 {
-  const int trials = 999999;
+  const int trials = 1000;
+  const int repeats = 1000;
 
   if(verbose) printf("Small key speed test - %4d-byte keys - ",keysize);
 
-  double cycles = SpeedTest(hash,seed,trials,keysize,0);
+  double cycles = SpeedTest(hash,seed,trials,repeats,keysize,0);
 
   printf("%8.2f cycles/hash\n",cycles);
 }
