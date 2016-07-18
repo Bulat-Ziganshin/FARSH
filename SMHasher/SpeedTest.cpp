@@ -148,7 +148,7 @@ void FilterOutliers2 ( std::vector<double> & v )
 // possible by marking the function as NEVER_INLINE (to keep the optimizer from
 // moving it) and marking the timing variables as "volatile register".
 
-NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed, const int repeats, int measure_throughput )
+NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed, const int repeats, bool measure_throughput )
 {
   volatile register int64_t begin,end;
 
@@ -176,7 +176,7 @@ NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed
 
 //-----------------------------------------------------------------------------
 
-double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repeats, const int blocksize, const int align, int measure_throughput )
+double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repeats, const int blocksize, const int align, bool measure_throughput )
 {
   Rand r(seed);
 
@@ -224,7 +224,7 @@ void BulkSpeedTest ( pfHash hash, uint32_t seed )
   const int trials = 2999;
   const int repeats = 1;
   const int blocksize = 256 * 1024;
-  const int measure_throughput = 1;
+  const bool measure_throughput = true;
 
   printf("Bulk speed test - %d-byte keys\n",blocksize);
 
@@ -241,18 +241,39 @@ void BulkSpeedTest ( pfHash hash, uint32_t seed )
 
 //-----------------------------------------------------------------------------
 
-void TinySpeedTest ( pfHash hash, int hashsize, int keysize, uint32_t seed, bool verbose, double & /*outCycles*/ )
+void TinySpeedTest ( pfHash hash, int hashsize, int max_keysize, uint32_t seed, bool verbose )
 {
   const int trials = 1000;
   const int repeats = 1000;
+  std::vector<double> cycles_latency(max_keysize+1);
+  std::vector<double> cycles_throughput(max_keysize+1);
 
-  if(verbose) printf("Small key speed test - %4d-byte keys - ",keysize);
+  printf("Small key speed test");
 
-  double cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,0);
-  printf("latency %8.2f cycles/hash",cycles);
+  for (int i=0; i<10; i++)
+  {
+    if(verbose) printf(".");
 
-  cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,1);
-  printf(",  throughput %8.2f cycles/hash\n",cycles);
+    for(int keysize = 0; keysize <= max_keysize; keysize++)
+    {
+      double cycles;
+
+      cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,false);
+      if (i==0 || cycles < cycles_latency[keysize])
+        cycles_latency[keysize] = cycles;
+
+      cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,true);
+      if (i==0 || cycles < cycles_throughput[keysize])
+        cycles_throughput[keysize] = cycles;
+    }
+  }
+  printf("\n");
+
+  for(int keysize = 0; keysize <= max_keysize; keysize++)
+  {
+    printf("%4d-byte keys - latency %8.2f cycles/hash,  throughput %8.2f cycles/hash\n",
+      keysize, cycles_latency[keysize], cycles_throughput[keysize]);
+  }
 }
 
 //-----------------------------------------------------------------------------

@@ -147,12 +147,8 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
     BulkSpeedTest(info->hash,info->verification);
     printf("\n");
 
-    for(int i = 0; i <= 64; i++)
-    {
-      double cycles;
-
-      TinySpeedTest(hashfunc<hashtype>(info->hash),sizeof(hashtype),i,info->verification,true,cycles);
-    }
+    const int max_keysize = 64;
+    TinySpeedTest(hashfunc<hashtype>(info->hash),sizeof(hashtype),max_keysize,info->verification,true);
 
     printf("\n");
   }
