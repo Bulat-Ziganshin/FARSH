@@ -147,7 +147,7 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
     BulkSpeedTest(info->hash,info->verification);
     printf("\n");
 
-    for(int i = 1; i < 32; i++)
+    for(int i = 0; i <= 64; i++)
     {
       double cycles;
 
