@@ -13,10 +13,22 @@ void testRDTSC ( void )
 
 #include <windows.h>
 
+static DWORD_PTR process_mask = 1, system_mask = 1;
+int thread_priority = THREAD_PRIORITY_NORMAL;
+
 void SetAffinity ( int cpu )
 {
-  SetProcessAffinityMask(GetCurrentProcess(),cpu);
+  GetProcessAffinityMask(GetCurrentProcess(), &process_mask, &system_mask);   // i don't know why, but it can't fetch the process mask as set by the "start" command
+  thread_priority = GetThreadPriority (GetCurrentThread ());
+
+  SetThreadAffinityMask(GetCurrentThread(),cpu);
   SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+}
+
+void ResetAffinity()
+{
+  SetThreadAffinityMask(GetCurrentThread(),process_mask);
+  SetThreadPriority(GetCurrentThread(), thread_priority);
 }
 
 #else
@@ -37,6 +49,11 @@ void SetAffinity ( int /*cpu*/ )
     printf("WARNING: Could not set CPU affinity\n");
   }
 #endif
+}
+
+void ResetAffinity()
+{
+  // #TODO
 }
 
 #endif

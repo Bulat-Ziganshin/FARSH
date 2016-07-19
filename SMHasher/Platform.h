@@ -4,6 +4,7 @@
 #pragma once
 
 void SetAffinity ( int cpu );
+void ResetAffinity();
 
 //-----------------------------------------------------------------------------
 // Microsoft Visual Studio

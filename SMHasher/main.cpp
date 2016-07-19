@@ -144,11 +144,15 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
   {
     printf("[[[ Speed Tests ]]]\n\n");
 
+    SetAffinity((1 << 2));   // Run speed tests on 3rd CPU to ensure that RDTSC always the the same core
+
     BulkSpeedTest(info->hash,info->verification);
     printf("\n");
 
     const int max_keysize = 64;
     TinySpeedTest(hashfunc<hashtype>(info->hash),sizeof(hashtype),max_keysize,info->verification,true);
+
+    ResetAffinity();   // Use all cores for the rest of code
 
     printf("\n");
   }
@@ -560,10 +564,6 @@ int main ( int argc, char ** argv )
   {
     hashToTest = argv[1];
   }
-
-  // Code runs on the 3rd CPU by default
-
-  SetAffinity((1 << 2));
 
   SelfTest();
 
