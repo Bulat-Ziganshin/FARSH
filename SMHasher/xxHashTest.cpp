@@ -115,18 +115,33 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
         } while (p<=limit);
     }
 
-    U32 remainder[5] = {0};
-    memcpy(remainder, p, bEnd-p);
-    p = (const BYTE*)remainder;
-    ROUND();
+    size_t rem = bEnd - p;
+    if (rem >=  4) { v1 = update(v1, v2, XXH_get32bits(p));
+    if (rem >=  8) { v2 = update(v2, v3, XXH_get32bits(p+4));
+    if (rem >= 12) { v3 = update(v3, v4, XXH_get32bits(p+8));
+    if (rem >= 16) { v4 = update(v4, v5, XXH_get32bits(p+12));
+    }}}}
+
+    size_t rem4 = rem%4;
+    if (rem4 >=  1) {
+        p += (rem/4)*4;
+        U32 last_word = p[0];
+        if (rem4 >=  2) {
+            last_word += p[1] << 8;
+            if (rem4 >=  3) {
+                last_word += p[2] << 16;
+            }
+        }
+        v5 = update(v5, v1, last_word);
+    }
 
     U64 h64 = U64(v1) + (U64(v2) << 8) + (U64(v3) << 16) + (U64(v4) << 24) + (U64(v5) << 32);
-    h64 = XXH64_mergeRound(h64, (U32) len);
     h64 = XXH64_mergeRound(h64, v1);
     h64 = XXH64_mergeRound(h64, v2);
     h64 = XXH64_mergeRound(h64, v3);
     h64 = XXH64_mergeRound(h64, v4);
     h64 = XXH64_mergeRound(h64, v5);
+    h64 = XXH64_mergeRound(h64, (U32) len);
 
     h64 ^= h64 >> 33;
     h64 *= PRIME64_2;
