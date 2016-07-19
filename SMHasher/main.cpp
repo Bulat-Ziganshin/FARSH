@@ -85,6 +85,10 @@ HashInfo g_hashes[] =
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
   { SpookyHash128_test,  128, 0xB7C8659C, "Spooky128",   "SpookyHash V2, 128-bit result" },
+
+  { MurmurHash3_x86_32,   32, 0xB0F57EE3, "Murmur3A",    "MurmurHash3 for x86, 32-bit" },
+  { MurmurHash3_x86_128, 128, 0xB3ECE62A, "Murmur3C",    "MurmurHash3 for x86, 128-bit" },
+  { MurmurHash3_x64_128, 128, 0x6384BA69, "Murmur3F",    "MurmurHash3 for x64, 128-bit" },
 };
 
 HashInfo * findHash ( const char * name )
