@@ -83,6 +83,20 @@ void ModXXH64_test ( const void * key, int len, unsigned seed, void * out )
 }
 
 
+//-----------------------------------------------------------------------------
+// MurMurHash3 finalization mix - force all bits of a hash block to avalanche
+
+FORCE_INLINE uint32_t fmix32 ( uint32_t h )
+{
+  h ^= h >> 16;
+  h *= 0x85ebca6b;
+  h ^= h >> 13;
+  h *= 0xc2b2ae35;
+  h ^= h >> 16;
+
+  return h;
+}
+
 /* ***********************************************
 *  New hash functions developed by Bulat Ziganshin
 *************************************************/
@@ -135,21 +149,21 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
         v5 = update(v5, v1, last_word);
     }
 
-    U64 h64 = U64(v1) + (U64(v2) << 8) + (U64(v3) << 16) + (U64(v4) << 24) + (U64(v5) << 32);
-    h64 = XXH64_mergeRound(h64, v1);
-    h64 = XXH64_mergeRound(h64, v2);
-    h64 = XXH64_mergeRound(h64, v3);
-    h64 = XXH64_mergeRound(h64, v4);
-    h64 = XXH64_mergeRound(h64, v5);
-    h64 = XXH64_mergeRound(h64, (U32) len);
+    //----------
+    // finalization
 
-    h64 ^= h64 >> 33;
-    h64 *= PRIME64_2;
-    h64 ^= h64 >> 29;
-    h64 *= PRIME64_3;
-    h64 ^= h64 >> 32;
+    v1 ^= len;
 
-    return h64;
+    v1 += v2; v1 += v3; v1 += v4; v1 += v5;
+    v2 ^= v1; v3 ^= v1; v4 ^= v1; v5 ^= v1;
+
+    v1 = fmix32(v1);
+    v2 = fmix32(v2);
+    v3 = fmix32(v3);
+    v4 = fmix32(v4);
+    v5 = fmix32(v5);
+
+    return (U64(v1+v2+v3+v4)<<32) ^ (XXH_rotl32(v2^v3,13)^v4^v5);
 }
 
 
