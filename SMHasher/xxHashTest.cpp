@@ -149,19 +149,25 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
         v5 = update(v5, v1, last_word);
     }
 
-    //----------
-    // finalization
+#define ROL(v,i)  (v = XXH_rotl32(v,(13*(i))%32))
 
-    v1 ^= len;
+    ROL(v4,1);  ROL(v5,6);  v1 += v2;  v2 ^= v3;
+    ROL(v1,2);  ROL(v2,7);  v3 += v4;  v4 ^= v5;
+    ROL(v3,3);  ROL(v4,8);  v5 += v1;  v1 ^= v2;
+    ROL(v5,4);  ROL(v1,9);  v2 += v3;  v3 ^= v4;
+    ROL(v2,5);  ROL(v3,10); v4 += v5;  v5 ^= v1;
 
-    v1 += v2; v1 += v3; v1 += v4; v1 += v5;
-    v2 ^= v1; v3 ^= v1; v4 ^= v1; v5 ^= v1;
-
-    v1 = fmix32(v1);
+    v1 = fmix32(v1+len);
     v2 = fmix32(v2);
     v3 = fmix32(v3);
     v4 = fmix32(v4);
     v5 = fmix32(v5);
+
+    ROL(v4,1);  ROL(v5,6);  v1 += v2;  v2 ^= v3;
+    ROL(v1,2);  ROL(v2,7);  v3 += v4;  v4 ^= v5;
+    ROL(v3,3);  ROL(v4,8);  v5 += v1;  v1 ^= v2;
+    ROL(v5,4);  ROL(v1,9);  v2 += v3;  v3 ^= v4;
+    ROL(v2,5);  ROL(v3,10); v4 += v5;  v5 ^= v1;
 
     return (U64(v1+v2+v3+v4)<<32) ^ (XXH_rotl32(v2^v3,13)^v4^v5);
 }
