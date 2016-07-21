@@ -129,25 +129,49 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
         } while (p<=limit);
     }
 
-    size_t rem = bEnd - p;
-    if (rem >=  4) { v1 = update(v1, v2, XXH_get32bits(p));
-    if (rem >=  8) { v2 = update(v2, v3, XXH_get32bits(p+4));
-    if (rem >= 12) { v3 = update(v3, v4, XXH_get32bits(p+8));
-    if (rem >= 16) { v4 = update(v4, v5, XXH_get32bits(p+12));
-    }}}}
 
-    size_t rem4 = rem%4;
-    if (rem4 >=  1) {
-        p += (rem/4)*4;
-        U32 last_word = p[0];
-        if (rem4 >=  2) {
-            last_word += p[1] << 8;
-            if (rem4 >=  3) {
-                last_word += p[2] << 16;
-            }
-        }
-        v5 = update(v5, v1, last_word);
+    size_t rem = bEnd - p;
+    U32 last_word = 0;     // (U32)len << 24
+    switch (rem)
+    {
+        case 19:
+        case 18:
+        case 17:    v1 = update(v1, v2, XXH_get32bits(p));
+                    v2 = update(v2, v3, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, XXH_get32bits(p+12));
+                    v5 = update(v5, v1, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+        case 16:
+        case 15:
+        case 14:
+        case 13:    v1 = update(v1, v2, XXH_get32bits(p));
+                    v2 = update(v2, v3, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+        case 12:
+        case 11:
+        case 10:
+        case  9:    v1 = update(v1, v2, XXH_get32bits(p));
+                    v2 = update(v2, v3, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+
+        case  8:
+        case  7:
+        case  6:
+        case  5:
+        case  4:    v1 = update(v1, v2, XXH_get32bits(p));
+                    v2 = update(v2, v3, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+
+        case  3:    last_word += p[2] << 16;
+        case  2:    last_word += p[1] << 8;
+        case  1:    last_word += p[0];
+                    v1 = update(v1, v2, last_word);
     }
+
 
 #define ROL(v,i)  (v = XXH_rotl32(v,(13*(i))%32))
 
