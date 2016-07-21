@@ -84,17 +84,16 @@ void ModXXH64_test ( const void * key, int len, unsigned seed, void * out )
 
 
 //-----------------------------------------------------------------------------
-// MurMurHash3 finalization mix - force all bits of a hash block to avalanche
+// XXH32 finalization mix - force all bits of a hash block to avalanche
 
-FORCE_INLINE uint32_t fmix32 ( uint32_t h )
+FORCE_INLINE U32 fmix32 (U32 h32, U32 CONST_1, U32 CONST_2)
 {
-  h ^= h >> 16;
-  h *= 0x85ebca6b;
-  h ^= h >> 13;
-  h *= 0xc2b2ae35;
-  h ^= h >> 16;
-
-  return h;
+  h32 ^= h32 >> 15;
+  h32 *= CONST_1;
+  h32 ^= h32 >> 13;
+  h32 *= CONST_2;
+  h32 ^= h32 >> 16;
+  return h32;
 }
 
 /* ***********************************************
@@ -176,16 +175,16 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 #define ROL(v,i)  (v = XXH_rotl32(v,i))
 
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  v2 += v6;  v3 += v6;  v4 += v6;  v5 += v6;
+    v1 += v6;  ROL(v6,13);  v2 += v6;  v3 ^= v6;  v4 -= v6;  v5 += v6*PRIME32_5;
 
-    v1 = fmix32(v1);
-    v2 = fmix32(v2);
-    v3 = fmix32(v3);
-    v4 = fmix32(v4);
-    v5 = fmix32(v5);
+    v1 = fmix32 (v1, PRIME32_1, PRIME32_2);
+    v2 = fmix32 (v2, PRIME32_2, PRIME32_3);
+    v3 = fmix32 (v3, PRIME32_3, PRIME32_4);
+    v4 = fmix32 (v4, PRIME32_4, PRIME32_5);
+    v5 = fmix32 (v5, PRIME32_5, PRIME32_1);
 
     v6 = v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  v2 += v6;  v3 += v6;  v4 += v6;
+    v1 += v6;  ROL(v6,13);  v2 += v6;  v3 ^= v6;  v4 -= v6;
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;
