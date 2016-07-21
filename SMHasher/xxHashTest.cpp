@@ -100,20 +100,12 @@ FORCE_INLINE U32 fmix32 (U32 h32, U32 CONST_1, U32 CONST_2)
 *  New hash functions developed by Bulat Ziganshin
 *************************************************/
 
-typedef U32 update_f (U32 h1, U32 h2, U32 input);
+typedef U32 update_f (U32 h1, U32 h2, U32 CONST_1, U32 CONST_2, U32 input);
 
 FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U32 seed, void *out)
 {
     const BYTE* p = (const BYTE*)input;
     const BYTE* bEnd = p + len;
-#define ROUND()                                  \
-{                                                \
-    v1 = update(v1, v2, XXH_get32bits(p)); p+=4; \
-    v2 = update(v2, v3, XXH_get32bits(p)); p+=4; \
-    v3 = update(v3, v4, XXH_get32bits(p)); p+=4; \
-    v4 = update(v4, v5, XXH_get32bits(p)); p+=4; \
-    v5 = update(v5, v1, XXH_get32bits(p)); p+=4; \
-}
 
     U32 v1 = seed + PRIME32_1 + PRIME32_2;
     U32 v2 = seed + PRIME32_2;
@@ -124,58 +116,61 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     if (len>=20) {
         const BYTE* const limit = bEnd - 20;
         do {
-            ROUND();
+            v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p)); p+=4;
+            v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p)); p+=4;
+            v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p)); p+=4;
+            v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p)); p+=4;
+            v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p)); p+=4;
         } while (p<=limit);
     }
 
 
     size_t rem = bEnd - p;
-    U32 last_word = 0;     // (U32)len << 24
+    U32 last_word = 0;
     switch (rem)
     {
         case 19:
         case 18:
-        case 17:    v1 = update(v1, v2, XXH_get32bits(p));
-                    v2 = update(v2, v3, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, XXH_get32bits(p+8));
-                    v4 = update(v4, v5, XXH_get32bits(p+12));
-                    v5 = update(v5, v1, XXH_get32bits(bEnd-4));  // unaligned access!
+        case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p+12));
+                    v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
         case 16:
         case 15:
         case 14:
-        case 13:    v1 = update(v1, v2, XXH_get32bits(p));
-                    v2 = update(v2, v3, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, XXH_get32bits(p+8));
-                    v4 = update(v4, v5, XXH_get32bits(bEnd-4));  // unaligned access!
+        case 13:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
         case 12:
         case 11:
         case 10:
-        case  9:    v1 = update(v1, v2, XXH_get32bits(p));
-                    v2 = update(v2, v3, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, XXH_get32bits(bEnd-4));  // unaligned access!
+        case  9:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
-
         case  8:
         case  7:
         case  6:
         case  5:
-        case  4:    v1 = update(v1, v2, XXH_get32bits(p));
-                    v2 = update(v2, v3, XXH_get32bits(bEnd-4));  // unaligned access!
+        case  4:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
         case  3:    last_word += p[2] << 16;
         case  2:    last_word += p[1] << 8;
         case  1:    last_word += p[0];
-                    v1 = update(v1, v2, last_word);
+                    v1 = update(v1, v2, PRIME32_1, PRIME32_4, last_word);
     }
 
 
 #define ROL(v,i)  (v = XXH_rotl32(v,i))
 
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  ROL(v6,13);  v2 += v6;  v3 ^= v6;  v4 -= v6;  v5 += v6*PRIME32_5;
+    v1 += v6;  v2 ^= v6;  ROL(v6,13);  v3 += v6;  v4 ^= v6;  v5 -= v6;
 
     v1 = fmix32 (v1, PRIME32_1, PRIME32_2);
     v2 = fmix32 (v2, PRIME32_2, PRIME32_3);
@@ -184,7 +179,7 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     v5 = fmix32 (v5, PRIME32_5, PRIME32_1);
 
     v6 = v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  ROL(v6,13);  v2 += v6;  v3 ^= v6;  v4 -= v6;
+    v1 += v6;  v2 ^= v6;  ROL(v6,13);  v3 += v6;  v4 ^= v6;
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;
@@ -193,33 +188,33 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 }
 
 
-/* **************************************************
-*  Two zzHash variants differ only in ROUND procedure
-****************************************************/
+/* ********************************************************
+*  Two zzHash variants differ only in their ROUND procedure
+**********************************************************/
 
-static U32 ZZH32_round (U32 h1, U32 h2, U32 input)
+static U32 ZZH32_round (U32 h1, U32 h2, U32 CONST_1, U32 /*CONST_2*/, U32 input)
 {
     h1 += input;
-    h1 *= PRIME32_1;
+    h1 *= CONST_1;
     h1 += h2;
     h1 = XXH_rotl32(h1, 13);
     return h1;
 }
 
-static U32 SlowZZH32_round (U32 h1, U32 h2, U32 input)
+static U32 SlowZZH32_round (U32 h1, U32 h2, U32 CONST_1, U32 CONST_2, U32 input)
 {
     h1 += input;
-    h1 *= PRIME32_1;
+    h1 *= CONST_1;
     h1 = XXH_swap32(h1);
     h1 += h2;
-    h1 *= PRIME32_2;
+    h1 *= CONST_2;
 //    h1 = XXH_rotl32(h1, 13);
     return h1;
 }
 
-/* ***********************************************
-*  Generate 32-to-128 bit hash routines
-*************************************************/
+/* ***************************************************
+*  Generate hashing routines with 32 to 128 bit output
+*****************************************************/
 
 #define GEN32(PROCNAME, ROUNDNAME, NUM)                                              \
 void PROCNAME ( const void * key, int len, unsigned seed, void * out )               \
