@@ -103,7 +103,7 @@ FORCE_INLINE uint32_t fmix32 ( uint32_t h )
 
 typedef U32 update_f (U32 h1, U32 h2, U32 input);
 
-FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U32 seed)
+FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U32 seed, void *out)
 {
     const BYTE* p = (const BYTE*)input;
     const BYTE* bEnd = p + len;
@@ -173,33 +173,40 @@ FORCE_INLINE U64 GenericHash (update_f update, const void* input, size_t len, U3
     }
 
 
-#define ROL(v,i)  (v = XXH_rotl32(v,(13*(i))%32))
+#define ROL(v)  (v = XXH_rotl32(v,13))
 
-    ROL(v4,1);  ROL(v5,6);  v1 += v2;  v2 ^= v3;
-    ROL(v1,2);  ROL(v2,7);  v3 += v4;  v4 ^= v5;
-    ROL(v3,3);  ROL(v4,8);  v5 += v1;  v1 ^= v2;
-    ROL(v5,4);  ROL(v1,9);  v2 += v3;  v3 ^= v4;
-    ROL(v2,5);  ROL(v3,10); v4 += v5;  v5 ^= v1;
+    U32 v6 = v1+len;
+    ROL(v2);  v3 += v1;  v4 ^= v1;  v5 -= v1;
+    ROL(v3);  v4 += v2;  v5 ^= v2;  v6 -= v2;
+    ROL(v4);  v5 += v3;  v6 ^= v3;  v1 -= v3;
+    ROL(v5);  v6 += v4;  v1 ^= v4;  v2 -= v4;
+    ROL(v6);  v1 += v5;  v2 ^= v5;  v3 -= v5;
+    ROL(v1);  v2 += v6;  v3 ^= v6;  v4 -= v6;
 
-    v1 = fmix32(v1+len);
+    v1 = fmix32(v1);
     v2 = fmix32(v2);
     v3 = fmix32(v3);
     v4 = fmix32(v4);
     v5 = fmix32(v5);
 
-    ROL(v4,1);  ROL(v5,6);  v1 += v2;  v2 ^= v3;
-    ROL(v1,2);  ROL(v2,7);  v3 += v4;  v4 ^= v5;
-    ROL(v3,3);  ROL(v4,8);  v5 += v1;  v1 ^= v2;
-    ROL(v5,4);  ROL(v1,9);  v2 += v3;  v3 ^= v4;
-    ROL(v2,5);  ROL(v3,10); v4 += v5;  v5 ^= v1;
+    v6 = v1+len;
+    ROL(v2);  v3 += v1;  v4 ^= v1;  v5 -= v1;
+    ROL(v3);  v4 += v2;  v5 ^= v2;  v6 -= v2;
+    ROL(v4);  v5 += v3;  v6 ^= v3;  v1 -= v3;
+    ROL(v5);  v6 += v4;  v1 ^= v4;  v2 -= v4;
+    ROL(v6);  v1 += v5;  v2 ^= v5;  v3 -= v5;
+    ROL(v1);  v2 += v6;  v3 ^= v6;  v4 -= v6;
 
-    return (U64(v1+v2+v3+v4)<<32) ^ (XXH_rotl32(v2^v3,13)^v4^v5);
+    ((uint32_t*)out)[0] = v1;
+    ((uint32_t*)out)[1] = v2;
+    ((uint32_t*)out)[2] = v3;
+    ((uint32_t*)out)[3] = v4;
 }
 
 
-/* ***********************************************
-*  Fast ZZ-hashes
-*************************************************/
+/* **************************************************
+*  Two zzHash variants differ only in ROUND procedure
+****************************************************/
 
 static U32 ZZH32_round (U32 h1, U32 h2, U32 input)
 {
@@ -209,26 +216,6 @@ static U32 ZZH32_round (U32 h1, U32 h2, U32 input)
     h1 = XXH_rotl32(h1, 13);
     return h1;
 }
-
-void ZZH32_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint32_t*)out = GenericHash (ZZH32_round,key,len,seed);
-}
-
-void ZZH32a_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint32_t*)out = GenericHash (ZZH32_round,key,len,seed) >> 32;
-}
-
-void ZZH64_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint64_t*)out = GenericHash (ZZH32_round,key,len,seed);
-}
-
-
-/* ***********************************************
-*  Slow ZZ-hashes
-*************************************************/
 
 static U32 SlowZZH32_round (U32 h1, U32 h2, U32 input)
 {
@@ -241,20 +228,44 @@ static U32 SlowZZH32_round (U32 h1, U32 h2, U32 input)
     return h1;
 }
 
-void SlowZZH32_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint32_t*)out = GenericHash (SlowZZH32_round,key,len,seed);
+/* ***********************************************
+*  Generate 32-to-128 bit hash routines
+*************************************************/
+
+#define GEN32(PROCNAME, ROUNDNAME, NUM)                                              \
+void PROCNAME ( const void * key, int len, unsigned seed, void * out )               \
+{                                                                                    \
+  uint32_t result[4];                                                                \
+  GenericHash (ROUNDNAME,key,len,seed,result);                                       \
+  *(uint32_t*)out = result[NUM];                                                     \
 }
 
-void SlowZZH32a_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint32_t*)out = GenericHash (SlowZZH32_round,key,len,seed) >> 32;
+#define GEN64(PROCNAME, ROUNDNAME, NUM)                                              \
+void PROCNAME ( const void * key, int len, unsigned seed, void * out )               \
+{                                                                                    \
+  uint32_t result[4];                                                                \
+  GenericHash (ROUNDNAME,key,len,seed,result);                                       \
+  ((uint32_t*)out)[0] = result[NUM*2];                                               \
+  ((uint32_t*)out)[1] = result[NUM*2+1];                                             \
 }
 
-void SlowZZH64_test ( const void * key, int len, unsigned seed, void * out )
-{
-  *(uint64_t*)out = GenericHash (SlowZZH32_round,key,len,seed);
+#define GEN(PREFIX)                                                                  \
+                                                                                     \
+GEN32(PREFIX##32_test,  PREFIX##32_round, 0)                                         \
+GEN32(PREFIX##32a_test, PREFIX##32_round, 1)                                         \
+GEN32(PREFIX##32b_test, PREFIX##32_round, 2)                                         \
+GEN32(PREFIX##32c_test, PREFIX##32_round, 3)                                         \
+                                                                                     \
+GEN64(PREFIX##64_test,  PREFIX##32_round, 0)                                         \
+GEN64(PREFIX##64a_test, PREFIX##32_round, 1)                                         \
+                                                                                     \
+void PREFIX##128_test ( const void * key, int len, unsigned seed, void * out )       \
+{                                                                                    \
+  GenericHash (PREFIX##32_round,key,len,seed,out);                                   \
 }
+
+GEN(ZZH)
+GEN(SlowZZH)
 
 
 /* ***************************************************

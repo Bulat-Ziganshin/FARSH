@@ -48,11 +48,19 @@ void ModXXH64_test   ( const void * key, int len, unsigned seed, void * out );
 
 void ZZH32_test      ( const void * key, int len, unsigned seed, void * out );
 void ZZH32a_test     ( const void * key, int len, unsigned seed, void * out );
+void ZZH32b_test     ( const void * key, int len, unsigned seed, void * out );
+void ZZH32c_test     ( const void * key, int len, unsigned seed, void * out );
 void ZZH64_test      ( const void * key, int len, unsigned seed, void * out );
+void ZZH64a_test     ( const void * key, int len, unsigned seed, void * out );
+void ZZH128_test     ( const void * key, int len, unsigned seed, void * out );
 
 void SlowZZH32_test  ( const void * key, int len, unsigned seed, void * out );
 void SlowZZH32a_test ( const void * key, int len, unsigned seed, void * out );
+void SlowZZH32b_test ( const void * key, int len, unsigned seed, void * out );
+void SlowZZH32c_test ( const void * key, int len, unsigned seed, void * out );
 void SlowZZH64_test  ( const void * key, int len, unsigned seed, void * out );
+void SlowZZH64a_test ( const void * key, int len, unsigned seed, void * out );
+void SlowZZH128_test ( const void * key, int len, unsigned seed, void * out );
 
 void WideZZH32_test  ( const void * key, int len, unsigned seed, void * out );
 void WideZZH32a_test ( const void * key, int len, unsigned seed, void * out );
