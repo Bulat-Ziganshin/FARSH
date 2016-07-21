@@ -173,15 +173,15 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     }
 
 
-#define ROL(v)  (v = XXH_rotl32(v,13))
+#define ROL(v,i)  (v = XXH_rotl32(v,i))
 
     U32 v6 = v1+len;
-    ROL(v2);  v3 += v1;  v4 ^= v1;  v5 -= v1;
-    ROL(v3);  v4 += v2;  v5 ^= v2;  v6 -= v2;
-    ROL(v4);  v5 += v3;  v6 ^= v3;  v1 -= v3;
-    ROL(v5);  v6 += v4;  v1 ^= v4;  v2 -= v4;
-    ROL(v6);  v1 += v5;  v2 ^= v5;  v3 -= v5;
-    ROL(v1);  v2 += v6;  v3 ^= v6;  v4 -= v6;
+    ROL(v2,13);  v3 += v1;  v4 ^= v1;  v5 -= v1;
+    ROL(v3,19);  v4 += v2;  v5 ^= v2;  v6 -= v2;
+    ROL(v4, 7);  v5 += v3;  v6 ^= v3;  v1 -= v3;
+    ROL(v5,25);  v6 += v4;  v1 ^= v4;  v2 -= v4;
+    ROL(v6,11);  v1 += v5;  v2 ^= v5;  v3 -= v5;
+    ROL(v1,21);  v2 += v6;  v3 ^= v6;  v4 -= v6;
 
     v1 = fmix32(v1);
     v2 = fmix32(v2);
@@ -189,13 +189,13 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     v4 = fmix32(v4);
     v5 = fmix32(v5);
 
-    v6 = v1+len;
-    ROL(v2);  v3 += v1;  v4 ^= v1;  v5 -= v1;
-    ROL(v3);  v4 += v2;  v5 ^= v2;  v6 -= v2;
-    ROL(v4);  v5 += v3;  v6 ^= v3;  v1 -= v3;
-    ROL(v5);  v6 += v4;  v1 ^= v4;  v2 -= v4;
-    ROL(v6);  v1 += v5;  v2 ^= v5;  v3 -= v5;
-    ROL(v1);  v2 += v6;  v3 ^= v6;  v4 -= v6;
+    v6 = v1;
+    ROL(v2,13);  v3 += v1;  v4 ^= v1;  v5 -= v1;
+    ROL(v3,19);  v4 += v2;  v5 ^= v2;  v6 -= v2;
+    ROL(v4, 7);  v5 += v3;  v6 ^= v3;  v1 -= v3;
+    ROL(v5,25);  v6 += v4;  v1 ^= v4;  v2 -= v4;
+    ROL(v6,11);  v1 += v5;  v2 ^= v5;  v3 -= v5;
+    ROL(v1,21);  v2 += v6;  v3 ^= v6;  v4 -= v6;
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;
