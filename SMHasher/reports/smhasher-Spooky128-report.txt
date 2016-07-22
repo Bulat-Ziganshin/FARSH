@@ -1,86 +1,86 @@
 
-C:\!FreeArc\public\FARSH\SMHasher>a Spooky128
+C:\!FreeArc\public\FARSH\SMHasher>a spooky128
 -------------------------------------------------------------------------------
 --- Testing Spooky128 (SpookyHash V2, 128-bit result)
 
 [[[ Speed Tests ]]]
 
 Bulk speed test - 262144-byte keys
-Alignment  0 -  4.635 bytes/cycle - 13261.31 MiB/sec @ 3 ghz
-Alignment  1 -  4.381 bytes/cycle - 12533.80 MiB/sec @ 3 ghz
-Alignment  2 -  4.435 bytes/cycle - 12689.10 MiB/sec @ 3 ghz
-Alignment  3 -  4.443 bytes/cycle - 12711.58 MiB/sec @ 3 ghz
-Alignment  4 -  4.428 bytes/cycle - 12668.74 MiB/sec @ 3 ghz
-Alignment  5 -  4.453 bytes/cycle - 12739.30 MiB/sec @ 3 ghz
-Alignment  6 -  4.425 bytes/cycle - 12660.15 MiB/sec @ 3 ghz
-Alignment  7 -  4.448 bytes/cycle - 12724.62 MiB/sec @ 3 ghz
+Alignment  0 -  4.627 bytes/cycle - 13239.07 MiB/sec @ 3 ghz
+Alignment  1 -  4.445 bytes/cycle - 12718.45 MiB/sec @ 3 ghz
+Alignment  2 -  3.635 bytes/cycle - 10399.06 MiB/sec @ 3 ghz
+Alignment  3 -  4.424 bytes/cycle - 12656.59 MiB/sec @ 3 ghz
+Alignment  4 -  4.440 bytes/cycle - 12701.79 MiB/sec @ 3 ghz
+Alignment  5 -  4.413 bytes/cycle - 12624.48 MiB/sec @ 3 ghz
+Alignment  6 -  4.448 bytes/cycle - 12724.77 MiB/sec @ 3 ghz
+Alignment  7 -  4.447 bytes/cycle - 12723.76 MiB/sec @ 3 ghz
 
 Small key speed test..........
-   0-byte keys - latency    30.82 cycles/hash,  throughput    24.91 cycles/hash
-   1-byte keys - latency    30.28 cycles/hash,  throughput    25.93 cycles/hash
-   2-byte keys - latency    30.61 cycles/hash,  throughput    26.64 cycles/hash
-   3-byte keys - latency    31.20 cycles/hash,  throughput    28.01 cycles/hash
-   4-byte keys - latency    30.42 cycles/hash,  throughput    25.92 cycles/hash
-   5-byte keys - latency    29.93 cycles/hash,  throughput    26.65 cycles/hash
-   6-byte keys - latency    31.13 cycles/hash,  throughput    27.85 cycles/hash
-   7-byte keys - latency    30.42 cycles/hash,  throughput    28.87 cycles/hash
-   8-byte keys - latency    30.77 cycles/hash,  throughput    26.06 cycles/hash
-   9-byte keys - latency    29.63 cycles/hash,  throughput    26.13 cycles/hash
-  10-byte keys - latency    30.29 cycles/hash,  throughput    27.10 cycles/hash
-  11-byte keys - latency    31.21 cycles/hash,  throughput    28.07 cycles/hash
-  12-byte keys - latency    29.62 cycles/hash,  throughput    26.65 cycles/hash
-  13-byte keys - latency    30.88 cycles/hash,  throughput    27.46 cycles/hash
-  14-byte keys - latency    30.43 cycles/hash,  throughput    27.54 cycles/hash
-  15-byte keys - latency    31.03 cycles/hash,  throughput    29.07 cycles/hash
-  16-byte keys - latency    55.97 cycles/hash,  throughput    48.68 cycles/hash
-  17-byte keys - latency    54.51 cycles/hash,  throughput    47.41 cycles/hash
-  18-byte keys - latency    54.45 cycles/hash,  throughput    48.06 cycles/hash
-  19-byte keys - latency    54.51 cycles/hash,  throughput    48.83 cycles/hash
-  20-byte keys - latency    54.54 cycles/hash,  throughput    46.59 cycles/hash
-  21-byte keys - latency    54.71 cycles/hash,  throughput    47.04 cycles/hash
-  22-byte keys - latency    54.27 cycles/hash,  throughput    47.55 cycles/hash
-  23-byte keys - latency    56.07 cycles/hash,  throughput    49.27 cycles/hash
-  24-byte keys - latency    54.59 cycles/hash,  throughput    47.68 cycles/hash
-  25-byte keys - latency    55.45 cycles/hash,  throughput    47.60 cycles/hash
-  26-byte keys - latency    56.60 cycles/hash,  throughput    48.82 cycles/hash
-  27-byte keys - latency    57.39 cycles/hash,  throughput    49.71 cycles/hash
-  28-byte keys - latency    54.34 cycles/hash,  throughput    48.78 cycles/hash
-  29-byte keys - latency    56.39 cycles/hash,  throughput    48.37 cycles/hash
-  30-byte keys - latency    57.46 cycles/hash,  throughput    50.33 cycles/hash
-  31-byte keys - latency    57.25 cycles/hash,  throughput    50.86 cycles/hash
-  32-byte keys - latency    56.26 cycles/hash,  throughput    49.16 cycles/hash
-  33-byte keys - latency    54.33 cycles/hash,  throughput    47.46 cycles/hash
-  34-byte keys - latency    55.39 cycles/hash,  throughput    48.80 cycles/hash
-  35-byte keys - latency    56.40 cycles/hash,  throughput    48.45 cycles/hash
-  36-byte keys - latency    55.70 cycles/hash,  throughput    48.46 cycles/hash
-  37-byte keys - latency    55.52 cycles/hash,  throughput    49.29 cycles/hash
-  38-byte keys - latency    56.17 cycles/hash,  throughput    48.47 cycles/hash
-  39-byte keys - latency    57.14 cycles/hash,  throughput    50.39 cycles/hash
-  40-byte keys - latency    54.73 cycles/hash,  throughput    48.71 cycles/hash
-  41-byte keys - latency    56.11 cycles/hash,  throughput    48.70 cycles/hash
-  42-byte keys - latency    57.30 cycles/hash,  throughput    48.85 cycles/hash
-  43-byte keys - latency    57.40 cycles/hash,  throughput    50.46 cycles/hash
-  44-byte keys - latency    55.99 cycles/hash,  throughput    48.16 cycles/hash
-  45-byte keys - latency    57.14 cycles/hash,  throughput    49.37 cycles/hash
-  46-byte keys - latency    56.42 cycles/hash,  throughput    50.39 cycles/hash
-  47-byte keys - latency    58.50 cycles/hash,  throughput    51.65 cycles/hash
-  48-byte keys - latency    79.44 cycles/hash,  throughput    72.10 cycles/hash
-  49-byte keys - latency    76.79 cycles/hash,  throughput    71.32 cycles/hash
-  50-byte keys - latency    78.30 cycles/hash,  throughput    71.59 cycles/hash
-  51-byte keys - latency    79.08 cycles/hash,  throughput    72.46 cycles/hash
-  52-byte keys - latency    78.21 cycles/hash,  throughput    71.39 cycles/hash
-  53-byte keys - latency    78.39 cycles/hash,  throughput    71.37 cycles/hash
-  54-byte keys - latency    79.19 cycles/hash,  throughput    72.38 cycles/hash
-  55-byte keys - latency    78.17 cycles/hash,  throughput    72.79 cycles/hash
-  56-byte keys - latency    76.62 cycles/hash,  throughput    71.50 cycles/hash
-  57-byte keys - latency    77.53 cycles/hash,  throughput    70.62 cycles/hash
-  58-byte keys - latency    80.11 cycles/hash,  throughput    72.58 cycles/hash
-  59-byte keys - latency    80.63 cycles/hash,  throughput    73.17 cycles/hash
-  60-byte keys - latency    79.57 cycles/hash,  throughput    72.20 cycles/hash
-  61-byte keys - latency    80.16 cycles/hash,  throughput    72.81 cycles/hash
-  62-byte keys - latency    81.17 cycles/hash,  throughput    71.99 cycles/hash
-  63-byte keys - latency    79.99 cycles/hash,  throughput    73.03 cycles/hash
-  64-byte keys - latency    80.43 cycles/hash,  throughput    71.30 cycles/hash
+   0-byte keys - latency    33.72 cycles/hash,  throughput    24.63 cycles/hash
+   1-byte keys - latency    33.42 cycles/hash,  throughput    25.53 cycles/hash
+   2-byte keys - latency    33.43 cycles/hash,  throughput    26.62 cycles/hash
+   3-byte keys - latency    33.57 cycles/hash,  throughput    27.38 cycles/hash
+   4-byte keys - latency    33.47 cycles/hash,  throughput    26.12 cycles/hash
+   5-byte keys - latency    33.44 cycles/hash,  throughput    26.63 cycles/hash
+   6-byte keys - latency    33.57 cycles/hash,  throughput    27.98 cycles/hash
+   7-byte keys - latency    33.76 cycles/hash,  throughput    28.21 cycles/hash
+   8-byte keys - latency    33.50 cycles/hash,  throughput    26.07 cycles/hash
+   9-byte keys - latency    33.84 cycles/hash,  throughput    26.12 cycles/hash
+  10-byte keys - latency    34.07 cycles/hash,  throughput    26.72 cycles/hash
+  11-byte keys - latency    33.85 cycles/hash,  throughput    27.45 cycles/hash
+  12-byte keys - latency    33.40 cycles/hash,  throughput    26.60 cycles/hash
+  13-byte keys - latency    33.58 cycles/hash,  throughput    26.77 cycles/hash
+  14-byte keys - latency    33.77 cycles/hash,  throughput    27.53 cycles/hash
+  15-byte keys - latency    34.05 cycles/hash,  throughput    28.29 cycles/hash
+  16-byte keys - latency    57.90 cycles/hash,  throughput    47.67 cycles/hash
+  17-byte keys - latency    56.79 cycles/hash,  throughput    47.43 cycles/hash
+  18-byte keys - latency    57.43 cycles/hash,  throughput    47.08 cycles/hash
+  19-byte keys - latency    58.04 cycles/hash,  throughput    47.56 cycles/hash
+  20-byte keys - latency    56.81 cycles/hash,  throughput    46.59 cycles/hash
+  21-byte keys - latency    57.43 cycles/hash,  throughput    47.04 cycles/hash
+  22-byte keys - latency    58.04 cycles/hash,  throughput    47.58 cycles/hash
+  23-byte keys - latency    59.30 cycles/hash,  throughput    48.36 cycles/hash
+  24-byte keys - latency    57.08 cycles/hash,  throughput    46.66 cycles/hash
+  25-byte keys - latency    59.21 cycles/hash,  throughput    48.73 cycles/hash
+  26-byte keys - latency    58.74 cycles/hash,  throughput    49.31 cycles/hash
+  27-byte keys - latency    61.06 cycles/hash,  throughput    49.13 cycles/hash
+  28-byte keys - latency    59.24 cycles/hash,  throughput    47.57 cycles/hash
+  29-byte keys - latency    58.67 cycles/hash,  throughput    48.36 cycles/hash
+  30-byte keys - latency    59.84 cycles/hash,  throughput    49.13 cycles/hash
+  31-byte keys - latency    60.90 cycles/hash,  throughput    49.81 cycles/hash
+  32-byte keys - latency    58.09 cycles/hash,  throughput    48.81 cycles/hash
+  33-byte keys - latency    57.39 cycles/hash,  throughput    48.16 cycles/hash
+  34-byte keys - latency    57.87 cycles/hash,  throughput    48.00 cycles/hash
+  35-byte keys - latency    59.61 cycles/hash,  throughput    48.43 cycles/hash
+  36-byte keys - latency    57.35 cycles/hash,  throughput    47.43 cycles/hash
+  37-byte keys - latency    57.83 cycles/hash,  throughput    48.01 cycles/hash
+  38-byte keys - latency    58.28 cycles/hash,  throughput    48.45 cycles/hash
+  39-byte keys - latency    59.55 cycles/hash,  throughput    50.21 cycles/hash
+  40-byte keys - latency    57.96 cycles/hash,  throughput    47.37 cycles/hash
+  41-byte keys - latency    58.39 cycles/hash,  throughput    47.92 cycles/hash
+  42-byte keys - latency    59.12 cycles/hash,  throughput    48.82 cycles/hash
+  43-byte keys - latency    60.94 cycles/hash,  throughput    49.79 cycles/hash
+  44-byte keys - latency    58.44 cycles/hash,  throughput    48.01 cycles/hash
+  45-byte keys - latency    59.20 cycles/hash,  throughput    49.16 cycles/hash
+  46-byte keys - latency    59.94 cycles/hash,  throughput    50.92 cycles/hash
+  47-byte keys - latency    62.16 cycles/hash,  throughput    50.43 cycles/hash
+  48-byte keys - latency    83.10 cycles/hash,  throughput    71.97 cycles/hash
+  49-byte keys - latency    80.72 cycles/hash,  throughput    69.73 cycles/hash
+  50-byte keys - latency    80.44 cycles/hash,  throughput    69.84 cycles/hash
+  51-byte keys - latency    81.44 cycles/hash,  throughput    71.90 cycles/hash
+  52-byte keys - latency    81.57 cycles/hash,  throughput    71.15 cycles/hash
+  53-byte keys - latency    82.53 cycles/hash,  throughput    69.86 cycles/hash
+  54-byte keys - latency    81.38 cycles/hash,  throughput    70.65 cycles/hash
+  55-byte keys - latency    81.84 cycles/hash,  throughput    71.27 cycles/hash
+  56-byte keys - latency    80.31 cycles/hash,  throughput    69.68 cycles/hash
+  57-byte keys - latency    81.10 cycles/hash,  throughput    70.61 cycles/hash
+  58-byte keys - latency    82.30 cycles/hash,  throughput    71.20 cycles/hash
+  59-byte keys - latency    82.93 cycles/hash,  throughput    71.95 cycles/hash
+  60-byte keys - latency    83.41 cycles/hash,  throughput    70.63 cycles/hash
+  61-byte keys - latency    82.31 cycles/hash,  throughput    71.17 cycles/hash
+  62-byte keys - latency    84.78 cycles/hash,  throughput    71.94 cycles/hash
+  63-byte keys - latency    84.17 cycles/hash,  throughput    73.06 cycles/hash
+  64-byte keys - latency    83.25 cycles/hash,  throughput    71.31 cycles/hash
 
 [[[ Sanity Tests ]]]
 
