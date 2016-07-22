@@ -148,7 +148,7 @@ void FilterOutliers2 ( std::vector<double> & v )
 // possible by marking the function as NEVER_INLINE (to keep the optimizer from
 // moving it) and marking the timing variables as "volatile register".
 
-NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed, const int repeats, bool measure_throughput )
+NEVER_INLINE int64_t timehash ( pfHash hash, int hashsize, const void * key, int len, int seed, const int repeats, bool measure_throughput )
 {
   volatile register int64_t begin,end;
 
@@ -162,10 +162,48 @@ NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed
         hash(key,len,seed,temp);
     }
   } else {  // measure back-to-back latency
-    for(int i = 0; i < repeats; i++)
+    switch (hashsize)
     {
-        hash(key,len,seed,temp);
-        seed = temp[0];
+      case  32: for(int i = 0; i < repeats; i++)
+                {
+                    hash(key,len,seed,temp);
+                    seed = temp[0];                // ensure that new seed depends on ALL bits of hash result
+                }
+                break;
+
+      case  64: for(int i = 0; i < repeats; i++)
+                {
+                    hash(key,len,seed,temp);
+                    seed  =  (sizeof(size_t) == 4?  temp[0] + temp[1]
+                                                 :  (*(uint64_t*)temp >> 1));
+                }
+                break;
+
+      case 128: for(int i = 0; i < repeats; i++)
+                {
+                    hash(key,len,seed,temp);
+                    seed  =  temp[0] + temp[1] + temp[2] + temp[3];
+                }
+                break;
+
+      case 256: for(int i = 0; i < repeats; i++)
+                {
+                    hash(key,len,seed,temp);
+                    seed = temp[0];
+                    for (int j=1; j < 256/32; j++)
+                        seed += temp[j];
+                }
+                break;
+
+      case 512: for(int i = 0; i < repeats; i++)
+                {
+                    hash(key,len,seed,temp);
+                    seed = temp[0];
+                    for (int j=1; j < 512/32; j++)
+                        seed += temp[j];
+                }
+                break;
+
     }
   }
 
@@ -176,7 +214,7 @@ NEVER_INLINE int64_t timehash ( pfHash hash, const void * key, int len, int seed
 
 //-----------------------------------------------------------------------------
 
-double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repeats, const int blocksize, const int align, bool measure_throughput )
+double SpeedTest ( pfHash hash, int hashsize, uint32_t seed, const int trials, const int repeats, const int blocksize, const int align, bool measure_throughput )
 {
   Rand r(seed);
 
@@ -200,7 +238,7 @@ double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repea
   {
     r.rand_p(block,blocksize);
 
-    double t = (double)timehash(hash,block,blocksize,itrial,repeats,measure_throughput);
+    double t = (double)timehash(hash,hashsize,block,blocksize,itrial,repeats,measure_throughput);
 
     if(t > 0) times.push_back(t);
   }
@@ -219,7 +257,7 @@ double SpeedTest ( pfHash hash, uint32_t seed, const int trials, const int repea
 //-----------------------------------------------------------------------------
 // 256k blocks seem to give the best results.
 
-void BulkSpeedTest ( pfHash hash, uint32_t seed )
+void BulkSpeedTest ( pfHash hash, int hashsize, uint32_t seed )
 {
   const int trials = 2999;
   const int repeats = 1;
@@ -230,7 +268,7 @@ void BulkSpeedTest ( pfHash hash, uint32_t seed )
 
   for(int align = 0; align < 8; align++)
   {
-    double cycles = SpeedTest(hash,seed,trials,repeats,blocksize,align,measure_throughput);
+    double cycles = SpeedTest(hash,hashsize,seed,trials,repeats,blocksize,align,measure_throughput);
 
     double bestbpc = double(blocksize)/cycles;
 
@@ -258,11 +296,11 @@ void TinySpeedTest ( pfHash hash, int hashsize, int max_keysize, uint32_t seed, 
     {
       double cycles;
 
-      cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,false);
+      cycles = SpeedTest(hash,hashsize,seed,trials,repeats,keysize,0,false);
       if (i==0 || cycles < cycles_latency[keysize])
         cycles_latency[keysize] = cycles;
 
-      cycles = SpeedTest(hash,seed,trials,repeats,keysize,0,true);
+      cycles = SpeedTest(hash,hashsize,seed,trials,repeats,keysize,0,true);
       if (i==0 || cycles < cycles_throughput[keysize])
         cycles_throughput[keysize] = cycles;
     }
