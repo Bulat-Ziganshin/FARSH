@@ -412,15 +412,15 @@ FORCE_INLINE U64 SimdZZHash (const void* input, size_t len, U32 seed)
     U64 p1 = (U64)v1 * v4;           \
     U64 p2 = (U64)v3 * v2;           \
                                      \
-    U32 v1x = v2 + p1;               \
-    U32 v2x = v3 + (p1>>32);         \
-    U32 v3x = v4 + p2;               \
-    U32 v4x = v1 + (p2>>32);         \
+    U32 v1x = (v1 >> 24) | (v2 << 8);\
+    U32 v2x = (v2 >> 24) | (v3 << 8);\
+    U32 v3x = (v3 >> 24) | (v4 << 8);\
+    U32 v4x = (v4 >> 24) | (v1 << 8);\
                                      \
-    v1 = v1x;                        \
-    v2 = v2x;                        \
-    v3 = v3x;                        \
-    v4 = v4x;                        \
+    v1 = v1x + p1;                   \
+    v2 = v2x + (p1>>32);             \
+    v3 = v3x + p2;                   \
+    v4 = v4x + (p2>>32);             \
 }
 
     U32 v1 = seed + PRIME32_1 + PRIME32_2;
