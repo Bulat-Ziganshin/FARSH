@@ -167,8 +167,6 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     }
 
 
-#define ROL(v,i)  (v = XXH_rotl32(v,i))
-
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
 
@@ -411,12 +409,18 @@ FORCE_INLINE U64 SimdZZHash (const void* input, size_t len, U32 seed)
     v3 += XXH_get32bits(p); p+=4;    \
     v4 += XXH_get32bits(p); p+=4;    \
                                      \
-    U64 p1 = (U64)v1 * v2;           \
-    U64 p2 = (U64)v3 * v4;           \
-    v1 += p2;                        \
-    v2 += (p2>>32);                  \
-    v3 += p1;                        \
-    v4 += (p1>>32);                  \
+    U64 p1 = (U64)v1 * v4;           \
+    U64 p2 = (U64)v3 * v2;           \
+                                     \
+    U32 v1x = v2 + p1;               \
+    U32 v2x = v3 + (p1>>32);         \
+    U32 v3x = v4 + p2;               \
+    U32 v4x = v1 + (p2>>32);         \
+                                     \
+    v1 = v1x;                        \
+    v2 = v2x;                        \
+    v3 = v3x;                        \
+    v4 = v4x;                        \
 }
 
     U32 v1 = seed + PRIME32_1 + PRIME32_2;
