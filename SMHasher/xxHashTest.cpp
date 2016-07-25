@@ -170,7 +170,7 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 #define ROL(v,i)  (v = XXH_rotl32(v,i))
 
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  v2 ^= v6;  ROL(v6,13);  v3 += v6;  v4 ^= v6;  v5 -= v6;
+    v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
 
     v1 = fmix32 (v1, PRIME32_1, PRIME32_2);
     v2 = fmix32 (v2, PRIME32_2, PRIME32_3);
@@ -179,7 +179,7 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     v5 = fmix32 (v5, PRIME32_5, PRIME32_1);
 
     v6 = v1 + v2 + v3 + v4 + v5;
-    v1 += v6;  v2 ^= v6;  ROL(v6,13);  v3 += v6;  v4 ^= v6;
+    v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;
