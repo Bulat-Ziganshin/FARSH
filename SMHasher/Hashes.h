@@ -69,6 +69,10 @@ void SlowWideZZH32_test  ( const void * key, int len, unsigned seed, void * out 
 void SlowWideZZH32a_test ( const void * key, int len, unsigned seed, void * out );
 void SlowWideZZH64_test  ( const void * key, int len, unsigned seed, void * out );
 
+void SimdZZH32_test  ( const void * key, int len, unsigned seed, void * out );
+void SimdZZH32a_test ( const void * key, int len, unsigned seed, void * out );
+void SimdZZH64_test  ( const void * key, int len, unsigned seed, void * out );
+
 //-----------------------------------------------------------------------------
 // Test harnesses for SpookyHash
 

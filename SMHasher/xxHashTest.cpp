@@ -393,3 +393,77 @@ void SlowWideZZH64_test ( const void * key, int len, unsigned seed, void * out )
 {
   *(uint64_t*)out = GenericWideHash (SlowWideZZH64_round,key,len,seed);
 }
+
+
+/* ********************************************************
+*  SIMD-friendly hash function developed by Bulat Ziganshin
+**********************************************************/
+
+FORCE_INLINE U64 SimdZZHash (const void* input, size_t len, U32 seed)
+{
+    const BYTE* p = (const BYTE*)input;
+    const BYTE* bEnd = p + len;
+
+#define SIMD_ROUND()                 \
+{                                    \
+    v1 += XXH_get32bits(p); p+=4;    \
+    v2 += XXH_get32bits(p); p+=4;    \
+    v3 += XXH_get32bits(p); p+=4;    \
+    v4 += XXH_get32bits(p); p+=4;    \
+                                     \
+    U64 p1 = (U64)v1 * v2;           \
+    U64 p2 = (U64)v3 * v4;           \
+    v1 += p2;                        \
+    v2 += (p2>>32);                  \
+    v3 += p1;                        \
+    v4 += (p1>>32);                  \
+}
+
+    U32 v1 = seed + PRIME32_1 + PRIME32_2;
+    U32 v2 = seed + PRIME32_2;
+    U32 v3 = seed + 0;
+    U32 v4 = seed - PRIME32_1;
+
+    if (len>=16) {
+        const BYTE* const limit = bEnd - 16;
+        do {
+            SIMD_ROUND();
+        } while (p<=limit);
+    }
+
+    U32 remainder[4] = {0};
+    memcpy(remainder, p, bEnd-p);
+    p = (const BYTE*)remainder;
+    SIMD_ROUND();
+
+    U64 h64 = U64(v1) + (U64(v2) << 11) + (U64(v3) << 21) + (U64(v4) << 32);
+    h64 = XXH64_mergeRound(h64, (U32) len);
+    h64 = XXH64_mergeRound(h64, v1);
+    h64 = XXH64_mergeRound(h64, v2);
+    h64 = XXH64_mergeRound(h64, v3);
+    h64 = XXH64_mergeRound(h64, v4);
+
+    h64 ^= h64 >> 33;
+    h64 *= PRIME64_2;
+    h64 ^= h64 >> 29;
+    h64 *= PRIME64_3;
+    h64 ^= h64 >> 32;
+
+    return h64;
+}
+
+
+void SimdZZH32_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint32_t*)out = SimdZZHash (key,len,seed);
+}
+
+void SimdZZH32a_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint32_t*)out = SimdZZHash (key,len,seed) >> 32;
+}
+
+void SimdZZH64_test ( const void * key, int len, unsigned seed, void * out )
+{
+  *(uint64_t*)out = SimdZZHash (key,len,seed);
+}
