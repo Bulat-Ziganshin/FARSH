@@ -167,7 +167,14 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     }
 
 
+    // Final mixing of the internal state
+
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
+
+#ifdef ZZH_CYCLES
+for (int i=0; i<ZZH_CYCLES; i++)
+#endif
+{
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
 
     v1 = fmix32 (v1, PRIME32_1, PRIME32_2);
@@ -177,6 +184,8 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     v5 = fmix32 (v5, PRIME32_5, PRIME32_1);
 
     v6 = v1 + v2 + v3 + v4 + v5;
+}
+
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;
 
     ((uint32_t*)out)[0] = v1;
