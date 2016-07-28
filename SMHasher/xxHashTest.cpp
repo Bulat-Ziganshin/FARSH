@@ -413,6 +413,11 @@ FORCE_INLINE U64 SimdZZHash (const void* input, size_t len, U32 seed)
 
 #define SIMD_ROUND()                 \
 {                                    \
+    U32 t1 = v1;                     \
+    U32 t2 = v2;                     \
+    U32 t3 = v3;                     \
+    U32 t4 = v4;                     \
+                                     \
     v1 += XXH_get32bits(p); p+=4;    \
     v2 += XXH_get32bits(p); p+=4;    \
     v3 += XXH_get32bits(p); p+=4;    \
@@ -423,12 +428,15 @@ FORCE_INLINE U64 SimdZZHash (const void* input, size_t len, U32 seed)
     v3 *= PRIME32_3;                 \
     v4 *= PRIME32_4;                 \
                                      \
-    U32 temp = v1;                   \
+    v1 += t2;                        \
+    v2 += t3;                        \
+    v3 += t4;                        \
+    v4 += t1;                        \
                                      \
-    v1 = (v1>>5) + v2;               \
-    v2 = (v2>>5) + v3;               \
-    v3 = (v3>>5) + v4;               \
-    v4 = (v4>>5) + temp;             \
+    v1 += (v1>>13);                  \
+    v2 += (v2>>13);                  \
+    v3 += (v3>>13);                  \
+    v4 += (v4>>13);                  \
 }
 
     U32 v1 = seed + PRIME32_1 + PRIME32_2;
