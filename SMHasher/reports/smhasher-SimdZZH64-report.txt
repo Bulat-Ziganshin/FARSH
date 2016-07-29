@@ -6,106 +6,106 @@ C:\!FreeArc\public\FARSH\SMHasher>a simd64
 [[[ Speed Tests ]]]
 
 Bulk speed test - 262144-byte keys
-Alignment  0 -  1.962 bytes/cycle - 5613.14 MiB/sec @ 3 ghz
-Alignment  1 -  1.927 bytes/cycle - 5514.04 MiB/sec @ 3 ghz
-Alignment  2 -  1.934 bytes/cycle - 5532.99 MiB/sec @ 3 ghz
-Alignment  3 -  1.935 bytes/cycle - 5535.50 MiB/sec @ 3 ghz
-Alignment  4 -  1.940 bytes/cycle - 5549.22 MiB/sec @ 3 ghz
-Alignment  5 -  1.926 bytes/cycle - 5509.04 MiB/sec @ 3 ghz
-Alignment  6 -  1.932 bytes/cycle - 5526.45 MiB/sec @ 3 ghz
-Alignment  7 -  1.929 bytes/cycle - 5517.86 MiB/sec @ 3 ghz
+Alignment  0 -  2.397 bytes/cycle - 6856.93 MiB/sec @ 3 ghz
+Alignment  1 -  1.872 bytes/cycle - 5354.64 MiB/sec @ 3 ghz
+Alignment  2 -  2.303 bytes/cycle - 6589.42 MiB/sec @ 3 ghz
+Alignment  3 -  2.307 bytes/cycle - 6601.72 MiB/sec @ 3 ghz
+Alignment  4 -  2.396 bytes/cycle - 6854.79 MiB/sec @ 3 ghz
+Alignment  5 -  1.795 bytes/cycle - 5134.19 MiB/sec @ 3 ghz
+Alignment  6 -  2.313 bytes/cycle - 6618.08 MiB/sec @ 3 ghz
+Alignment  7 -  2.325 bytes/cycle - 6651.99 MiB/sec @ 3 ghz
 
 Small key speed test..........
-   0-byte keys - latency    53.46 cycles/hash,  throughput    38.81 cycles/hash
-   1-byte keys - latency    70.29 cycles/hash,  throughput    70.31 cycles/hash
-   2-byte keys - latency    71.12 cycles/hash,  throughput    71.57 cycles/hash
-   3-byte keys - latency    72.24 cycles/hash,  throughput    73.24 cycles/hash
-   4-byte keys - latency    73.39 cycles/hash,  throughput    74.30 cycles/hash
-   5-byte keys - latency    78.61 cycles/hash,  throughput    76.94 cycles/hash
-   6-byte keys - latency    77.40 cycles/hash,  throughput    77.23 cycles/hash
-   7-byte keys - latency    78.33 cycles/hash,  throughput    78.50 cycles/hash
-   8-byte keys - latency    53.45 cycles/hash,  throughput    41.67 cycles/hash
-   9-byte keys - latency    72.85 cycles/hash,  throughput    74.47 cycles/hash
-  10-byte keys - latency    73.70 cycles/hash,  throughput    73.59 cycles/hash
-  11-byte keys - latency    75.16 cycles/hash,  throughput    74.48 cycles/hash
-  12-byte keys - latency    75.55 cycles/hash,  throughput    75.42 cycles/hash
-  13-byte keys - latency    76.56 cycles/hash,  throughput    76.45 cycles/hash
-  14-byte keys - latency    76.48 cycles/hash,  throughput    76.60 cycles/hash
-  15-byte keys - latency    76.91 cycles/hash,  throughput    77.90 cycles/hash
-  16-byte keys - latency    61.81 cycles/hash,  throughput    47.13 cycles/hash
-  17-byte keys - latency    76.09 cycles/hash,  throughput    75.80 cycles/hash
-  18-byte keys - latency    77.04 cycles/hash,  throughput    77.21 cycles/hash
-  19-byte keys - latency    78.00 cycles/hash,  throughput    78.21 cycles/hash
-  20-byte keys - latency    78.82 cycles/hash,  throughput    78.69 cycles/hash
-  21-byte keys - latency    84.11 cycles/hash,  throughput    83.34 cycles/hash
-  22-byte keys - latency    83.03 cycles/hash,  throughput    82.49 cycles/hash
-  23-byte keys - latency    84.24 cycles/hash,  throughput    83.89 cycles/hash
-  24-byte keys - latency    61.37 cycles/hash,  throughput    52.43 cycles/hash
-  25-byte keys - latency    80.80 cycles/hash,  throughput    80.98 cycles/hash
-  26-byte keys - latency    81.67 cycles/hash,  throughput    81.94 cycles/hash
-  27-byte keys - latency    82.50 cycles/hash,  throughput    83.19 cycles/hash
-  28-byte keys - latency    83.38 cycles/hash,  throughput    84.31 cycles/hash
-  29-byte keys - latency    85.92 cycles/hash,  throughput    83.99 cycles/hash
-  30-byte keys - latency    84.53 cycles/hash,  throughput    84.22 cycles/hash
-  31-byte keys - latency    86.37 cycles/hash,  throughput    84.43 cycles/hash
-  32-byte keys - latency    70.15 cycles/hash,  throughput    54.78 cycles/hash
-  33-byte keys - latency    82.21 cycles/hash,  throughput    82.91 cycles/hash
-  34-byte keys - latency    83.35 cycles/hash,  throughput    81.77 cycles/hash
-  35-byte keys - latency    85.68 cycles/hash,  throughput    84.69 cycles/hash
-  36-byte keys - latency    87.26 cycles/hash,  throughput    86.10 cycles/hash
-  37-byte keys - latency    89.23 cycles/hash,  throughput    87.29 cycles/hash
-  38-byte keys - latency    90.27 cycles/hash,  throughput    87.60 cycles/hash
-  39-byte keys - latency    91.24 cycles/hash,  throughput    88.76 cycles/hash
-  40-byte keys - latency    72.73 cycles/hash,  throughput    58.92 cycles/hash
-  41-byte keys - latency    87.03 cycles/hash,  throughput    87.51 cycles/hash
-  42-byte keys - latency    88.85 cycles/hash,  throughput    89.49 cycles/hash
-  43-byte keys - latency    89.81 cycles/hash,  throughput    89.66 cycles/hash
-  44-byte keys - latency    91.65 cycles/hash,  throughput    91.99 cycles/hash
-  45-byte keys - latency    92.56 cycles/hash,  throughput    89.37 cycles/hash
-  46-byte keys - latency    90.95 cycles/hash,  throughput    89.52 cycles/hash
-  47-byte keys - latency    90.86 cycles/hash,  throughput    89.79 cycles/hash
-  48-byte keys - latency    81.08 cycles/hash,  throughput    62.17 cycles/hash
-  49-byte keys - latency    90.21 cycles/hash,  throughput    88.09 cycles/hash
-  50-byte keys - latency    92.09 cycles/hash,  throughput    89.04 cycles/hash
-  51-byte keys - latency    92.62 cycles/hash,  throughput    89.99 cycles/hash
-  52-byte keys - latency    95.35 cycles/hash,  throughput    90.38 cycles/hash
-  53-byte keys - latency    97.56 cycles/hash,  throughput    93.58 cycles/hash
-  54-byte keys - latency    97.92 cycles/hash,  throughput    94.48 cycles/hash
-  55-byte keys - latency   100.40 cycles/hash,  throughput    95.67 cycles/hash
-  56-byte keys - latency    86.99 cycles/hash,  throughput    66.49 cycles/hash
-  57-byte keys - latency    94.62 cycles/hash,  throughput    93.51 cycles/hash
-  58-byte keys - latency    96.06 cycles/hash,  throughput    95.23 cycles/hash
-  59-byte keys - latency    98.47 cycles/hash,  throughput    96.04 cycles/hash
-  60-byte keys - latency    98.65 cycles/hash,  throughput    97.82 cycles/hash
-  61-byte keys - latency    97.90 cycles/hash,  throughput    95.28 cycles/hash
-  62-byte keys - latency    97.92 cycles/hash,  throughput    95.35 cycles/hash
-  63-byte keys - latency    98.20 cycles/hash,  throughput    95.84 cycles/hash
-  64-byte keys - latency    87.53 cycles/hash,  throughput    69.78 cycles/hash
+   0-byte keys - latency    52.13 cycles/hash,  throughput    36.48 cycles/hash
+   1-byte keys - latency    69.06 cycles/hash,  throughput    66.64 cycles/hash
+   2-byte keys - latency    69.95 cycles/hash,  throughput    67.50 cycles/hash
+   3-byte keys - latency    70.89 cycles/hash,  throughput    68.41 cycles/hash
+   4-byte keys - latency    71.77 cycles/hash,  throughput    69.34 cycles/hash
+   5-byte keys - latency    74.56 cycles/hash,  throughput    72.24 cycles/hash
+   6-byte keys - latency    75.21 cycles/hash,  throughput    72.90 cycles/hash
+   7-byte keys - latency    76.29 cycles/hash,  throughput    73.97 cycles/hash
+   8-byte keys - latency    52.63 cycles/hash,  throughput    40.01 cycles/hash
+   9-byte keys - latency    74.67 cycles/hash,  throughput    72.10 cycles/hash
+  10-byte keys - latency    75.72 cycles/hash,  throughput    73.75 cycles/hash
+  11-byte keys - latency    77.60 cycles/hash,  throughput    73.85 cycles/hash
+  12-byte keys - latency    77.53 cycles/hash,  throughput    74.74 cycles/hash
+  13-byte keys - latency    78.08 cycles/hash,  throughput    75.46 cycles/hash
+  14-byte keys - latency    78.11 cycles/hash,  throughput    75.50 cycles/hash
+  15-byte keys - latency    79.15 cycles/hash,  throughput    76.66 cycles/hash
+  16-byte keys - latency    59.02 cycles/hash,  throughput    43.16 cycles/hash
+  17-byte keys - latency    74.45 cycles/hash,  throughput    72.23 cycles/hash
+  18-byte keys - latency    75.38 cycles/hash,  throughput    73.06 cycles/hash
+  19-byte keys - latency    76.32 cycles/hash,  throughput    73.92 cycles/hash
+  20-byte keys - latency    77.37 cycles/hash,  throughput    74.76 cycles/hash
+  21-byte keys - latency    79.91 cycles/hash,  throughput    77.80 cycles/hash
+  22-byte keys - latency    80.62 cycles/hash,  throughput    78.35 cycles/hash
+  23-byte keys - latency    81.68 cycles/hash,  throughput    79.43 cycles/hash
+  24-byte keys - latency    59.32 cycles/hash,  throughput    48.12 cycles/hash
+  25-byte keys - latency    80.14 cycles/hash,  throughput    78.26 cycles/hash
+  26-byte keys - latency    81.09 cycles/hash,  throughput    78.85 cycles/hash
+  27-byte keys - latency    81.90 cycles/hash,  throughput    79.60 cycles/hash
+  28-byte keys - latency    82.77 cycles/hash,  throughput    80.58 cycles/hash
+  29-byte keys - latency    83.35 cycles/hash,  throughput    81.98 cycles/hash
+  30-byte keys - latency    85.82 cycles/hash,  throughput    82.08 cycles/hash
+  31-byte keys - latency    84.66 cycles/hash,  throughput    82.26 cycles/hash
+  32-byte keys - latency    66.88 cycles/hash,  throughput    50.11 cycles/hash
+  33-byte keys - latency    79.57 cycles/hash,  throughput    77.19 cycles/hash
+  34-byte keys - latency    80.06 cycles/hash,  throughput    78.01 cycles/hash
+  35-byte keys - latency    80.77 cycles/hash,  throughput    78.81 cycles/hash
+  36-byte keys - latency    81.40 cycles/hash,  throughput    79.77 cycles/hash
+  37-byte keys - latency    85.04 cycles/hash,  throughput    82.83 cycles/hash
+  38-byte keys - latency    85.62 cycles/hash,  throughput    83.42 cycles/hash
+  39-byte keys - latency    88.29 cycles/hash,  throughput    84.63 cycles/hash
+  40-byte keys - latency    66.69 cycles/hash,  throughput    53.70 cycles/hash
+  41-byte keys - latency    84.48 cycles/hash,  throughput    83.03 cycles/hash
+  42-byte keys - latency    85.50 cycles/hash,  throughput    83.93 cycles/hash
+  43-byte keys - latency    86.40 cycles/hash,  throughput    84.91 cycles/hash
+  44-byte keys - latency    87.20 cycles/hash,  throughput    86.61 cycles/hash
+  45-byte keys - latency    88.30 cycles/hash,  throughput    86.28 cycles/hash
+  46-byte keys - latency    87.98 cycles/hash,  throughput    86.31 cycles/hash
+  47-byte keys - latency    88.96 cycles/hash,  throughput    87.36 cycles/hash
+  48-byte keys - latency    75.75 cycles/hash,  throughput    57.17 cycles/hash
+  49-byte keys - latency    87.07 cycles/hash,  throughput    82.03 cycles/hash
+  50-byte keys - latency    87.20 cycles/hash,  throughput    82.94 cycles/hash
+  51-byte keys - latency    88.64 cycles/hash,  throughput    84.07 cycles/hash
+  52-byte keys - latency    89.93 cycles/hash,  throughput    85.26 cycles/hash
+  53-byte keys - latency    93.09 cycles/hash,  throughput    87.57 cycles/hash
+  54-byte keys - latency    93.92 cycles/hash,  throughput    88.11 cycles/hash
+  55-byte keys - latency    95.11 cycles/hash,  throughput    89.30 cycles/hash
+  56-byte keys - latency    78.85 cycles/hash,  throughput    62.12 cycles/hash
+  57-byte keys - latency    91.83 cycles/hash,  throughput    88.71 cycles/hash
+  58-byte keys - latency    92.98 cycles/hash,  throughput    89.96 cycles/hash
+  59-byte keys - latency    94.15 cycles/hash,  throughput    90.69 cycles/hash
+  60-byte keys - latency    95.18 cycles/hash,  throughput    91.31 cycles/hash
+  61-byte keys - latency    96.03 cycles/hash,  throughput    91.09 cycles/hash
+  62-byte keys - latency    95.40 cycles/hash,  throughput    90.87 cycles/hash
+  63-byte keys - latency    96.40 cycles/hash,  throughput    91.99 cycles/hash
+  64-byte keys - latency    82.42 cycles/hash,  throughput    63.38 cycles/hash
 
 [[[ Sanity Tests ]]]
 
-Verification value 0xA86CDF73 : Failed! (Expected 0xaec33a87)
+Verification value 0x75365A45 : Failed! (Expected 0xaec33a87)
 Running sanity check 1..........PASS
 Running sanity check 2..........PASS
 
 [[[ Avalanche Tests ]]]
 
-Testing  32-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.615333%
-Testing  40-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.646667%
-Testing  48-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.564667%
-Testing  56-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.588667%
-Testing  64-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.732000%
-Testing  72-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.649333%
-Testing  80-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.659333%
-Testing  88-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.682000%
-Testing  96-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.712667%
-Testing 104-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.679333%
-Testing 112-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.755333%
-Testing 120-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.777333%
-Testing 128-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.684667%
-Testing 136-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.704667%
-Testing 144-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.724000%
-Testing 152-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.816667%
+Testing  32-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.693333%
+Testing  40-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.856667%
+Testing  48-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.596667%
+Testing  56-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.718667%
+Testing  64-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.634667%
+Testing  72-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.652667%
+Testing  80-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.664000%
+Testing  88-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.629333%
+Testing  96-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.946667%
+Testing 104-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.676000%
+Testing 112-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.768667%
+Testing 120-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.723333%
+Testing 128-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.669333%
+Testing 136-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.756000%
+Testing 144-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.726667%
+Testing 152-bit keys ->  64-bit hashes,   300000 reps.......... worst bias is 0.778000%
 
 [[[ Differential Tests ]]]
 
@@ -126,116 +126,116 @@ Testing 2796416 up-to-3-bit differentials in 256-bit keys -> 64 bit hashes.
 
 Keyset 'Cyclic' - 8 cycles of 8 bytes - 10000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  14 - 0.031%
+Testing distribution - Worst bias is the  20-bit window at bit  28 - 0.049%
 
 Keyset 'Cyclic' - 8 cycles of 9 bytes - 10000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  41 - 0.030%
+Testing distribution - Worst bias is the  20-bit window at bit  27 - 0.025%
 
 Keyset 'Cyclic' - 8 cycles of 10 bytes - 10000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  22 - 0.039%
+Testing distribution - Worst bias is the  20-bit window at bit  12 - 0.022%
 
 Keyset 'Cyclic' - 8 cycles of 11 bytes - 10000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  61 - 0.042%
+Testing distribution - Worst bias is the  20-bit window at bit  53 - 0.039%
 
 Keyset 'Cyclic' - 8 cycles of 12 bytes - 10000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  25 - 0.027%
+Testing distribution - Worst bias is the  20-bit window at bit  12 - 0.038%
 
 
 [[[ Keyset 'TwoBytes' Tests ]]]
 
 Keyset 'TwoBytes' - up-to-4-byte keys, 652545 total keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  16-bit window at bit  15 - 0.138%
+Testing distribution - Worst bias is the  16-bit window at bit   2 - 0.101%
 
 Keyset 'TwoBytes' - up-to-8-byte keys, 5471025 total keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit   0 - 0.065%
+Testing distribution - Worst bias is the  20-bit window at bit  51 - 0.099%
 
 Keyset 'TwoBytes' - up-to-12-byte keys, 18616785 total keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  28 - 0.017%
+Testing distribution - Worst bias is the  20-bit window at bit  25 - 0.015%
 
 Keyset 'TwoBytes' - up-to-16-byte keys, 44251425 total keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  32 - 0.009%
+Testing distribution - Worst bias is the  20-bit window at bit   9 - 0.009%
 
 Keyset 'TwoBytes' - up-to-20-byte keys, 86536545 total keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  47 - 0.004%
+Testing distribution - Worst bias is the  19-bit window at bit  27 - 0.003%
 
 
 [[[ Keyset 'Sparse' Tests ]]]
 
 Keyset 'Sparse' - 32-bit keys with up to 6 bits set - 1149017 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  17-bit window at bit  55 - 0.079%
+Testing distribution - Worst bias is the  17-bit window at bit  17 - 0.088%
 
 Keyset 'Sparse' - 40-bit keys with up to 6 bits set - 4598479 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  19-bit window at bit   3 - 0.060%
+Testing distribution - Worst bias is the  19-bit window at bit  10 - 0.032%
 
 Keyset 'Sparse' - 48-bit keys with up to 5 bits set - 1925357 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  18-bit window at bit  15 - 0.088%
+Testing distribution - Worst bias is the  18-bit window at bit  35 - 0.072%
 
 Keyset 'Sparse' - 56-bit keys with up to 5 bits set - 4216423 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  19-bit window at bit  47 - 0.047%
+Testing distribution - Worst bias is the  19-bit window at bit  49 - 0.075%
 
 Keyset 'Sparse' - 64-bit keys with up to 5 bits set - 8303633 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  19-bit window at bit  55 - 0.041%
+Testing distribution - Worst bias is the  20-bit window at bit  49 - 0.055%
 
 Keyset 'Sparse' - 96-bit keys with up to 4 bits set - 3469497 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  19-bit window at bit  35 - 0.084%
+Testing distribution - Worst bias is the  19-bit window at bit  61 - 0.063%
 
 Keyset 'Sparse' - 256-bit keys with up to 3 bits set - 2796417 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  18-bit window at bit  48 - 0.066%
+Testing distribution - Worst bias is the  19-bit window at bit  49 - 0.095%
 
 Keyset 'Sparse' - 2048-bit keys with up to 2 bits set - 2098177 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  18-bit window at bit  18 - 0.082%
+Testing distribution - Worst bias is the  18-bit window at bit  45 - 0.060%
 
 
 [[[ Keyset 'Combination Lowbits' Tests ]]]
 
 Keyset 'Combination' - up to 8 blocks from a set of 8 - 19173960 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  45 - 0.020%
+Testing distribution - Worst bias is the  20-bit window at bit  46 - 0.012%
 
 
 [[[ Keyset 'Combination Highbits' Tests ]]]
 
 Keyset 'Combination' - up to 8 blocks from a set of 8 - 19173960 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit   0 - 0.014%
+Testing distribution - Worst bias is the  20-bit window at bit  30 - 0.026%
 
 
 [[[ Keyset 'Combination 0x8000000' Tests ]]]
 
 Keyset 'Combination' - up to 20 blocks from a set of 2 - 2097150 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  18-bit window at bit  51 - 0.085%
+Testing distribution - Worst bias is the  18-bit window at bit  10 - 0.061%
 
 
 [[[ Keyset 'Combination 0x0000001' Tests ]]]
 
 Keyset 'Combination' - up to 20 blocks from a set of 2 - 2097150 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  18-bit window at bit  17 - 0.070%
+Testing distribution - Worst bias is the  18-bit window at bit  22 - 0.075%
 
 
 [[[ Keyset 'Combination Hi-Lo' Tests ]]]
 
 Keyset 'Combination' - up to 6 blocks from a set of 15 - 12204240 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  26 - 0.025%
+Testing distribution - Worst bias is the  20-bit window at bit  61 - 0.038%
 
 
 [[[ Keyset 'Window' Tests ]]]
@@ -375,35 +375,32 @@ Window at 128 - Testing collisions   - Expected     0.00, actual     0.00 ( 0.00
 
 Keyset 'Text' - keys of form "Foo[XXXX]Bar" - 14776336 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  24 - 0.024%
+Testing distribution - Worst bias is the  20-bit window at bit  59 - 0.029%
 
 Keyset 'Text' - keys of form "FooBar[XXXX]" - 14776336 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  20-bit window at bit  20 - 0.013%
+Testing distribution - Worst bias is the  20-bit window at bit  50 - 0.029%
 
 Keyset 'Text' - keys of form "[XXXX]FooBar" - 14776336 keys
-Testing collisions   - Expected     0.00, actual     3.00 (506917.74x) !!!!!
-Testing distribution - Worst bias is the  20-bit window at bit  12 - 0.020%
+Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
+Testing distribution - Worst bias is the  20-bit window at bit   3 - 0.022%
 
-*********FAIL*********
 
 [[[ Keyset 'Zeroes' Tests ]]]
 
 Keyset 'Zeroes' - 262144 keys...........
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  15-bit window at bit  38 - 0.277%
+Testing distribution - Worst bias is the  15-bit window at bit  20 - 0.163%
 
 
 [[[ Keyset 'Seed' Tests ]]]
 
 Keyset 'Seed' - 1000000 keys
 Testing collisions   - Expected     0.00, actual     0.00 ( 0.00x)
-Testing distribution - Worst bias is the  17-bit window at bit  62 - 0.111%
+Testing distribution - Worst bias is the  17-bit window at bit  26 - 0.123%
 
 
 
 Input vcode 0x00000001, Output vcode 0x00000001, Result vcode 0x00000001
-Verification value is 0x00000001 - Testing took 1235.846000 seconds
+Verification value is 0x00000001 - Testing took 1304.766000 seconds
 -------------------------------------------------------------------------------
-
-C:\!FreeArc\public\FARSH\SMHasher>
