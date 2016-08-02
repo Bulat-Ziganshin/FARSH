@@ -131,33 +131,24 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     {
         case 19:
         case 18:
-        case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
-                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p+12));
-                    v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(bEnd-4));  // unaligned access!
-                    break;
+        case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p+12));
+
         case 16:
         case 15:
         case 14:
-        case 13:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
-                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(bEnd-4));  // unaligned access!
-                    break;
+        case 13:    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+8));
+
         case 12:
         case 11:
         case 10:
-        case  9:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(bEnd-4));  // unaligned access!
-                    break;
+        case  9:    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+4));
+
         case  8:
         case  7:
         case  6:
         case  5:
-        case  4:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
+        case  4:    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p));
+                    v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
         case  3:    last_word += p[2] << 16;
