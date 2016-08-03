@@ -166,17 +166,22 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
                     v1 = update(v1, v2, PRIME32_1, PRIME32_4, last_word);
     }
 
-v1 += len;    
+    U32 v6 = len + v1 + v2 + v3 + v4 + v5;
 
-#define ROL(v,i)  (v = XXH_rotl32(v,i))
-for (int i=0; i<ZZH_CYCLES; i++)
-{
-    v2 ^= v1;  ROL(v1,13);  v3 += v1;
-    v3 ^= v2;  ROL(v2,22);  v4 += v2;
-    v4 ^= v3;  ROL(v3, 7);  v5 += v3;
-    v5 ^= v4;  ROL(v4,18);  v1 += v3;
-    v1 ^= v5;  ROL(v5,11);  v2 += v5;
-}    
+    for (int i=0; i<ZZH_CYCLES; i++)
+    {
+        v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
+
+        v1 = update(v1, 0, PRIME32_1, PRIME32_4, v2);
+        v2 = update(v2, 0, PRIME32_2, PRIME32_5, v3);
+        v3 = update(v3, 0, PRIME32_3, PRIME32_1, v4);
+        v4 = update(v4, 0, PRIME32_4, PRIME32_2, v5);
+        v5 = update(v5, 0, PRIME32_5, PRIME32_3, v1);
+
+        v6 = v1 + v2 + v3 + v4 + v5;
+    }
+
+    v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
 
 /*
     // Final mixing of the internal state
@@ -199,7 +204,7 @@ for (int i=0; i<ZZH_CYCLES; i++)
 }
 
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;
-*/    
+*/
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;
