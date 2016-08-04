@@ -42,3 +42,7 @@ asm-listings/aaa.cmd
 benchmark/aaa.cmd
 SMHasher/aaa.cmd
    
+SMHasher/128.cmd
+SMHasher/32.cmd
+SMHasher/64.cmd
+SMHasher/33.cmd

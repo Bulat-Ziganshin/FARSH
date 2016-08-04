@@ -143,17 +143,16 @@ tail:
         case  8:
         case  7:
         case  6:
-        case  5:
-        case  4:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+        case  5:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
-        case  3:    v1 += p[2] << 16;
-        case  2:    v1 += p[1] << 8;
-        case  1:    v1 += p[0];
-                    v1 = update(v1, v2, PRIME32_1, PRIME32_4, 0);
+        case  4:    v1 += p[3];
+        case  3:    v2 += p[2];
+        case  2:    v3 += p[1];
+        case  1:    v4 += p[0];
 
-        case 0:     break;
+        case  0:    break;
 
         default:
                     const BYTE* const limit = bEnd - 20;
