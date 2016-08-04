@@ -147,9 +147,9 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
-        case  4:    v1 += p[3] << 24;
-        case  3:    v2 += p[2] << 16;
-        case  2:    v3 += p[1] <<  8;
+        case  4:    v1 += p[3];  v1 = XXH_rotl32(v1, 24);
+        case  3:    v2 += p[2];  v2 = XXH_rotl32(v2, 16);
+        case  2:    v3 += p[1];  v3 = XXH_rotl32(v3,  8);
         case  1:    v4 += p[0];
 
         case  0:    break;
@@ -157,11 +157,11 @@ tail:
         default:
                     const BYTE* const limit = bEnd - 20;
                     do {
-                        v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p)); p+=4;
-                        v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p)); p+=4;
-                        v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p)); p+=4;
-                        v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p)); p+=4;
-                        v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p)); p+=4;
+                        v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
+                        v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
+                        v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p));  p+=4;
+                        v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p));  p+=4;
+                        v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p));  p+=4;
                     } while (p<=limit);
 
                     remainder = bEnd - p;
