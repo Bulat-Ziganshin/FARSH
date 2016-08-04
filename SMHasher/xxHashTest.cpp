@@ -113,21 +113,10 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     U32 v4 = PRIME32_5;
     U32 v5 = seed;
 
-    if (len>=20) {
-        const BYTE* const limit = bEnd - 20;
-        do {
-            v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p)); p+=4;
-            v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p)); p+=4;
-            v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p)); p+=4;
-            v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p)); p+=4;
-            v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p)); p+=4;
-        } while (p<=limit);
-    }
-
-
-    size_t rem = bEnd - p;
+    size_t remainder = len;
+tail:
     U32 last_word = 0;
-    switch (rem)
+    switch (remainder)
     {
         case 19:
         case 18:
@@ -164,6 +153,21 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
         case  2:    last_word += p[1] << 8;
         case  1:    last_word += p[0];
                     v1 = update(v1, v2, PRIME32_1, PRIME32_4, last_word);
+
+        case 0:     break;
+
+        default:
+                    const BYTE* const limit = bEnd - 20;
+                    do {
+                        v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p)); p+=4;
+                        v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p)); p+=4;
+                        v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p)); p+=4;
+                        v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p)); p+=4;
+                        v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p)); p+=4;
+                    } while (p<=limit);
+
+                    remainder = bEnd - p;
+                    goto tail;
     }
 
 
