@@ -115,7 +115,6 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 
     size_t remainder = len;
 tail:
-    U32 last_word = 0;
     switch (remainder)
     {
         case 19:
@@ -149,10 +148,10 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
-        case  3:    last_word += p[2] << 16;
-        case  2:    last_word += p[1] << 8;
-        case  1:    last_word += p[0];
-                    v1 = update(v1, v2, PRIME32_1, PRIME32_4, last_word);
+        case  3:    v1 += p[2] << 16;
+        case  2:    v1 += p[1] << 8;
+        case  1:    v1 += p[0];
+                    v1 = update(v1, v2, PRIME32_1, PRIME32_4, 0);
 
         case 0:     break;
 
