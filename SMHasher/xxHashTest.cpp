@@ -147,9 +147,9 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
-        case  4:    v1 += p[3];
-        case  3:    v2 += p[2];
-        case  2:    v3 += p[1];
+        case  4:    v1 += p[3] << 24;
+        case  3:    v2 += p[2] << 16;
+        case  2:    v3 += p[1] <<  8;
         case  1:    v4 += p[0];
 
         case  0:    break;
