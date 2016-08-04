@@ -107,11 +107,11 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
     const BYTE* p = (const BYTE*)input;
     const BYTE* bEnd = p + len;
 
-    U32 v1 = seed + PRIME32_1 + PRIME32_2;
-    U32 v2 = seed + PRIME32_2;
-    U32 v3 = seed + 0;
-    U32 v4 = seed - PRIME32_1;
-    U32 v5 = seed + PRIME32_3;
+    U32 v1 = seed;
+    U32 v2 = PRIME32_3;
+    U32 v3 = seed;
+    U32 v4 = PRIME32_5;
+    U32 v5 = seed;
 
     if (len>=20) {
         const BYTE* const limit = bEnd - 20;
@@ -166,24 +166,7 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
                     v1 = update(v1, v2, PRIME32_1, PRIME32_4, last_word);
     }
 
-    U32 v6 = len + v1 + v2 + v3 + v4 + v5;
 
-    for (int i=0; i<ZZH_CYCLES; i++)
-    {
-        v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
-
-        v1 = update(v1, 0, PRIME32_1, PRIME32_4, v2);
-        v2 = update(v2, 0, PRIME32_2, PRIME32_5, v3);
-        v3 = update(v3, 0, PRIME32_3, PRIME32_1, v4);
-        v4 = update(v4, 0, PRIME32_4, PRIME32_2, v5);
-        v5 = update(v5, 0, PRIME32_5, PRIME32_3, v1);
-
-        v6 = v1 + v2 + v3 + v4 + v5;
-    }
-
-    v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
-
-/*
     // Final mixing of the internal state
 
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
@@ -204,7 +187,6 @@ for (int i=0; i<ZZH_CYCLES; i++)
 }
 
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;
-*/
 
     ((uint32_t*)out)[0] = v1;
     ((uint32_t*)out)[1] = v2;

@@ -146,10 +146,12 @@ More results and benchmarking executables are available in those [forum posts](h
 
 # Competition
 Fast non-cryptographic hashes:
+- {MumHash](https://github.com/vnmakarov/mum-hash) (2016)
 - [HighwayHash](https://github.com/google/highwayhash) (2016)
 - [CLHash](http://lemire.me/blog/2015/10/26/crazily-fast-hashing-with-carry-less-multiplications),
 even [faster with Broadwell](http://lemire.me/blog/2015/12/24/your-software-should-follow-your-hardware-the-clhash-example) (2015)
 - [MetroHash](https://github.com/jandrewrogers/MetroHash) (2015)
+- Go language [32-bit](https://github.com/golang/go/blob/master/src/runtime/hash32.go) and [64-bit](https://github.com/golang/go/blob/master/src/runtime/hash64.go) hashes (2014)
 - [xxHash][xxHash] (2012) and [xxHash64][xxHash64] (2014)
 - [SpookyHash](http://burtleburtle.net/bob/hash/spooky.html): a 128-bit noncryptographic hash (2012)
 - The [CityHash](https://github.com/google/cityhash) family of hash functions (2011)
