@@ -123,7 +123,7 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
                     v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
                     v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p+12));
-                    v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(bEnd-4));  // unaligned access!
+                    v5 += XXH_get32bits(bEnd-4);  // unaligned access!
                     break;
         case 16:
         case 15:
@@ -131,20 +131,20 @@ tail:
         case 13:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
                     v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
-                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(bEnd-4));  // unaligned access!
+                    v4 += XXH_get32bits(bEnd-4);  // unaligned access!
                     break;
         case 12:
         case 11:
         case 10:
         case  9:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
-                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(bEnd-4));  // unaligned access!
+                    v3 += XXH_get32bits(bEnd-4);  // unaligned access!
                     break;
         case  8:
         case  7:
         case  6:
         case  5:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
+                    v2 += XXH_get32bits(bEnd-4);  // unaligned access!
                     break;
 
         case  4:    v1 += p[3] << 24;
