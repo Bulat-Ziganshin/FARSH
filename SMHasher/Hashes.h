@@ -77,5 +77,16 @@ void SimdZZH64_test  ( const void * key, int len, unsigned seed, void * out );
 // Test harnesses for SpookyHash
 
 void SpookyHash32_test ( const void * key, int len, unsigned seed, void * out );
+void SpookyHash32a_test( const void * key, int len, unsigned seed, void * out );
+void SpookyHash32b_test( const void * key, int len, unsigned seed, void * out );
+void SpookyHash32c_test( const void * key, int len, unsigned seed, void * out );
 void SpookyHash64_test ( const void * key, int len, unsigned seed, void * out );
 void SpookyHash128_test( const void * key, int len, unsigned seed, void * out );
+
+//-----------------------------------------------------------------------------
+// Test harnesses for MurmurHash3_x86_128
+
+void Murmur3c_32 ( const void * key, const int len, uint32_t seed, void * out );
+void Murmur3c_32a( const void * key, const int len, uint32_t seed, void * out );
+void Murmur3c_32b( const void * key, const int len, uint32_t seed, void * out );
+void Murmur3c_32c( const void * key, const int len, uint32_t seed, void * out );

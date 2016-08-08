@@ -28,3 +28,35 @@ uint32_t MurmurOAAT ( const void * key, int len, uint32_t seed )
 
   return h;
 }
+
+
+//-----------------------------------------------------------------------------
+// 32-bit parts of MurmurHash3_x86_128
+
+void Murmur3c_32 ( const void * key, const int len, uint32_t seed, void * out )
+{
+  uint32_t full_out[4];
+  MurmurHash3_x86_128 ( key, len, seed, full_out );
+  *(uint32_t*)out = full_out[0];
+}
+
+void Murmur3c_32a ( const void * key, const int len, uint32_t seed, void * out )
+{
+  uint32_t full_out[4];
+  MurmurHash3_x86_128 ( key, len, seed, full_out );
+  *(uint32_t*)out = full_out[1];
+}
+
+void Murmur3c_32b ( const void * key, const int len, uint32_t seed, void * out )
+{
+  uint32_t full_out[4];
+  MurmurHash3_x86_128 ( key, len, seed, full_out );
+  *(uint32_t*)out = full_out[2];
+}
+
+void Murmur3c_32c ( const void * key, const int len, uint32_t seed, void * out )
+{
+  uint32_t full_out[4];
+  MurmurHash3_x86_128 ( key, len, seed, full_out );
+  *(uint32_t*)out = full_out[3];
+}

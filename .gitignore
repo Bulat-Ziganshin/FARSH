@@ -46,3 +46,5 @@ SMHasher/128.cmd
 SMHasher/32.cmd
 SMHasher/64.cmd
 SMHasher/33.cmd
+SMHasher/sp.cmd
+SMHasher/mur.cmd
