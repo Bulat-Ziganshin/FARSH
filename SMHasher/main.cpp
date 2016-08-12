@@ -46,21 +46,22 @@ HashInfo g_hashes[] =
   { DoNothingHash,        64, 0x00000000, "donothing64", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,       128, 0x00000000, "donothing128", "Do-Nothing function (only valid for measuring call overhead)" },
 
-  { farsh32_test,         32, 0x866BC8B2, "Farsh32",     "FARSH, 32-bit result" },
-  { farsh64_test,         64, 0xDF463566, "Farsh64",     "FARSH, 64-bit result" },
-  { farsh128_test,       128, 0xFDF1A5AE, "Farsh128",    "FARSH, 128-bit result"},
-  { farsh256_test,       256, 0xE82C0185, "Farsh256",    "FARSH, 256-bit result"},
+  { farsh32_test,         32, 0xBCDE332C, "Farsh32",     "FARSH, 32-bit result" },
+  { farsh64_test,         64, 0xDE2FDAEE, "Farsh64",     "FARSH, 64-bit result" },
+  { farsh128_test,       128, 0x82B6CBEC, "Farsh128",    "FARSH, 128-bit result"},
+  { farsh256_test,       256, 0xFEBEA0BC, "Farsh256",    "FARSH, 256-bit result"},
 
   { uhash32_test,         32, 0x852EACB6, "UHash32",     "UHASH, 32-bit result" },
   { uhash32_test,         64, 0x852EACB6, "UHash64",     "UHASH, 64-bit result" },
   { uhash32_test,        128, 0x852EACB6, "UHash128",    "UHASH, 128-bit result" },
 
-  { vhash64_test,         64, 0x852EACB6, "VHash64",     "VHASH, 64-bit result" },
+  { vhash64_test,         64, 0x78C43DC5, "VHash64",     "VHASH, 64-bit result" },
+  { vhash128_test,       128, 0xA5160150, "VHash128",    "VHASH, 128-bit result" },
 
   { poly1305_test,       128, 0x852EACB6, "poly1305",    "poly-1305, 128-bit result" },
 
   { XXH32_test,           32, 0xBA88B743, "XXH32",       "xxHash, 32-bit result" },
-  { XXH64_test,           64, 0xBA88B743, "XXH64",       "xxHash, 64-bit result" },
+  { XXH64_test,           64, 0x024B7CF4, "XXH64",       "xxHash, 64-bit result" },
 
   { ModXXH32_test,        32, 0x6FE47417, "Mod32",       "xxHash with XXH64 finalization, 32-bit result" },
   { ModXXH32a_test,       32, 0xD68852E6, "Mod32a",      "xxHash with XXH64 finalization, upper 32 bits of result" },
@@ -173,7 +174,7 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
     BulkSpeedTest(info->hash,info->hashbits,info->verification);
     printf("\n");
 
-    const int max_keysize = 64;
+    const int max_keysize = 66;
     TinySpeedTest(info->hash,info->hashbits,max_keysize,info->verification,true);
 
     ResetAffinity();   // Use all cores for the rest of code
