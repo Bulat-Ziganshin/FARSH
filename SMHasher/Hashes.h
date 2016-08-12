@@ -7,6 +7,18 @@
 // These are _not_ hash functions (even though people tend to use crc32 as one...)
 
 void DoNothingHash ( const void * key, int len, uint32_t seed, void * out );
+void crc32         ( const void * key, int len, uint32_t seed, void * out );
+
+//----------
+// 32/64/128-bit parts of SHA1
+
+void sha1_32  ( const void * key, int len, uint32_t seed, void * out );
+void sha1_32a ( const void * key, int len, uint32_t seed, void * out );
+void sha1_32b ( const void * key, int len, uint32_t seed, void * out );
+void sha1_32c ( const void * key, int len, uint32_t seed, void * out );
+void sha1_64  ( const void * key, int len, uint32_t seed, void * out );
+void sha1_64a ( const void * key, int len, uint32_t seed, void * out );
+void sha1_128 ( const void * key, int len, uint32_t seed, void * out );
 
 //----------
 // General purpose hashes

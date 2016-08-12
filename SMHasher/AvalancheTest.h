@@ -102,7 +102,7 @@ bool AvalancheTest ( pfHash hash, const int reps )
       {
         double k = *cursor++/(double)reps;
         if (k>0.51 || k<0.49)
-          printf(", %d->%d %f%%",iBit,iOut,k * 100.0);
+          0 && printf(", %d->%d %f%%",iBit,iOut,k * 100.0);   // enable if you need detailed information
       }
     }
     result = false;

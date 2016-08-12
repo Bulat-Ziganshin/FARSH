@@ -46,14 +46,22 @@ HashInfo g_hashes[] =
   { DoNothingHash,        64, 0x00000000, "donothing64", "Do-Nothing function (only valid for measuring call overhead)" },
   { DoNothingHash,       128, 0x00000000, "donothing128", "Do-Nothing function (only valid for measuring call overhead)" },
 
+  { crc32,                32, 0x3719DB20, "crc32",       "CRC-32 soft" },
+
+  { sha1_32,              32, 0x0C2E2F52, "sha1_32",     "SHA1, first 32 bits of result" },
+  { sha1_32a,             32, 0x39D77F01, "sha1_32a",    "SHA1, second 32 bits of result" },
+  { sha1_32b,             32, 0x8436EAEC, "sha1_32b",    "SHA1, third 32 bits of result" },
+  { sha1_32c,             32, 0x3941812B, "sha1_32c",    "SHA1, thourth 32 bits of result" },
+  { sha1_64,              64, 0x2DD8C16C, "sha1_64",     "SHA1, first 64 bits of result" },
+  { sha1_64a,             64, 0x4E971A7E, "sha1_64a",    "SHA1, second 64 bits of result" },
+  { sha1_128,            128, 0x3396C771, "sha1_128",    "SHA1, first 128 bits of result" },
+
   { farsh32_test,         32, 0xBCDE332C, "Farsh32",     "FARSH, 32-bit result" },
   { farsh64_test,         64, 0xDE2FDAEE, "Farsh64",     "FARSH, 64-bit result" },
   { farsh128_test,       128, 0x82B6CBEC, "Farsh128",    "FARSH, 128-bit result"},
   { farsh256_test,       256, 0xFEBEA0BC, "Farsh256",    "FARSH, 256-bit result"},
 
   { uhash32_test,         32, 0x852EACB6, "UHash32",     "UHASH, 32-bit result" },
-  { uhash32_test,         64, 0x852EACB6, "UHash64",     "UHASH, 64-bit result" },
-  { uhash32_test,        128, 0x852EACB6, "UHash128",    "UHASH, 128-bit result" },
 
   { vhash64_test,         64, 0x78C43DC5, "VHash64",     "VHASH, 64-bit result" },
   { vhash128_test,       128, 0xA5160150, "VHash128",    "VHASH, 128-bit result" },
@@ -96,8 +104,8 @@ HashInfo g_hashes[] =
   { SimdZZH64_test,       64, 0xAEC33A87, "Simd64",      "SIMD-optimized zzHash, 64-bit result" },
 
   { SpookyHash32_test,    32, 0xA48BE265, "Spooky32",    "SpookyHash V2, 32-bit result" },
-  { SpookyHash32a_test,   32, 0x7B7AD2B9, "Spooky32a",   "SpookyHash V2, second 32 bits of result" }, 
-  { SpookyHash32b_test,   32, 0x75691943, "Spooky32b",   "SpookyHash V2, third 32 bits of result" },  
+  { SpookyHash32a_test,   32, 0x7B7AD2B9, "Spooky32a",   "SpookyHash V2, second 32 bits of result" },
+  { SpookyHash32b_test,   32, 0x75691943, "Spooky32b",   "SpookyHash V2, third 32 bits of result" },
   { SpookyHash32c_test,   32, 0x5E47E7B3, "Spooky32c",   "SpookyHash V2, thourth 32 bits of result" },
   { SpookyHash64_test,    64, 0x972C4BDC, "Spooky64",    "SpookyHash V2, 64-bit result" },
   { SpookyHash128_test,  128, 0xB7C8659C, "Spooky128",   "SpookyHash V2, 128-bit result" },
@@ -163,6 +171,19 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
   printf("--- Testing %s (%s)\n\n",info->name,info->desc);
 
   //-----------------------------------------------------------------------------
+  // Sanity tests
+
+  if(g_testSanity || g_testAll)
+  {
+    printf("[[[ Sanity Tests ]]]\n\n");
+
+    VerificationTest(hash,hashbits,info->verification,true);
+    SanityTest(hash,hashbits);
+    AppendedZeroesTest(hash,hashbits);
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
   // Speed tests
 
   if(g_testSpeed || g_testAll)
@@ -179,19 +200,6 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
 
     ResetAffinity();   // Use all cores for the rest of code
 
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
-  // Sanity tests
-
-  if(g_testSanity || g_testAll)
-  {
-    printf("[[[ Sanity Tests ]]]\n\n");
-
-    VerificationTest(hash,hashbits,info->verification,true);
-    SanityTest(hash,hashbits);
-    AppendedZeroesTest(hash,hashbits);
     printf("\n");
   }
 
