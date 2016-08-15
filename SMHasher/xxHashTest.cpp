@@ -117,6 +117,7 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 tail:
     switch (remainder)
     {
+        case 20:
         case 19:
         case 18:
         case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
@@ -147,16 +148,16 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
 
-        case  4:    v1 += p[3] << 24;
+        case  4:    v1 += XXH_get32bits(p);
+                    break;
+
         case  3:    v1 += p[2] << 16;
         case  2:    v1 += p[1] << 8;
         case  1:    v1 += p[0];
-                    // v1 = update(v1, v2, PRIME32_1, PRIME32_4, 0);
-
         case  0:    break;
 
         default:
-                    const BYTE* const limit = bEnd - 20;
+                    const BYTE* const limit = bEnd - 21;
                     do {
                         v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
                         v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
@@ -173,11 +174,6 @@ tail:
     // Final mixing of the internal state
 
     U32 v6 = len + v1 + v2 + v3 + v4 + v5;
-
-#ifdef ZZH_CYCLES
-for (int i=0; i<ZZH_CYCLES; i++)
-#endif
-{
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;  v5 += v6;
 
     v1 = fmix32 (v1, PRIME32_1, PRIME32_2);
@@ -187,8 +183,6 @@ for (int i=0; i<ZZH_CYCLES; i++)
     v5 = fmix32 (v5, PRIME32_5, PRIME32_1);
 
     v6 = v1 + v2 + v3 + v4 + v5;
-}
-
     v1 += v6;  v2 ^= v6;  v3 += v6;  v4 ^= v6;
 
     ((uint32_t*)out)[0] = v1;
