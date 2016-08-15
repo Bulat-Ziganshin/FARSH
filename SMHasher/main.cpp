@@ -237,55 +237,6 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
   }
 
   //-----------------------------------------------------------------------------
-  // Differential tests
-
-  if(g_testDiff || g_testAll)
-  {
-    printf("[[[ Differential Tests ]]]\n\n");
-
-    bool result = true;
-    bool dumpCollisions = false;
-
-    result &= DiffTest< Blob<64>,  hashtype >(hash,5,1000,dumpCollisions);
-    result &= DiffTest< Blob<128>, hashtype >(hash,4,1000,dumpCollisions);
-    result &= DiffTest< Blob<256>, hashtype >(hash,3,1000,dumpCollisions);
-
-    if(!result) printf("*********FAIL*********\n");
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
-  // Differential-distribution tests
-
-  if(g_testDiffDist /*|| g_testAll*/)
-  {
-    printf("[[[ Differential Distribution Tests ]]]\n\n");
-
-    bool result = true;
-
-    result &= DiffDistTest2<uint64_t,hashtype>(hash);
-
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
-  // Bit Independence Criteria. Interesting, but doesn't tell us much about
-  // collision or distribution.
-
-  if(g_testBIC)
-  {
-    printf("[[[ Bit Independence Criteria ]]]\n\n");
-
-    bool result = true;
-
-    //result &= BicTest<uint64_t,hashtype>(hash,2000000);
-    BicTest3<Blob<88>,hashtype>(hash,2000000);
-
-    if(!result) printf("*********FAIL*********\n");
-    printf("\n");
-  }
-
-  //-----------------------------------------------------------------------------
   // Keyset 'Cyclic' - keys of the form "abcdabcdabcd..."
 
   if(g_testCyclic || g_testAll)
@@ -522,6 +473,55 @@ void test ( hashfunc<hashtype> hash, HashInfo * info )
     bool drawDiagram = false;
 
     result &= SeedTest<hashtype>( hash, 1000000, drawDiagram );
+
+    if(!result) printf("*********FAIL*********\n");
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
+  // Differential tests
+
+  if(g_testDiff || g_testAll)
+  {
+    printf("[[[ Differential Tests ]]]\n\n");
+
+    bool result = true;
+    bool dumpCollisions = false;
+
+    result &= DiffTest< Blob<64>,  hashtype >(hash,5,1000,dumpCollisions);
+    result &= DiffTest< Blob<128>, hashtype >(hash,4,1000,dumpCollisions);
+    result &= DiffTest< Blob<256>, hashtype >(hash,3,1000,dumpCollisions);
+
+    if(!result) printf("*********FAIL*********\n");
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
+  // Differential-distribution tests
+
+  if(g_testDiffDist /*|| g_testAll*/)
+  {
+    printf("[[[ Differential Distribution Tests ]]]\n\n");
+
+    bool result = true;
+
+    result &= DiffDistTest2<uint64_t,hashtype>(hash);
+
+    printf("\n");
+  }
+
+  //-----------------------------------------------------------------------------
+  // Bit Independence Criteria. Interesting, but doesn't tell us much about
+  // collision or distribution.
+
+  if(g_testBIC)
+  {
+    printf("[[[ Bit Independence Criteria ]]]\n\n");
+
+    bool result = true;
+
+    //result &= BicTest<uint64_t,hashtype>(hash,2000000);
+    BicTest3<Blob<88>,hashtype>(hash,2000000);
 
     if(!result) printf("*********FAIL*********\n");
     printf("\n");
