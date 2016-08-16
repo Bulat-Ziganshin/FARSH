@@ -117,7 +117,6 @@ FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U
 tail:
     switch (remainder)
     {
-        case 20:
         case 19:
         case 18:
         case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
@@ -141,11 +140,15 @@ tail:
                     v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
                     v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(bEnd-4));  // unaligned access!
                     break;
-        case  8:
+
+        case  8:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    break;
+
         case  7:
         case  6:
-        case  5:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
-                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(bEnd-4));  // unaligned access!
+        case  5:    v1 += XXH_get32bits(p) * PRIME32_1;
+                    v2 += XXH_rotl32(XXH_get32bits(bEnd-4) * PRIME32_2, 13);  // unaligned access!
                     break;
 
         case  4:    v1 += XXH_get32bits(p);
@@ -157,7 +160,7 @@ tail:
         case  0:    break;
 
         default:
-                    const BYTE* const limit = bEnd - 21;
+                    const BYTE* const limit = bEnd - 20;
                     do {
                         v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
                         v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
