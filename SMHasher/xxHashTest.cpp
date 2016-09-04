@@ -102,6 +102,114 @@ FORCE_INLINE U32 fmix32 (U32 h32, U32 CONST_1, U32 CONST_2)
 
 typedef U32 update_f (U32 h1, U32 h2, U32 CONST_1, U32 CONST_2, U32 input);
 
+struct VARS {U32 v1, v2, v3, v4, v5;};
+
+// Hash single block up to 4096 bytes and return final 160-bit internal state
+VARS SingleBlockHash (update_f update, const void* input, size_t len, U32 seed, U32 init_v5)
+{
+    const BYTE* p = (const BYTE*)input;
+    const BYTE* bEnd = p + len;
+
+    U32 v1 = seed;
+    U32 v2 = PRIME32_3;
+    U32 v3 = seed;
+    U32 v4 = PRIME32_5;
+    U32 v5 = init_v5;
+
+    size_t remainder = len;
+tail:
+    switch (remainder)
+    {
+        case 19:
+        case 18:
+        case 17:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p+12));
+                    v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+        case 16:
+        case 15:
+        case 14:
+        case 13:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p+8));
+                    v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+        case 12:
+        case 11:
+        case 10:
+        case  9:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(bEnd-4));  // unaligned access!
+                    break;
+
+        case  8:    v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));
+                    v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p+4));
+                    break;
+
+        case  7:
+        case  6:
+        case  5:    v1 += XXH_get32bits(p) * PRIME32_1;
+                    v2 += XXH_rotl32(XXH_get32bits(bEnd-4) * PRIME32_2, 13);  // unaligned access!
+                    break;
+
+        case  4:    v1 += XXH_get32bits(p);
+                    break;
+
+        case  3:    v1 += p[2] << 16;
+        case  2:    v1 += p[1] << 8;
+        case  1:    v1 += p[0];
+        case  0:    break;
+
+        default:
+                    const BYTE* const limit = bEnd - 20;
+                    do {
+                        v1 = update( v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
+                        v2 = update( v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
+                        v3 = update( v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p));  p+=4;
+                        v4 = update( v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p));  p+=4;
+                        v5 = update( v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p));  p+=4;
+                    } while (p<=limit);
+
+                    remainder = bEnd - p;
+                    goto tail;
+    }
+
+    VARS x = {v1, v2, v3, v4, v5};
+    return x;
+}
+
+
+// Hash inputs longer than 4096 bytes
+VARS LongHash (update_f update, const void* input, size_t len, U32 seed)
+{
+    const BYTE* block_start = (const BYTE*)input;
+ 
+    VARS x = {seed, PRIME32_5, seed, PRIME32_2, seed}; 
+    U32 init_v5 = seed;
+    
+    while (len > 0)
+    {
+        size_t block_len  =  (len <= 4096? len : 4096);
+
+        VARS y = SingleBlockHash (update, block_start, block_len, seed, init_v5);
+        
+        x.v1 = update( x.v1, x.v2, PRIME32_1, PRIME32_4, y.v1);
+        x.v2 = update( x.v2, x.v3, PRIME32_2, PRIME32_5, y.v2);
+        x.v3 = update( x.v3, x.v4, PRIME32_3, PRIME32_1, y.v3);
+        x.v4 = update( x.v4, x.v5, PRIME32_4, PRIME32_2, y.v4);
+        x.v5 = update( x.v5, x.v1, PRIME32_5, PRIME32_3, y.v5);
+
+        init_v5 += PRIME32_1;    // vary initial v5 for every block, to ensure different block hashes even when block contents is repeated
+        len -= block_len;
+        block_start += block_len;
+    }                                                    
+
+    return x;
+}
+
+
 FORCE_INLINE void GenericHash (update_f update, const void* input, size_t len, U32 seed, void *out)
 {
     const BYTE* p = (const BYTE*)input;
@@ -160,17 +268,29 @@ tail:
         case  0:    break;
 
         default:
-                    const BYTE* const limit = bEnd - 20;
-                    do {
-                        v1 = update(v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
-                        v2 = update(v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
-                        v3 = update(v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p));  p+=4;
-                        v4 = update(v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p));  p+=4;
-                        v5 = update(v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p));  p+=4;
-                    } while (p<=limit);
+                    if (len < 4096)
+                    {
+                        const BYTE* const limit = bEnd - 20;
+                        do {
+                            v1 = update( v1, v2, PRIME32_1, PRIME32_4, XXH_get32bits(p));  p+=4;
+                            v2 = update( v2, v3, PRIME32_2, PRIME32_5, XXH_get32bits(p));  p+=4;
+                            v3 = update( v3, v4, PRIME32_3, PRIME32_1, XXH_get32bits(p));  p+=4;
+                            v4 = update( v4, v5, PRIME32_4, PRIME32_2, XXH_get32bits(p));  p+=4;
+                            v5 = update( v5, v1, PRIME32_5, PRIME32_3, XXH_get32bits(p));  p+=4;
+                        } while (p<=limit);
 
-                    remainder = bEnd - p;
-                    goto tail;
+                        remainder = bEnd - p;
+                        goto tail;
+                    }
+                    else // len > 4096
+                    {
+                        VARS x = LongHash (update, input, len, seed);
+                        v1 = x.v1;
+                        v2 = x.v2;
+                        v3 = x.v3;
+                        v4 = x.v4;
+                        v5 = x.v5;
+                    }
     }
 
 
